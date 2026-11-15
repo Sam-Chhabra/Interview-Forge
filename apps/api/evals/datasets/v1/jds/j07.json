@@ -1,0 +1,179 @@
+{
+  "jd_id": "j07",
+  "title": "Senior Applied LLM Engineer, Knowledge Platform",
+  "company": "Vespera Knowledge Systems",
+  "text": "Vespera Knowledge Systems builds enterprise AI assistants that help regulated financial, insurance, and healthcare teams resolve complex customer and compliance inquiries. Our platform ingests millions of internal policy documents, call transcripts, and ticket threads to deliver cited, trustworthy answers in real time.\n\nWe are looking for a Senior Applied LLM Engineer to own the core retrieval-augmented generation (RAG), model adaptation, and evaluation layers of our knowledge platform. You will work closely with product managers, subject-matter experts, and platform engineers to take features from messy domain workflows all the way to low-latency production.\n\nResponsibilities:\n- Design, build, and scale production retrieval-augmented generation (RAG) and hybrid semantic search pipelines in Python.\n- Operate and tune vector databases (Qdrant, Pinecone, Milvus, or pgvector) for high-recall, low-latency retrieval across tens of millions of chunks.\n- Run parameter-efficient adaptation of open-weight foundation models using Low-Rank Adaptation for domain-specific summarization and extraction tasks.\n- Architect automated LLM evaluation pipelines and continuous regression benchmarks measuring hallucination, faithfulness, and citation accuracy.\n- Engineer robust system prompts, structured output enforcement with JSON schemas, and multi-step function-calling tool routers.\n- Optimize LLM serving throughput and token latency using vLLM, TensorRT-LLM, KV-cache quantization, or speculative decoding.\n- Curate and deduplicate large training and retrieval corpora on cloud GPU infrastructure and Kubernetes clusters.\n- Partner with domain experts and product stakeholders to translate manual business workflows into shipped AI features.\n\nNice to Have:\n- Experience implementing PII redaction, prompt-injection guardrails, and safety filters for enterprise GenAI deployments.\n- Experience building multimodal vision-language models (VLMs) or layout-aware OCR document extraction pipelines.",
+  "pairs_with": ["r07", "r12"],
+  "requirements": [
+    {
+      "req_id": "j07-q01",
+      "text": "3+ years building production retrieval-augmented generation (RAG) and semantic search pipelines in Python",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-01": 1, "r07-02": 2, "r07-06": 2, "r07-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-04"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q02",
+      "text": "Hands-on experience indexing and tuning vector databases (Qdrant, Pinecone, Milvus, or pgvector) for low-latency retrieval",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-03": 2, "r07-18": 1, "r07-27": 1},
+          "match_type": "lexical",
+          "distractors": ["r07-16"]
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-11"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q03",
+      "text": "Parameter-efficient adaptation of open-weight foundation models using Low-Rank Adaptation",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-04": 2, "r07-27": 1},
+          "match_type": "abbreviation",
+          "distractors": ["r07-22"]
+        },
+        "r12": {
+          "relevant": {"r12-06": 1, "r12-26": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j07-q04",
+      "text": "Designing automated LLM evaluation pipelines and regression benchmarks for hallucination, faithfulness, and citation accuracy",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-05": 2, "r07-11": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-08"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q05",
+      "text": "Prompt engineering, structured output enforcement with JSON schemas, and multi-step function-calling tool routing",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-07": 2, "r07-19": 1, "r07-20": 1},
+          "match_type": "lexical",
+          "distractors": ["r07-15"]
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-14"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q06",
+      "text": "Optimizing LLM serving throughput and token latency using vLLM, TensorRT-LLM, KV-cache quantization, or speculative decoding",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r07-08"]
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-03"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q07",
+      "text": "Large-scale dataset curation or distributed training on cloud GPU infrastructure and Kubernetes clusters",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-09": 2, "r07-04": 1, "r07-28": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r12": {
+          "relevant": {"r12-05": 2},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j07-q08",
+      "text": "Implementing PII redaction, prompt-injection guardrails, and safety filters for enterprise GenAI deployments",
+      "priority": "nice",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-10": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        },
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-10"]
+        }
+      }
+    },
+    {
+      "req_id": "j07-q09",
+      "text": "Partnering with domain experts and product stakeholders to translate manual business workflows into shipped AI features",
+      "priority": "must",
+      "judgments": {
+        "r07": {
+          "relevant": {"r07-12": 2},
+          "match_type": "implicit",
+          "distractors": []
+        },
+        "r12": {
+          "relevant": {"r12-12": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j07-q10",
+      "text": "Building multimodal vision-language models (VLMs) or layout-aware OCR document extraction pipelines",
+      "priority": "nice",
+      "judgments": {
+        "r07": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r07-17"]
+        },
+        "r12": {
+          "relevant": {"r12-19": 2},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    }
+  ]
+}

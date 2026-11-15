@@ -1,0 +1,1383 @@
+{
+  "benchmark_version": "v1",
+  "generated_at": "2026-11-15T19:44:24Z",
+  "total_runtime_sec": 145.98,
+  "dataset_summary": {
+    "description": "ResumeJD-Bench v1: 12 resumes (324 items), 12 JDs, 16 pairs, 160 queries; match types: {'abbreviation': 22, 'gap': 40, 'implicit': 20, 'lexical': 43, 'paraphrase': 35}",
+    "num_resumes": 12,
+    "num_items": 324,
+    "num_jds": 12,
+    "num_pairs": 16,
+    "num_queries": 160,
+    "match_type_distribution": {
+      "abbreviation": 22,
+      "gap": 40,
+      "implicit": 20,
+      "lexical": 43,
+      "paraphrase": 35
+    }
+  },
+  "retrieval_comparison": {
+    "fts": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.2936,
+        "ci95_low": 0.2429,
+        "ci95_high": 0.3456
+      },
+      "recall_at_3": {
+        "mean": 0.6101,
+        "ci95_low": 0.5429,
+        "ci95_high": 0.6777
+      },
+      "recall_at_5": {
+        "mean": 0.7183,
+        "ci95_low": 0.6558,
+        "ci95_high": 0.7795
+      },
+      "mrr_at_10": {
+        "mean": 0.7167,
+        "ci95_low": 0.6479,
+        "ci95_high": 0.7796
+      },
+      "ndcg_at_5": {
+        "mean": 0.6483,
+        "ci95_low": 0.5853,
+        "ci95_high": 0.7079
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.6483,
+        "ci95_low": 0.5853,
+        "ci95_high": 0.7079
+      },
+      "map_at_10": {
+        "mean": 0.6143,
+        "ci95_low": 0.5517,
+        "ci95_high": 0.6759
+      },
+      "recall_at_150tok": {
+        "mean": 0.6722,
+        "ci95_low": 0.6056,
+        "ci95_high": 0.7359
+      },
+      "recall_at_300tok": {
+        "mean": 0.8335,
+        "ci95_low": 0.7811,
+        "ci95_high": 0.887
+      },
+      "snr_at_3": {
+        "mean": 0.4755,
+        "ci95_low": 0.4186,
+        "ci95_high": 0.5348
+      },
+      "trap_rate_at_3": 0.3684,
+      "gap_auroc": 0.7704,
+      "latency_p50_ms": 0.3,
+      "latency_p95_ms": 0.37,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.4924,
+          "mrr_at_10": 0.685,
+          "ndcg_at_5": 0.5662,
+          "f_ndcg_at_5": 0.5662
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.625,
+          "mrr_at_10": 0.5244,
+          "ndcg_at_5": 0.5663,
+          "f_ndcg_at_5": 0.5663
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.7609,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.8857,
+          "f_ndcg_at_5": 0.8857
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.4905,
+          "mrr_at_10": 0.5269,
+          "ndcg_at_5": 0.455,
+          "f_ndcg_at_5": 0.455
+        }
+      },
+      "strategy": "fts",
+      "label": "PostgreSQL FTS (ts_rank_cd + Snowball)",
+      "p_value_vs_dense_ndcg5": 0.5602,
+      "p_value_vs_fts_ndcg5": 1.0
+    },
+    "bm25": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.2957,
+        "ci95_low": 0.2419,
+        "ci95_high": 0.3504
+      },
+      "recall_at_3": {
+        "mean": 0.6011,
+        "ci95_low": 0.5346,
+        "ci95_high": 0.6681
+      },
+      "recall_at_5": {
+        "mean": 0.7158,
+        "ci95_low": 0.6443,
+        "ci95_high": 0.7784
+      },
+      "mrr_at_10": {
+        "mean": 0.7101,
+        "ci95_low": 0.6392,
+        "ci95_high": 0.7763
+      },
+      "ndcg_at_5": {
+        "mean": 0.6344,
+        "ci95_low": 0.5669,
+        "ci95_high": 0.6942
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.6344,
+        "ci95_low": 0.5669,
+        "ci95_high": 0.6942
+      },
+      "map_at_10": {
+        "mean": 0.622,
+        "ci95_low": 0.558,
+        "ci95_high": 0.6835
+      },
+      "recall_at_150tok": {
+        "mean": 0.6614,
+        "ci95_low": 0.5912,
+        "ci95_high": 0.7229
+      },
+      "recall_at_300tok": {
+        "mean": 0.8431,
+        "ci95_low": 0.7847,
+        "ci95_high": 0.8944
+      },
+      "snr_at_3": {
+        "mean": 0.4785,
+        "ci95_low": 0.419,
+        "ci95_high": 0.5392
+      },
+      "trap_rate_at_3": 0.2895,
+      "gap_auroc": 0.78,
+      "latency_p50_ms": 0.3,
+      "latency_p95_ms": 0.37,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.5076,
+          "mrr_at_10": 0.6845,
+          "ndcg_at_5": 0.5712,
+          "f_ndcg_at_5": 0.5712
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.475,
+          "mrr_at_10": 0.483,
+          "ndcg_at_5": 0.5197,
+          "f_ndcg_at_5": 0.5197
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.7977,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.8822,
+          "f_ndcg_at_5": 0.8822
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.4905,
+          "mrr_at_10": 0.5285,
+          "ndcg_at_5": 0.435,
+          "f_ndcg_at_5": 0.435
+        }
+      },
+      "strategy": "bm25",
+      "label": "BM25Okapi (Tech-Aware Tokenizer)",
+      "p_value_vs_dense_ndcg5": 0.946,
+      "p_value_vs_fts_ndcg5": 0.4263
+    },
+    "dense": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.2603,
+        "ci95_low": 0.2137,
+        "ci95_high": 0.3099
+      },
+      "recall_at_3": {
+        "mean": 0.6278,
+        "ci95_low": 0.5564,
+        "ci95_high": 0.6924
+      },
+      "recall_at_5": {
+        "mean": 0.7492,
+        "ci95_low": 0.6826,
+        "ci95_high": 0.8097
+      },
+      "mrr_at_10": {
+        "mean": 0.7106,
+        "ci95_low": 0.6438,
+        "ci95_high": 0.7747
+      },
+      "ndcg_at_5": {
+        "mean": 0.6326,
+        "ci95_low": 0.5681,
+        "ci95_high": 0.69
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.6326,
+        "ci95_low": 0.5681,
+        "ci95_high": 0.69
+      },
+      "map_at_10": {
+        "mean": 0.6295,
+        "ci95_low": 0.5677,
+        "ci95_high": 0.6886
+      },
+      "recall_at_150tok": {
+        "mean": 0.6943,
+        "ci95_low": 0.6219,
+        "ci95_high": 0.7546
+      },
+      "recall_at_300tok": {
+        "mean": 0.8826,
+        "ci95_low": 0.8305,
+        "ci95_high": 0.9243
+      },
+      "snr_at_3": {
+        "mean": 0.4908,
+        "ci95_low": 0.4335,
+        "ci95_high": 0.5512
+      },
+      "trap_rate_at_3": 0.1053,
+      "gap_auroc": 0.7804,
+      "latency_p50_ms": 0.3,
+      "latency_p95_ms": 0.36,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6667,
+          "mrr_at_10": 0.7917,
+          "ndcg_at_5": 0.663,
+          "f_ndcg_at_5": 0.663
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.65,
+          "mrr_at_10": 0.5563,
+          "ndcg_at_5": 0.5698,
+          "f_ndcg_at_5": 0.5698
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.7752,
+          "mrr_at_10": 0.9612,
+          "ndcg_at_5": 0.8378,
+          "f_ndcg_at_5": 0.8378
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.4095,
+          "mrr_at_10": 0.4398,
+          "ndcg_at_5": 0.3972,
+          "f_ndcg_at_5": 0.3972
+        }
+      },
+      "strategy": "dense",
+      "label": "Dense Bi-Encoder (BGE-small-en-v1.5, 384d)",
+      "p_value_vs_dense_ndcg5": 1.0,
+      "p_value_vs_fts_ndcg5": 0.5602
+    },
+    "dense_bge_base": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3311,
+        "ci95_low": 0.276,
+        "ci95_high": 0.3881
+      },
+      "recall_at_3": {
+        "mean": 0.6789,
+        "ci95_low": 0.613,
+        "ci95_high": 0.7415
+      },
+      "recall_at_5": {
+        "mean": 0.8121,
+        "ci95_low": 0.7597,
+        "ci95_high": 0.8629
+      },
+      "mrr_at_10": {
+        "mean": 0.7827,
+        "ci95_low": 0.7246,
+        "ci95_high": 0.8432
+      },
+      "ndcg_at_5": {
+        "mean": 0.7289,
+        "ci95_low": 0.678,
+        "ci95_high": 0.7816
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.7289,
+        "ci95_low": 0.678,
+        "ci95_high": 0.7816
+      },
+      "map_at_10": {
+        "mean": 0.6745,
+        "ci95_low": 0.6182,
+        "ci95_high": 0.7339
+      },
+      "recall_at_150tok": {
+        "mean": 0.7781,
+        "ci95_low": 0.7221,
+        "ci95_high": 0.8289
+      },
+      "recall_at_300tok": {
+        "mean": 0.8721,
+        "ci95_low": 0.8271,
+        "ci95_high": 0.9136
+      },
+      "snr_at_3": {
+        "mean": 0.5032,
+        "ci95_low": 0.4519,
+        "ci95_high": 0.5589
+      },
+      "trap_rate_at_3": 0.1842,
+      "gap_auroc": 0.7865,
+      "latency_p50_ms": 0.31,
+      "latency_p95_ms": 0.37,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.5682,
+          "mrr_at_10": 0.7727,
+          "ndcg_at_5": 0.6658,
+          "f_ndcg_at_5": 0.6658
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.65,
+          "mrr_at_10": 0.638,
+          "ndcg_at_5": 0.6551,
+          "f_ndcg_at_5": 0.6551
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.724,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.863,
+          "f_ndcg_at_5": 0.863
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.7095,
+          "mrr_at_10": 0.6333,
+          "ndcg_at_5": 0.646,
+          "f_ndcg_at_5": 0.646
+        }
+      },
+      "strategy": "dense_bge_base",
+      "label": "Dense Bi-Encoder (BGE-base-en-v1.5, 768d)",
+      "p_value_vs_dense_ndcg5": 0.002,
+      "p_value_vs_fts_ndcg5": 0.02
+    },
+    "hybrid_linear": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.2908,
+        "ci95_low": 0.241,
+        "ci95_high": 0.3414
+      },
+      "recall_at_3": {
+        "mean": 0.6507,
+        "ci95_low": 0.5856,
+        "ci95_high": 0.7172
+      },
+      "recall_at_5": {
+        "mean": 0.7738,
+        "ci95_low": 0.7089,
+        "ci95_high": 0.8322
+      },
+      "mrr_at_10": {
+        "mean": 0.7345,
+        "ci95_low": 0.6676,
+        "ci95_high": 0.7974
+      },
+      "ndcg_at_5": {
+        "mean": 0.6737,
+        "ci95_low": 0.6131,
+        "ci95_high": 0.7322
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.6737,
+        "ci95_low": 0.6131,
+        "ci95_high": 0.7322
+      },
+      "map_at_10": {
+        "mean": 0.651,
+        "ci95_low": 0.59,
+        "ci95_high": 0.7118
+      },
+      "recall_at_150tok": {
+        "mean": 0.73,
+        "ci95_low": 0.6629,
+        "ci95_high": 0.79
+      },
+      "recall_at_300tok": {
+        "mean": 0.8768,
+        "ci95_low": 0.8254,
+        "ci95_high": 0.9209
+      },
+      "snr_at_3": {
+        "mean": 0.5075,
+        "ci95_low": 0.4472,
+        "ci95_high": 0.569
+      },
+      "trap_rate_at_3": 0.3158,
+      "gap_auroc": 0.796,
+      "latency_p50_ms": 0.3,
+      "latency_p95_ms": 0.36,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.5189,
+          "mrr_at_10": 0.7338,
+          "ndcg_at_5": 0.6278,
+          "f_ndcg_at_5": 0.6278
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.65,
+          "mrr_at_10": 0.5314,
+          "ndcg_at_5": 0.6051,
+          "f_ndcg_at_5": 0.6051
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.8023,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.9047,
+          "f_ndcg_at_5": 0.9047
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.5476,
+          "mrr_at_10": 0.5391,
+          "ndcg_at_5": 0.458,
+          "f_ndcg_at_5": 0.458
+        }
+      },
+      "strategy": "hybrid_linear",
+      "label": "Hybrid Convex Fusion (0.6 Dense + 0.4 Lexical)",
+      "p_value_vs_dense_ndcg5": 0.0815,
+      "p_value_vs_fts_ndcg5": 0.0885
+    },
+    "hybrid_rrf": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3075,
+        "ci95_low": 0.2536,
+        "ci95_high": 0.359
+      },
+      "recall_at_3": {
+        "mean": 0.6778,
+        "ci95_low": 0.6085,
+        "ci95_high": 0.7396
+      },
+      "recall_at_5": {
+        "mean": 0.7876,
+        "ci95_low": 0.7248,
+        "ci95_high": 0.8429
+      },
+      "mrr_at_10": {
+        "mean": 0.757,
+        "ci95_low": 0.6921,
+        "ci95_high": 0.821
+      },
+      "ndcg_at_5": {
+        "mean": 0.6938,
+        "ci95_low": 0.634,
+        "ci95_high": 0.753
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.6938,
+        "ci95_low": 0.634,
+        "ci95_high": 0.753
+      },
+      "map_at_10": {
+        "mean": 0.6751,
+        "ci95_low": 0.613,
+        "ci95_high": 0.735
+      },
+      "recall_at_150tok": {
+        "mean": 0.7536,
+        "ci95_low": 0.6897,
+        "ci95_high": 0.8142
+      },
+      "recall_at_300tok": {
+        "mean": 0.8757,
+        "ci95_low": 0.8222,
+        "ci95_high": 0.9222
+      },
+      "snr_at_3": {
+        "mean": 0.5253,
+        "ci95_low": 0.4624,
+        "ci95_high": 0.586
+      },
+      "trap_rate_at_3": 0.2105,
+      "gap_auroc": 0.7775,
+      "latency_p50_ms": 0.34,
+      "latency_p95_ms": 0.41,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.5947,
+          "mrr_at_10": 0.7689,
+          "ndcg_at_5": 0.6338,
+          "f_ndcg_at_5": 0.6338
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.75,
+          "mrr_at_10": 0.6281,
+          "ndcg_at_5": 0.6656,
+          "f_ndcg_at_5": 0.6656
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.8159,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.9026,
+          "f_ndcg_at_5": 0.9026
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.519,
+          "mrr_at_10": 0.539,
+          "ndcg_at_5": 0.4912,
+          "f_ndcg_at_5": 0.4912
+        }
+      },
+      "strategy": "hybrid_rrf",
+      "label": "Hybrid Reciprocal Rank Fusion (RRF, k=60)",
+      "p_value_vs_dense_ndcg5": 0.004,
+      "p_value_vs_fts_ndcg5": 0.002
+    },
+    "hybrid_rerank": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3422,
+        "ci95_low": 0.2861,
+        "ci95_high": 0.3953
+      },
+      "recall_at_3": {
+        "mean": 0.7125,
+        "ci95_low": 0.6486,
+        "ci95_high": 0.7723
+      },
+      "recall_at_5": {
+        "mean": 0.8124,
+        "ci95_low": 0.7539,
+        "ci95_high": 0.8667
+      },
+      "mrr_at_10": {
+        "mean": 0.7826,
+        "ci95_low": 0.7211,
+        "ci95_high": 0.8438
+      },
+      "ndcg_at_5": {
+        "mean": 0.7354,
+        "ci95_low": 0.6776,
+        "ci95_high": 0.7902
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.7354,
+        "ci95_low": 0.6776,
+        "ci95_high": 0.7902
+      },
+      "map_at_10": {
+        "mean": 0.7075,
+        "ci95_low": 0.6468,
+        "ci95_high": 0.7646
+      },
+      "recall_at_150tok": {
+        "mean": 0.7783,
+        "ci95_low": 0.7111,
+        "ci95_high": 0.8356
+      },
+      "recall_at_300tok": {
+        "mean": 0.8782,
+        "ci95_low": 0.8268,
+        "ci95_high": 0.9236
+      },
+      "snr_at_3": {
+        "mean": 0.5415,
+        "ci95_low": 0.481,
+        "ci95_high": 0.602
+      },
+      "trap_rate_at_3": 0.1842,
+      "gap_auroc": 0.765,
+      "latency_p50_ms": 48.73,
+      "latency_p95_ms": 56.16,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6288,
+          "mrr_at_10": 0.775,
+          "ndcg_at_5": 0.696,
+          "f_ndcg_at_5": 0.696
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.775,
+          "mrr_at_10": 0.6475,
+          "ndcg_at_5": 0.6836,
+          "f_ndcg_at_5": 0.6836
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.814,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.9044,
+          "f_ndcg_at_5": 0.9044
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.6048,
+          "mrr_at_10": 0.6262,
+          "ndcg_at_5": 0.582,
+          "f_ndcg_at_5": 0.582
+        }
+      },
+      "strategy": "hybrid_rerank",
+      "label": "Hybrid RRF + MiniLM-L6 Cross-Encoder Rerank",
+      "p_value_vs_dense_ndcg5": 0.0005,
+      "p_value_vs_fts_ndcg5": 0.0005
+    },
+    "hybrid_rerank_bge": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3394,
+        "ci95_low": 0.2821,
+        "ci95_high": 0.3942
+      },
+      "recall_at_3": {
+        "mean": 0.7257,
+        "ci95_low": 0.6647,
+        "ci95_high": 0.7861
+      },
+      "recall_at_5": {
+        "mean": 0.8353,
+        "ci95_low": 0.779,
+        "ci95_high": 0.8806
+      },
+      "mrr_at_10": {
+        "mean": 0.788,
+        "ci95_low": 0.7265,
+        "ci95_high": 0.8468
+      },
+      "ndcg_at_5": {
+        "mean": 0.7493,
+        "ci95_low": 0.6931,
+        "ci95_high": 0.802
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.7493,
+        "ci95_low": 0.6931,
+        "ci95_high": 0.802
+      },
+      "map_at_10": {
+        "mean": 0.7111,
+        "ci95_low": 0.6508,
+        "ci95_high": 0.7688
+      },
+      "recall_at_150tok": {
+        "mean": 0.7943,
+        "ci95_low": 0.7339,
+        "ci95_high": 0.8511
+      },
+      "recall_at_300tok": {
+        "mean": 0.8925,
+        "ci95_low": 0.8455,
+        "ci95_high": 0.9351
+      },
+      "snr_at_3": {
+        "mean": 0.5477,
+        "ci95_low": 0.4912,
+        "ci95_high": 0.6044
+      },
+      "trap_rate_at_3": 0.2105,
+      "gap_auroc": 0.7498,
+      "latency_p50_ms": 351.34,
+      "latency_p95_ms": 391.45,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6288,
+          "mrr_at_10": 0.783,
+          "ndcg_at_5": 0.6857,
+          "f_ndcg_at_5": 0.6857
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.725,
+          "mrr_at_10": 0.6217,
+          "ndcg_at_5": 0.6725,
+          "f_ndcg_at_5": 0.6725
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.8004,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.9064,
+          "f_ndcg_at_5": 0.9064
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.6952,
+          "mrr_at_10": 0.6543,
+          "ndcg_at_5": 0.6401,
+          "f_ndcg_at_5": 0.6401
+        }
+      },
+      "strategy": "hybrid_rerank_bge",
+      "label": "Hybrid RRF + BGE-Reranker-Base Cross-Encoder",
+      "p_value_vs_dense_ndcg5": 0.0005,
+      "p_value_vs_fts_ndcg5": 0.0005
+    }
+  },
+  "chunking_ablation": {
+    "fixed_500_50": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.6315,
+        "ci95_low": 0.5722,
+        "ci95_high": 0.6864
+      },
+      "recall_at_3": {
+        "mean": 1.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0
+      },
+      "recall_at_5": {
+        "mean": 1.0,
+        "ci95_low": 1.0,
+        "ci95_high": 1.0
+      },
+      "mrr_at_10": {
+        "mean": 0.9583,
+        "ci95_low": 0.9292,
+        "ci95_high": 0.9833
+      },
+      "ndcg_at_5": {
+        "mean": 0.844,
+        "ci95_low": 0.8135,
+        "ci95_high": 0.8725
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.2445,
+        "ci95_low": 0.235,
+        "ci95_high": 0.2541
+      },
+      "map_at_10": {
+        "mean": 0.781,
+        "ci95_low": 0.7393,
+        "ci95_high": 0.8187
+      },
+      "recall_at_150tok": {
+        "mean": 0.6315,
+        "ci95_low": 0.5722,
+        "ci95_high": 0.6864
+      },
+      "recall_at_300tok": {
+        "mean": 0.6315,
+        "ci95_low": 0.5722,
+        "ci95_high": 0.6864
+      },
+      "snr_at_3": {
+        "mean": 0.0808,
+        "ci95_low": 0.0737,
+        "ci95_high": 0.0881
+      },
+      "trap_rate_at_3": 0.2368,
+      "gap_auroc": 0.4651,
+      "latency_p50_ms": 78.03,
+      "latency_p95_ms": 125.09,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 1.0,
+          "mrr_at_10": 0.9773,
+          "ndcg_at_5": 0.8874,
+          "f_ndcg_at_5": 0.2613
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 1.0,
+          "mrr_at_10": 0.875,
+          "ndcg_at_5": 0.8482,
+          "f_ndcg_at_5": 0.2343
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 1.0,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.7797,
+          "f_ndcg_at_5": 0.2304
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 1.0,
+          "mrr_at_10": 0.9571,
+          "ndcg_at_5": 0.8933,
+          "f_ndcg_at_5": 0.257
+        }
+      },
+      "chunk_strategy": "fixed_500_50",
+      "label": "Fixed 500 tokens / 50 overlap (Legacy Baseline)",
+      "avg_chunks_per_resume": 2.4,
+      "avg_tokens_per_chunk": 415.3
+    },
+    "fixed_200_30": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.4178,
+        "ci95_low": 0.3561,
+        "ci95_high": 0.4769
+      },
+      "recall_at_3": {
+        "mean": 0.8217,
+        "ci95_low": 0.7708,
+        "ci95_high": 0.867
+      },
+      "recall_at_5": {
+        "mean": 0.9833,
+        "ci95_low": 0.9681,
+        "ci95_high": 0.9972
+      },
+      "mrr_at_10": {
+        "mean": 0.8304,
+        "ci95_low": 0.7811,
+        "ci95_high": 0.8811
+      },
+      "ndcg_at_5": {
+        "mean": 0.8083,
+        "ci95_low": 0.7729,
+        "ci95_high": 0.8434
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.3786,
+        "ci95_low": 0.3597,
+        "ci95_high": 0.3975
+      },
+      "map_at_10": {
+        "mean": 0.7343,
+        "ci95_low": 0.6901,
+        "ci95_high": 0.7789
+      },
+      "recall_at_150tok": {
+        "mean": 0.4178,
+        "ci95_low": 0.3561,
+        "ci95_high": 0.4769
+      },
+      "recall_at_300tok": {
+        "mean": 0.4664,
+        "ci95_low": 0.4025,
+        "ci95_high": 0.5301
+      },
+      "snr_at_3": {
+        "mean": 0.1193,
+        "ci95_low": 0.1066,
+        "ci95_high": 0.1332
+      },
+      "trap_rate_at_3": 0.3684,
+      "gap_auroc": 0.5764,
+      "latency_p50_ms": 60.44,
+      "latency_p95_ms": 63.99,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6591,
+          "mrr_at_10": 0.7894,
+          "ndcg_at_5": 0.7446,
+          "f_ndcg_at_5": 0.3477
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.8,
+          "mrr_at_10": 0.6933,
+          "ndcg_at_5": 0.7412,
+          "f_ndcg_at_5": 0.3247
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.9248,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.8901,
+          "f_ndcg_at_5": 0.4412
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.8095,
+          "mrr_at_10": 0.7405,
+          "ndcg_at_5": 0.7863,
+          "f_ndcg_at_5": 0.3519
+        }
+      },
+      "chunk_strategy": "fixed_200_30",
+      "label": "Fixed 200 tokens / 30 overlap",
+      "avg_chunks_per_resume": 5.8,
+      "avg_tokens_per_chunk": 173.0
+    },
+    "fixed_100_20": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3256,
+        "ci95_low": 0.2746,
+        "ci95_high": 0.3736
+      },
+      "recall_at_3": {
+        "mean": 0.6926,
+        "ci95_low": 0.6278,
+        "ci95_high": 0.7569
+      },
+      "recall_at_5": {
+        "mean": 0.8561,
+        "ci95_low": 0.8086,
+        "ci95_high": 0.9017
+      },
+      "mrr_at_10": {
+        "mean": 0.7763,
+        "ci95_low": 0.716,
+        "ci95_high": 0.8351
+      },
+      "ndcg_at_5": {
+        "mean": 0.7332,
+        "ci95_low": 0.6811,
+        "ci95_high": 0.7842
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.5109,
+        "ci95_low": 0.4701,
+        "ci95_high": 0.5479
+      },
+      "map_at_10": {
+        "mean": 0.6891,
+        "ci95_low": 0.6366,
+        "ci95_high": 0.7405
+      },
+      "recall_at_150tok": {
+        "mean": 0.3651,
+        "ci95_low": 0.3082,
+        "ci95_high": 0.4204
+      },
+      "recall_at_300tok": {
+        "mean": 0.7162,
+        "ci95_low": 0.6558,
+        "ci95_high": 0.7814
+      },
+      "snr_at_3": {
+        "mean": 0.2179,
+        "ci95_low": 0.1901,
+        "ci95_high": 0.2472
+      },
+      "trap_rate_at_3": 0.2632,
+      "gap_auroc": 0.6177,
+      "latency_p50_ms": 60.09,
+      "latency_p95_ms": 68.6,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6061,
+          "mrr_at_10": 0.8182,
+          "ndcg_at_5": 0.7101,
+          "f_ndcg_at_5": 0.487
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.675,
+          "mrr_at_10": 0.5968,
+          "ndcg_at_5": 0.6029,
+          "f_ndcg_at_5": 0.4065
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.8554,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.9175,
+          "f_ndcg_at_5": 0.6611
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.5571,
+          "mrr_at_10": 0.5919,
+          "ndcg_at_5": 0.5958,
+          "f_ndcg_at_5": 0.4012
+        }
+      },
+      "chunk_strategy": "fixed_100_20",
+      "label": "Fixed 100 tokens / 20 overlap",
+      "avg_chunks_per_resume": 12.1,
+      "avg_tokens_per_chunk": 82.8
+    },
+    "sentence_window": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.4004,
+        "ci95_low": 0.3468,
+        "ci95_high": 0.456
+      },
+      "recall_at_3": {
+        "mean": 0.5428,
+        "ci95_low": 0.4789,
+        "ci95_high": 0.605
+      },
+      "recall_at_5": {
+        "mean": 0.7736,
+        "ci95_low": 0.7182,
+        "ci95_high": 0.8265
+      },
+      "mrr_at_10": {
+        "mean": 0.8047,
+        "ci95_low": 0.7435,
+        "ci95_high": 0.8652
+      },
+      "ndcg_at_5": {
+        "mean": 0.6855,
+        "ci95_low": 0.6309,
+        "ci95_high": 0.7359
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.4193,
+        "ci95_low": 0.3857,
+        "ci95_high": 0.4515
+      },
+      "map_at_10": {
+        "mean": 0.5894,
+        "ci95_low": 0.5406,
+        "ci95_high": 0.6393
+      },
+      "recall_at_150tok": {
+        "mean": 0.6982,
+        "ci95_low": 0.6428,
+        "ci95_high": 0.7536
+      },
+      "recall_at_300tok": {
+        "mean": 0.8868,
+        "ci95_low": 0.8438,
+        "ci95_high": 0.9292
+      },
+      "snr_at_3": {
+        "mean": 0.6988,
+        "ci95_low": 0.6348,
+        "ci95_high": 0.7666
+      },
+      "trap_rate_at_3": 0.1316,
+      "gap_auroc": 0.6035,
+      "latency_p50_ms": 77.34,
+      "latency_p95_ms": 90.88,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.553,
+          "mrr_at_10": 0.8303,
+          "ndcg_at_5": 0.6564,
+          "f_ndcg_at_5": 0.3927
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.5,
+          "mrr_at_10": 0.6446,
+          "ndcg_at_5": 0.6484,
+          "f_ndcg_at_5": 0.3922
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.5496,
+          "mrr_at_10": 0.9884,
+          "ndcg_at_5": 0.7758,
+          "f_ndcg_at_5": 0.4763
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.5524,
+          "mrr_at_10": 0.6543,
+          "ndcg_at_5": 0.6139,
+          "f_ndcg_at_5": 0.3815
+        }
+      },
+      "chunk_strategy": "sentence_window",
+      "label": "Sentence Window (+/- 1 neighbor sentence)",
+      "avg_chunks_per_resume": 34.7,
+      "avg_tokens_per_chunk": 78.8
+    },
+    "bullet_contextual": {
+      "num_queries_total": 160,
+      "num_queries_non_gap": 120,
+      "num_queries_gap": 40,
+      "recall_at_1": {
+        "mean": 0.3214,
+        "ci95_low": 0.2674,
+        "ci95_high": 0.3756
+      },
+      "recall_at_3": {
+        "mean": 0.6979,
+        "ci95_low": 0.634,
+        "ci95_high": 0.7577
+      },
+      "recall_at_5": {
+        "mean": 0.7971,
+        "ci95_low": 0.738,
+        "ci95_high": 0.8515
+      },
+      "mrr_at_10": {
+        "mean": 0.7721,
+        "ci95_low": 0.7114,
+        "ci95_high": 0.8302
+      },
+      "ndcg_at_5": {
+        "mean": 0.7271,
+        "ci95_low": 0.6662,
+        "ci95_high": 0.7821
+      },
+      "f_ndcg_at_5": {
+        "mean": 0.7271,
+        "ci95_low": 0.6662,
+        "ci95_high": 0.7821
+      },
+      "map_at_10": {
+        "mean": 0.6928,
+        "ci95_low": 0.6332,
+        "ci95_high": 0.7484
+      },
+      "recall_at_150tok": {
+        "mean": 0.7756,
+        "ci95_low": 0.7132,
+        "ci95_high": 0.8333
+      },
+      "recall_at_300tok": {
+        "mean": 0.8693,
+        "ci95_low": 0.8228,
+        "ci95_high": 0.9135
+      },
+      "snr_at_3": {
+        "mean": 0.5271,
+        "ci95_low": 0.4717,
+        "ci95_high": 0.5851
+      },
+      "trap_rate_at_3": 0.1842,
+      "gap_auroc": 0.6389,
+      "latency_p50_ms": 0.4,
+      "latency_p95_ms": 0.47,
+      "by_match_type": {
+        "abbreviation": {
+          "count": 22,
+          "recall_at_3": 0.6477,
+          "mrr_at_10": 0.8061,
+          "ndcg_at_5": 0.7166,
+          "f_ndcg_at_5": 0.7166
+        },
+        "implicit": {
+          "count": 20,
+          "recall_at_3": 0.775,
+          "mrr_at_10": 0.603,
+          "ndcg_at_5": 0.6379,
+          "f_ndcg_at_5": 0.6379
+        },
+        "lexical": {
+          "count": 43,
+          "recall_at_3": 0.7946,
+          "mrr_at_10": 0.9767,
+          "ndcg_at_5": 0.9103,
+          "f_ndcg_at_5": 0.9103
+        },
+        "paraphrase": {
+          "count": 35,
+          "recall_at_3": 0.5667,
+          "mrr_at_10": 0.596,
+          "ndcg_at_5": 0.5595,
+          "f_ndcg_at_5": 0.5595
+        }
+      },
+      "chunk_strategy": "bullet_contextual",
+      "label": "Contextual Bullet Chunking ([Section | Role] header)",
+      "avg_chunks_per_resume": 27.9,
+      "avg_tokens_per_chunk": 49.2
+    }
+  },
+  "grounding_evaluation": {
+    "num_questions_evaluated": 36,
+    "hallucination_detection_precision": 1.0,
+    "hallucination_detection_recall": 1.0,
+    "hallucination_detection_f1": 1.0,
+    "grounding_score_auroc": 1.0,
+    "mean_score_grounded": 0.9594,
+    "mean_score_hallucinated": 0.4245,
+    "pre_guardrail_grounded_rate": 0.6667,
+    "post_repair_grounded_rate": 1.0
+  },
+  "grader_calibration": {
+    "num_cases": 16,
+    "num_answers": 64,
+    "num_length_confound_cases": 7,
+    "rubric_evaluator": {
+      "spearman_rho": 0.8301,
+      "kendall_tau": 0.6775,
+      "pairwise_accuracy": 0.9167,
+      "quadratic_weighted_kappa": 0.7273,
+      "length_confound_accuracy_t3_gt_t2": 1.0
+    },
+    "naive_length_heuristic": {
+      "spearman_rho": 0.884,
+      "pairwise_accuracy": 0.9271,
+      "length_confound_accuracy_t3_gt_t2": 0.0
+    }
+  },
+  "case_studies": [
+    {
+      "qid": "j01-q06:r01",
+      "match_type": "abbreviation",
+      "query": "Experience with Approximate Nearest Neighbor (ANN) vector retrieval at scale",
+      "gold_evidence": "Indexed 45M catalog item embeddings in Faiss HNSW and ScaNN indices for candidate generation, achieving 0.96 recall@100 within a 6ms retrieval budget.",
+      "dense_top1": "ML & Ranking: PyTorch, LightGBM, scikit-learn, Feast Feature Store, Triton Inference Server, Multi-Task Learning, Learning-to-Rank",
+      "bm25_top1": "Senior Machine Learning Engineer with 6+ years of experience designing, training, and operating large-scale personalized recommendation and search ranking systems in Python and PyTorch.",
+      "hybrid_rerank_top1": "Indexed 45M catalog item embeddings in Faiss HNSW and ScaNN indices for candidate generation, achieving 0.96 recall@100 within a 6ms retrieval budget.",
+      "dense_ndcg5": 0.587,
+      "bm25_ndcg5": 0.53,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j02-q01:r02",
+      "match_type": "lexical",
+      "query": "3+ years of experience in data science or quantitative analytics using Python and SQL",
+      "gold_evidence": "Data Scientist with 4 years of experience in product experimentation, causal inference, demand forecasting, and executive decision analytics using Python and SQL.",
+      "dense_top1": "Data Scientist with 4 years of experience in product experimentation, causal inference, demand forecasting, and executive decision analytics using Python and SQL.",
+      "bm25_top1": "Data Scientist with 4 years of experience in product experimentation, causal inference, demand forecasting, and executive decision analytics using Python and SQL.",
+      "hybrid_rerank_top1": "Data Scientist with 4 years of experience in product experimentation, causal inference, demand forecasting, and executive decision analytics using Python and SQL.",
+      "dense_ndcg5": 0.721,
+      "bm25_ndcg5": 0.752,
+      "hybrid_rerank_ndcg5": 0.98
+    },
+    {
+      "qid": "j02-q07:r02",
+      "match_type": "implicit",
+      "query": "Statistical rigor in handling multiple hypothesis testing and controlling False Discovery Rate across multi-metric experiment scorecards",
+      "gold_evidence": "Applied Benjamini-Hochberg step-up adjustments across 24-metric launch scorecards to cap family-wise false positives below 5% during multi-arm checkout rollouts.",
+      "dense_top1": "Experimentation & Causal Inference: A/B Testing, CUPED, Sequential Testing, Difference-in-Differences, Synthetic Control, Propensity Score Matching, Instrumental Variables",
+      "bm25_top1": "Applied Benjamini-Hochberg step-up adjustments across 24-metric launch scorecards to cap family-wise false positives below 5% during multi-arm checkout rollouts.",
+      "hybrid_rerank_top1": "Applied Benjamini-Hochberg step-up adjustments across 24-metric launch scorecards to cap family-wise false positives below 5% during multi-arm checkout rollouts.",
+      "dense_ndcg5": 0.431,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j04-q06:r04",
+      "match_type": "paraphrase",
+      "query": "Experience preventing UI regressions through automated cross-browser end-to-end and visual snapshot testing",
+      "gold_evidence": "Authored 95 Playwright multi-viewport user-journey specs and Chromatic pixel-diff checks running on every pull request, cutting production UI hotfixes by 68%.",
+      "dense_top1": "Languages & Core Web: TypeScript, JavaScript (ES2023), HTML5, CSS3, CSS Modules, Tailwind CSS, GraphQL, REST",
+      "bm25_top1": "Led an end-to-end a11y remediation initiative to achieve WCAG 2.1 AA compliance across billing and workspace views, fixing modal focus traps, ARIA live regions, and VoiceOver/NVDA announcements.",
+      "hybrid_rerank_top1": "Authored 95 Playwright multi-viewport user-journey specs and Chromatic pixel-diff checks running on every pull request, cutting production UI hotfixes by 68%.",
+      "dense_ndcg5": 0.0,
+      "bm25_ndcg5": 0.493,
+      "hybrid_rerank_ndcg5": 0.964
+    },
+    {
+      "qid": "j06-q07:r06",
+      "match_type": "paraphrase",
+      "query": "Track record of optimizing cloud data warehouse compute costs, table clustering, and storage footprint",
+      "gold_evidence": "Cut monthly Snowflake credit consumption by 34% ($29K/mo) by right-sizing virtual warehouse auto-suspend timers, pruning unused staging clones, and re-clustering multi-billion-row order tables on event date.",
+      "dense_top1": "Big Data & Streaming: Apache Spark (PySpark, Spark SQL, Structured Streaming), Databricks, Delta Lake, Apache Iceberg, Kafka, Debezium (CDC)",
+      "bm25_top1": "Cut monthly Snowflake credit consumption by 34% ($29K/mo) by right-sizing virtual warehouse auto-suspend timers, pruning unused staging clones, and re-clustering multi-billion-row order tables on event date.",
+      "hybrid_rerank_top1": "Cut monthly Snowflake credit consumption by 34% ($29K/mo) by right-sizing virtual warehouse auto-suspend timers, pruning unused staging clones, and re-clustering multi-billion-row order tables on event date.",
+      "dense_ndcg5": 0.0,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j07-q05:r07",
+      "match_type": "lexical",
+      "query": "Prompt engineering, structured output enforcement with JSON schemas, and multi-step function-calling tool routing",
+      "gold_evidence": "Engineered system prompts, constrained decoding with Pydantic JSON schemas, and function-calling routers to orchestrate multi-step billing resolution tools, raising autonomous resolution from 61% to 84%.",
+      "dense_top1": "Added JSON Schema validation and retry-with-error-feedback loops for malformed tool-call outputs.",
+      "bm25_top1": "Engineered system prompts, constrained decoding with Pydantic JSON schemas, and function-calling routers to orchestrate multi-step billing resolution tools, raising autonomous resolution from 61% to 84%.",
+      "hybrid_rerank_top1": "Engineered system prompts, constrained decoding with Pydantic JSON schemas, and function-calling routers to orchestrate multi-step billing resolution tools, raising autonomous resolution from 61% to 84%.",
+      "dense_ndcg5": 0.395,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j07-q08:r07",
+      "match_type": "paraphrase",
+      "query": "Implementing PII redaction, prompt-injection guardrails, and safety filters for enterprise GenAI deployments",
+      "gold_evidence": "Deployed pre-inference input sanitizers to block jailbreak attempts and regex+Presidio NER scrubbers to strip customer SSNs, payment card numbers, and medical identifiers prior to model invocation.",
+      "dense_top1": "Created a Python CLI for versioning Jinja2 prompt templates, running A/B prompt evaluations against OpenAI and Anthropic APIs, and exporting cost/latency diffs (650+ GitHub stars).",
+      "bm25_top1": "Created a Python CLI for versioning Jinja2 prompt templates, running A/B prompt evaluations against OpenAI and Anthropic APIs, and exporting cost/latency diffs (650+ GitHub stars).",
+      "hybrid_rerank_top1": "Deployed pre-inference input sanitizers to block jailbreak attempts and regex+Presidio NER scrubbers to strip customer SSNs, payment card numbers, and medical identifiers prior to model invocation.",
+      "dense_ndcg5": 0.0,
+      "bm25_ndcg5": 0.0,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j07-q09:r07",
+      "match_type": "implicit",
+      "query": "Partnering with domain experts and product stakeholders to translate manual business workflows into shipped AI features",
+      "gold_evidence": "Embedded with claims adjusters and underwriting leads for three weeks to shadow manual policy reviews, turning their decision heuristics into an automated clause-extraction copilot adopted by 320 adjusters.",
+      "dense_top1": "Curated, filtered, and deduplicated 45B tokens of domain support transcripts using MinHashLSH and Ray Data on GKE spot node pools.",
+      "bm25_top1": "Embedded with claims adjusters and underwriting leads for three weeks to shadow manual policy reviews, turning their decision heuristics into an automated clause-extraction copilot adopted by 320 adjusters.",
+      "hybrid_rerank_top1": "Curated, filtered, and deduplicated 45B tokens of domain support transcripts using MinHashLSH and Ray Data on GKE spot node pools.",
+      "dense_ndcg5": 0.0,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 0.5
+    },
+    {
+      "qid": "j07-q07:r12",
+      "match_type": "lexical",
+      "query": "Large-scale dataset curation or distributed training on cloud GPU infrastructure and Kubernetes clusters",
+      "gold_evidence": "Orchestrated multi-node PyTorch DDP distributed training across 32 AWS EC2 p4d GPUs and curated 1.8M annotated LiDAR-camera frames stored on S3.",
+      "dense_top1": "Vision & ML: PyTorch, TorchVision, TensorRT, ONNX Runtime, OpenCV, PCL (Point Cloud Library), LoRA, MMDetection",
+      "bm25_top1": "Orchestrated multi-node PyTorch DDP distributed training across 32 AWS EC2 p4d GPUs and curated 1.8M annotated LiDAR-camera frames stored on S3.",
+      "hybrid_rerank_top1": "Orchestrated multi-node PyTorch DDP distributed training across 32 AWS EC2 p4d GPUs and curated 1.8M annotated LiDAR-camera frames stored on S3.",
+      "dense_ndcg5": 0.631,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 1.0
+    },
+    {
+      "qid": "j07-q09:r12",
+      "match_type": "paraphrase",
+      "query": "Partnering with domain experts and product stakeholders to translate manual business workflows into shipped AI features",
+      "gold_evidence": "Partnered with warehouse operations leads and product managers to translate ambiguous dock-unloading workflows into concrete perception specs and ship updated pallet-slot detectors.",
+      "dense_top1": "Built a multimodal vision-language navigation prototype combining CLIP visual encoders with layout-aware PaddleOCR text spotting to read hospital and warehouse aisle signage.",
+      "bm25_top1": "Partnered with warehouse operations leads and product managers to translate ambiguous dock-unloading workflows into concrete perception specs and ship updated pallet-slot detectors.",
+      "hybrid_rerank_top1": "Partnered with warehouse operations leads and product managers to translate ambiguous dock-unloading workflows into concrete perception specs and ship updated pallet-slot detectors.",
+      "dense_ndcg5": 0.631,
+      "bm25_ndcg5": 1.0,
+      "hybrid_rerank_ndcg5": 1.0
+    }
+  ]
+}

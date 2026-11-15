@@ -34,4 +34,15 @@ class ResumeChunkMatch(BaseModel):
 
     chunk_index: int
     content: str
-    similarity: float  # cosine similarity, higher is better (0.0–1.0)
+    raw_content: str | None = None
+    section_title: str | None = None
+    context_header: str | None = None
+    similarity: float
+    dense_score: float | None = None
+    lexical_score: float | None = None
+    rerank_score: float | None = None
+    rerank_prob: float | None = None
+    dense_rank: int | None = None
+    lexical_rank: int | None = None
+    strategy: str | None = None
+    matched_terms: list[str] | None = None

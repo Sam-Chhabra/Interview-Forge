@@ -1,0 +1,129 @@
+{
+  "jd_id": "j08",
+  "title": "Staff iOS Engineer, Core Experience",
+  "company": "Canopy Trails & Outdoor",
+  "text": "Canopy Trails & Outdoor helps millions of hikers, backcountry skiers, and gravel cyclists plan routes, navigate off-grid terrain, and share trip reports around the world. Because our community relies on Canopy miles from the nearest cell tower, reliability, battery efficiency, and rock-solid offline synchronization are existential product features for us.\n\nWe are hiring a Staff iOS Engineer to technical-lead our core iOS architecture and consumer experience. You will guide our ongoing evolution toward SwiftUI and Swift structured concurrency, harden our offline sync engine, keep the app blazingly fast on older devices, and mentor a talented team of 10 iOS engineers.\n\nResponsibilities:\n- Architect and build flagship native iOS features in Swift and modern declarative SwiftUI.\n- Own our offline-first local persistence, conflict resolution, and background synchronization layer (Core Data, SQLite, or GRDB).\n- Profile and optimize app launch time, scroll hitch rate, memory footprint, and battery drain using Xcode Instruments.\n- Drive adoption of Swift structured concurrency (async/await, Actors, TaskGroups) and reactive streams with Combine.\n- Ensure safe, zero-downtime mobile releases with automated rollback guardrails for a multi-million-user consumer app.\n- Modularize our large Xcode monolith with Swift Package Manager to reduce incremental compile times and enforce clean boundaries.\n- Mentor mobile engineers, author architectural RFCs, and raise the engineering bar across the iOS team.\n\nNice to Have:\n- Experience with MapKit, CoreLocation, or custom Metal vector tile rendering for interactive outdoor mapping.\n- Experience building Apple Watch companion apps (WatchKit / WatchConnectivity) and Lock Screen / Dynamic Island Live Activities (ActivityKit).\n- Experience implementing Apple Pay checkout (PassKit) and StoreKit 2 in-app subscription flows.",
+  "pairs_with": ["r08"],
+  "requirements": [
+    {
+      "req_id": "j08-q01",
+      "text": "5+ years building native iOS applications in Swift and modern declarative UI with SwiftUI",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-01": 1, "r08-02": 2, "r08-25": 1, "r08-26": 1},
+          "match_type": "lexical",
+          "distractors": ["r08-19"]
+        }
+      }
+    },
+    {
+      "req_id": "j08-q02",
+      "text": "Architecting offline-first local persistence, conflict resolution, and background synchronization (Core Data, SQLite, or GRDB)",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-03": 2, "r08-11": 2, "r08-27": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q03",
+      "text": "Profiling and optimizing app launch time, scroll hitch rate, memory footprint, and battery drain using Xcode Instruments",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-04": 2, "r08-28": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q04",
+      "text": "Structured concurrency in Swift (async/await, Actors, TaskGroups) and reactive streams with Combine",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-05": 2, "r08-26": 1},
+          "match_type": "lexical",
+          "distractors": ["r08-15"]
+        }
+      }
+    },
+    {
+      "req_id": "j08-q05",
+      "text": "Ensuring safe, zero-downtime mobile releases with automated rollback guardrails for a multi-million-user consumer app",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-06": 2, "r08-02": 1},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q06",
+      "text": "Modularizing large Xcode monoliths with Swift Package Manager to reduce incremental compile times",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-07": 2, "r08-20": 1, "r08-28": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q07",
+      "text": "Mentoring mobile engineers, authoring architectural RFCs, and raising the engineering bar across the iOS team",
+      "priority": "must",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-08": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q08",
+      "text": "Experience with MapKit, CoreLocation, or custom Metal vector tile rendering for interactive outdoor mapping",
+      "priority": "nice",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-12": 2},
+          "match_type": "implicit",
+          "distractors": ["r08-22"]
+        }
+      }
+    },
+    {
+      "req_id": "j08-q09",
+      "text": "Building Apple Watch companion apps (WatchKit / WatchConnectivity) and Lock Screen / Dynamic Island Live Activities (ActivityKit)",
+      "priority": "nice",
+      "judgments": {
+        "r08": {
+          "relevant": {"r08-09": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j08-q10",
+      "text": "Implementing Apple Pay checkout (PassKit) and StoreKit 2 in-app subscription flows",
+      "priority": "nice",
+      "judgments": {
+        "r08": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r08-09", "r08-14"]
+        }
+      }
+    }
+  ]
+}

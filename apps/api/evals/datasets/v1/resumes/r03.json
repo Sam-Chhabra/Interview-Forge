@@ -1,0 +1,162 @@
+{
+  "resume_id": "r03",
+  "candidate": "Devon Kowalski",
+  "contact": "devon.kowalski@example.com · Chicago, IL · github.com/dkowalski-dev",
+  "role_family": "backend_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r03-01",
+              "text": "Senior Backend Engineer with 7 years of experience building high-throughput distributed microservices, ledger systems, and event-driven APIs in Go and Java."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Backend Engineer, Core Ledger | Meridian Pay | 2022 – Present",
+          "items": [
+            {
+              "id": "r03-02",
+              "text": "Designed and maintained 12 tier-0 payment clearing and double-entry ledger microservices in Go and Java 17 handling $18B in annualized payment volume."
+            },
+            {
+              "id": "r03-03",
+              "text": "Architected an event-driven settlement pipeline on Apache Kafka processing 45,000 events/sec across 64 partitions with automated dead-letter queues and consumer lag alerting."
+            },
+            {
+              "id": "r03-04",
+              "text": "Designed public REST and internal gRPC APIs for multi-currency merchant payouts, enforcing Protobuf schema backward compatibility in CI via buf breaking-change checks."
+            },
+            {
+              "id": "r03-05",
+              "text": "Partitioned a 14TB Postgres ledger table by settlement month and replaced sequential scans with partial composite B-tree indexes, dropping p99 write lock contention by 74%."
+            },
+            {
+              "id": "r03-06",
+              "text": "Eliminated duplicate wire disbursements during network partitions by enforcing client-supplied deduplication keys and transactional outbox rows committed atomically with balance debits."
+            },
+            {
+              "id": "r03-07",
+              "text": "Implemented singleflight request coalescing and jittered TTLs in front of Redis Cluster merchant rate-limit counters, surviving a 10x Black Friday traffic spike on hot merchant keys without database fallback."
+            },
+            {
+              "id": "r03-08",
+              "text": "Containerized 16 Java and Go services with Docker on AWS ECS and EKS, automating canary deployments and integration test gates via GitHub Actions."
+            },
+            {
+              "id": "r03-09",
+              "text": "Served as primary pager duty commander for tier-0 checkout services, coordinating live mitigation bridges during a regional PSP outage and authoring five-whys root-cause writeups with preventative action items."
+            },
+            {
+              "id": "r03-10",
+              "text": "Paired weekly with 4 early-career teammates on concurrency debugging and shepherded their architecture proposals from initial draft to production rollout."
+            }
+          ]
+        },
+        {
+          "heading": "Software Engineer, Platform Services | ParcelGrid Logistics | 2019 – 2022",
+          "items": [
+            {
+              "id": "r03-11",
+              "text": "Migrated a monolithic shipment tracking application into 8 bounded-context Java (Spring Boot) and Go microservices, cutting deployment lead time from biweekly trains to 15 minutes."
+            },
+            {
+              "id": "r03-12",
+              "text": "Built a Kafka Streams geofence ingestion service consuming 18,000 GPS pings/sec from carrier fleets with sub-second end-to-end delivery notifications."
+            },
+            {
+              "id": "r03-13",
+              "text": "Diagnosed PG autovacuum transaction ID wraparound risks and tuned PgBouncer connection pooling across 18 read replicas, reducing p95 query latency by 41%."
+            },
+            {
+              "id": "r03-14",
+              "text": "Instrumented Go and Java services with OpenTelemetry distributed tracing and Prometheus histograms, cutting p99 latency triage time in Grafana by 50%."
+            },
+            {
+              "id": "r03-15",
+              "text": "Wrote an internal Go CLI tool to inspect consumer offsets, replay dead-letter Kafka topics, and validate database schema migrations."
+            },
+            {
+              "id": "r03-16",
+              "text": "Built automated payment processor failover routing between Stripe and Adyen HTTP APIs when upstream 5xx error rates exceeded 3%."
+            },
+            {
+              "id": "r03-17",
+              "text": "Configured mutual TLS (mTLS) client certificates for outbound webhook delivery to partner bank HTTPS endpoints."
+            },
+            {
+              "id": "r03-18",
+              "text": "Partnered with Go-to-market operations to automate enterprise merchant onboarding webhooks and sandbox credential provisioning."
+            },
+            {
+              "id": "r03-19",
+              "text": "Coordinated with the European data sovereignty federation council to align audit log retention schedules with GDPR mandates."
+            },
+            {
+              "id": "r03-20",
+              "text": "Built an internal hackathon prototype in Vanilla JavaScript to visualize webhook retry trees for support agents."
+            },
+            {
+              "id": "r03-21",
+              "text": "Queried merchant fraud ring relationships using an offline Neo4j graph analysis script during quarterly compliance audits."
+            },
+            {
+              "id": "r03-22",
+              "text": "Maintained local Docker Compose environment files so backend engineers could spin up mocked dependencies on developer laptops."
+            },
+            {
+              "id": "r03-23",
+              "text": "Implemented spot-rate foreign exchange (FX) quote caching for cross-border GBP and EUR merchant settlements."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Computer Engineering | Purdue University | 2015 – 2019",
+          "items": [
+            {
+              "id": "r03-24",
+              "text": "Coursework: Operating Systems, Distributed Computing, Relational Database Internals, Computer Networks."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r03-25",
+              "text": "Languages & Frameworks: Go (Golang), Java 17, Spring Boot, SQL, Bash, gRPC, Protobuf, REST APIs"
+            },
+            {
+              "id": "r03-26",
+              "text": "Data & Messaging: Postgres (PG), PgBouncer, Apache Kafka, Kafka Streams, Redis Cluster"
+            },
+            {
+              "id": "r03-27",
+              "text": "Infra & Observability: AWS (ECS, EKS, RDS, S3), Docker, GitHub Actions, OpenTelemetry, Prometheus, Grafana"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

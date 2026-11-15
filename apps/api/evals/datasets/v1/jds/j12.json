@@ -1,0 +1,129 @@
+{
+  "jd_id": "j12",
+  "title": "Senior Computer Vision & Robotics Perception Engineer",
+  "company": "Kestrel Autonomy",
+  "text": "Kestrel Autonomy builds autonomous mobile manipulation and material-handling robots that operate alongside human crews in high-throughput logistics hubs. Our robots rely on onboard vision, depth, and range sensors to perceive crowded aisles, localize within millimeter tolerances, and operate safely 24/7.\n\nWe are seeking a Senior Computer Vision & Robotics Perception Engineer to lead our 3D scene understanding and edge deployment stack. You will own perception models from dataset curation and distributed training in PyTorch through INT8 compilation on embedded NVIDIA Jetson compute modules running on the robot fleet.\n\nResponsibilities:\n- Design and train deep learning models for 2D/3D object detection, semantic segmentation, and multi-object tracking in PyTorch.\n- Optimize deep neural networks via quantization, pruning, and TensorRT compilation for real-time edge inference on NVIDIA Jetson platforms.\n- Develop production Robot Operating System middleware nodes, custom message transports, and real-time C++ perception pipelines.\n- Architect multi-sensor calibration and state-estimation fusion across LiDAR, RGB-D cameras, and IMU sensors.\n- Maintain centimeter-level robot localization across large-scale indoor environments without external motion-capture infrastructure.\n- Build active learning loops and automated hard-negative mining pipelines to curate high-value training data from fleet logs.\n- Validate perception and obstacle avoidance changes in closed-loop simulation using NVIDIA Isaac Sim or Gazebo.\n- Lead root-cause debugging of field robotics failures and coordinate cross-functional triage across hardware, firmware, and autonomy teams.\n\nNice to Have:\n- Experience with neural radiance fields (NeRF) or 3D Gaussian Splatting for photorealistic scene reconstruction.\n- Experience with end-to-end imitation learning or reinforcement learning for dexterous robotic arm manipulation.",
+  "pairs_with": ["r12"],
+  "requirements": [
+    {
+      "req_id": "j12-q01",
+      "text": "4+ years developing deep learning models for 2D/3D object detection, semantic segmentation, and multi-object tracking in PyTorch",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-01": 1, "r12-02": 2, "r12-09": 2, "r12-17": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q02",
+      "text": "Model quantization, pruning, and TensorRT compilation for real-time edge inference on NVIDIA Jetson platforms",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-03": 2, "r12-20": 1, "r12-26": 1, "r12-27": 1},
+          "match_type": "lexical",
+          "distractors": ["r12-16"]
+        }
+      }
+    },
+    {
+      "req_id": "j12-q03",
+      "text": "Production experience with Robot Operating System middleware, DDS pub/sub transport, and real-time C++ perception nodes",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-04": 2, "r12-25": 1, "r12-27": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q04",
+      "text": "Multi-sensor calibration and state-estimation fusion across LiDAR, RGB-D cameras, and IMU sensors",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-07": 2, "r12-01": 1},
+          "match_type": "paraphrase",
+          "distractors": ["r12-21"]
+        }
+      }
+    },
+    {
+      "req_id": "j12-q05",
+      "text": "Maintaining centimeter-level robot localization across large-scale indoor environments without external motion-capture infrastructure",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-11": 2, "r12-07": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q06",
+      "text": "Building active learning loops and automated hard-negative mining pipelines to curate training data from fleet telemetry",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-13": 2, "r12-05": 1},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q07",
+      "text": "Closed-loop simulation and synthetic scenario benchmarking using NVIDIA Isaac Sim or Gazebo",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-08": 2, "r12-27": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q08",
+      "text": "Experience with neural radiance fields (NeRF) or 3D Gaussian Splatting for photorealistic scene reconstruction",
+      "priority": "nice",
+      "judgments": {
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-15", "r12-23"]
+        }
+      }
+    },
+    {
+      "req_id": "j12-q09",
+      "text": "Root-cause debugging of field robotics failures and leading cross-functional triage across hardware, firmware, and autonomy teams",
+      "priority": "must",
+      "judgments": {
+        "r12": {
+          "relevant": {"r12-10": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j12-q10",
+      "text": "End-to-end imitation learning or reinforcement learning for dexterous robotic arm manipulation",
+      "priority": "nice",
+      "judgments": {
+        "r12": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r12-14", "r12-18"]
+        }
+      }
+    }
+  ]
+}

@@ -182,6 +182,24 @@ export type InterviewAnswer = {
   created_at: string;
 };
 
+export type ResumeChunkMatch = {
+  chunk_index: number;
+  content: string;
+  raw_content?: string | null;
+  section_title?: string | null;
+  context_header?: string | null;
+  similarity: number;
+  score?: number;
+  dense_score?: number | null;
+  lexical_score?: number | null;
+  rerank_score?: number | null;
+  rerank_prob?: number | null;
+  dense_rank?: number | null;
+  lexical_rank?: number | null;
+  strategy?: string | null;
+  matched_terms?: string[];
+};
+
 export const api = {
   auth: {
     register: (email: string, password: string, full_name?: string) =>
@@ -205,6 +223,54 @@ export const api = {
     upload: (file: File) => uploadFile<Resume>('/resumes/', file),
     list: () => request<Resume[]>('/resumes/'),
     get: (id: string) => request<Resume>(`/resumes/${id}`),
+    search: (
+      id: string,
+      q: string,
+      strategy = 'hybrid_rerank',
+      top_k = 5,
+    ) =>
+      request<ResumeChunkMatch[]>(
+        `/resumes/${id}/search?q=${encodeURIComponent(q)}&strategy=${encodeURIComponent(strategy)}&top_k=${top_k}`,
+      ),
+  },
+  rag: {
+    benchmarks: () => request<any>('/rag/benchmarks'),
+    runBenchmarks: () =>
+      request<any>('/rag/benchmarks/run', { method: 'POST' }),
+    searchCompare: (data: {
+      query: string;
+      resume_id?: string;
+      resume_text?: string;
+      chunk_strategy?: string;
+      top_k?: number;
+    }) =>
+      request<any>('/rag/search-compare', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    analyzeFit: (data: {
+      resume_id?: string;
+      jd_id?: string;
+      resume_text?: string;
+      jd_text?: string;
+      strategy?: string;
+      chunk_strategy?: string;
+    }) =>
+      request<any>('/rag/analyze-fit', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
+    verifyGrounding: (data: {
+      resume_id?: string;
+      resume_text?: string;
+      anchor: string;
+      question: string;
+      rationale?: string;
+    }) =>
+      request<any>('/rag/verify-grounding', {
+        method: 'POST',
+        body: JSON.stringify(data),
+      }),
   },
   jobDescriptions: {
     create: (data: { title: string; company?: string; raw_text: string }) =>

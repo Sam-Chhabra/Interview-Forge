@@ -14,7 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
-from app.routes import auth, health, interviews, job_descriptions, resumes
+from app.routes import auth, health, interviews, job_descriptions, rag, resumes
 
 
 @asynccontextmanager
@@ -56,6 +56,7 @@ app.include_router(
     tags=["job-descriptions"],
 )
 app.include_router(interviews.router, prefix="/interviews", tags=["interviews"])
+app.include_router(rag.router, prefix="/rag", tags=["rag"])
 
 
 @app.get("/")

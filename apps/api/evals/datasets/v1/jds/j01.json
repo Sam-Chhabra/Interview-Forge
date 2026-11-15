@@ -1,0 +1,179 @@
+{
+  "jd_id": "j01",
+  "title": "Senior Machine Learning Engineer, Ranking & Recommendations",
+  "company": "Fernwood Labs",
+  "text": "About Fernwood Labs\nFernwood Labs powers discovery for over 30 million monthly active buyers across our curated home, apparel, and artisan marketplace. Every search query, homepage feed, and related-item carousel is backed by real-time machine learning systems that balance relevance, novelty, and seller fairness.\n\nThe Role\nWe are looking for a Senior Machine Learning Engineer to join our Core Ranking & Recommendations team. You will own end-to-end modeling and serving infrastructure—from candidate generation and multi-stage scoring to online experimentation—directly shaping how millions of shoppers discover products every day.\n\nWhat You Will Do\n- Design, train, and deploy deep learning models for personalized homepage recommendations, search ranking, and sponsored click-through-rate (CTR) prediction.\n- Build and operate online feature stores backed by low-latency key-value storage and streaming ingestion to serve fresh real-time user and item signals.\n- Partner with infrastructure engineers to meet strict real-time serving SLAs (sub-50ms p99 latency at tens of thousands of queries per second).\n- Scale Approximate Nearest Neighbor (ANN) vector retrieval pipelines across tens of millions of catalog embeddings.\n- Design and analyze controlled online experiments, defining guardrail metrics and applying variance reduction techniques to measure long-term marketplace impact.\n- Mentor junior engineers and lead technical design reviews across the personalization organization.\n\nRequirements (Must-Haves)\n- 4+ years of experience building and deploying production machine learning models in Python and PyTorch.\n- Hands-on experience with personalized recommendation, search ranking, or ads click-through-rate (CTR) prediction systems.\n- Experience building or operating online feature stores (e.g., Feast, Tecton) backed by low-latency key-value storage.\n- Track record of meeting strict real-time serving SLAs (sub-50ms p99 latency at high throughput).\n- Proficiency designing and analyzing controlled online experiments, including guardrail metrics and variance reduction.\n- Experience with Approximate Nearest Neighbor (ANN) vector retrieval at scale.\n- Ability to build distributed data and training pipelines using Apache Spark on Google Cloud Platform.\n\nNice-to-Haves\n- Experience mentoring junior engineers and leading technical design reviews.\n- Experience writing custom C++ or CUDA kernels for model inference acceleration.\n- Hands-on experience with LLM-based semantic reranking or LoRA fine-tuning for generative retrieval.",
+  "pairs_with": ["r01", "r02"],
+  "requirements": [
+    {
+      "req_id": "j01-q01",
+      "text": "4+ years of experience building and deploying production machine learning models in Python and PyTorch",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-01": 2, "r01-02": 2, "r01-11": 2, "r01-26": 1, "r01-28": 1},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r02": {
+          "relevant": {"r02-05": 1, "r02-19": 1, "r02-28": 1},
+          "match_type": "lexical",
+          "distractors": ["r02-23"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q02",
+      "text": "Hands-on experience with personalized recommendation, search ranking, or ads click-through-rate (CTR) prediction systems",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-01": 2, "r01-02": 2, "r01-06": 2, "r01-12": 2},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r02-09", "r02-14"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q03",
+      "text": "Experience building or operating online feature stores (e.g., Feast, Tecton) backed by low-latency key-value storage",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-03": 2, "r01-26": 1, "r01-27": 1},
+          "match_type": "lexical",
+          "distractors": ["r01-15"]
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r02-06", "r02-11"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q04",
+      "text": "Track record of meeting strict real-time serving SLAs (sub-50ms p99 latency at high throughput)",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-04": 2, "r01-09": 2},
+          "match_type": "implicit",
+          "distractors": ["r01-14"]
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r02-17"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q05",
+      "text": "Proficiency designing and analyzing controlled online experiments, including guardrail metrics and variance reduction",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-05": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r01-22"]
+        },
+        "r02": {
+          "relevant": {"r02-02": 2, "r02-08": 2, "r02-26": 1},
+          "match_type": "lexical",
+          "distractors": ["r02-21"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q06",
+      "text": "Experience with Approximate Nearest Neighbor (ANN) vector retrieval at scale",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-07": 2, "r01-27": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r02-12"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q07",
+      "text": "Ability to build distributed data and training pipelines using Apache Spark on Google Cloud Platform",
+      "priority": "must",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-08": 2, "r01-13": 1, "r01-14": 2, "r01-28": 1},
+          "match_type": "abbreviation",
+          "distractors": ["r01-21"]
+        },
+        "r02": {
+          "relevant": {"r02-04": 1, "r02-29": 1},
+          "match_type": "abbreviation",
+          "distractors": ["r02-22"]
+        }
+      }
+    },
+    {
+      "req_id": "j01-q08",
+      "text": "Experience mentoring junior engineers and leading technical design reviews",
+      "priority": "nice",
+      "judgments": {
+        "r01": {
+          "relevant": {"r01-10": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r01-24"]
+        },
+        "r02": {
+          "relevant": {"r02-10": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j01-q09",
+      "text": "Experience writing custom C++ or CUDA kernels for model inference acceleration",
+      "priority": "nice",
+      "judgments": {
+        "r01": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r01-16", "r01-20"]
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j01-q10",
+      "text": "Hands-on experience with LLM-based semantic reranking or LoRA fine-tuning for generative retrieval",
+      "priority": "nice",
+      "judgments": {
+        "r01": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r01-19", "r01-23"]
+        },
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": []
+        }
+      }
+    }
+  ]
+}

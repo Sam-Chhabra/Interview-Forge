@@ -1,0 +1,15 @@
+{
+  "venvPath": ".",
+  "venv": "venv",
+  "pythonVersion": "3.13",
+  "extraPaths": [
+    "."
+  ],
+  "include": [
+    "app",
+    "evals",
+    "tests",
+    "alembic"
+  ],
+  "reportMissingTypeStubs": false
+}

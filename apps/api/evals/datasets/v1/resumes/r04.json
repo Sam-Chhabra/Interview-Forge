@@ -1,0 +1,154 @@
+{
+  "resume_id": "r04",
+  "candidate": "Sora Takahashi",
+  "contact": "sora.takahashi@example.com · Portland, OR · github.com/stakahashi-ui",
+  "role_family": "frontend_engineer",
+  "seniority": "mid",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r04-01",
+              "text": "Frontend Engineer with 4.5 years of experience crafting fast, accessible web applications and scalable design systems using React, TypeScript, and modern CSS."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Frontend Engineer, Design Systems & Web Platform | Looma Studio | 2022 – Present",
+          "items": [
+            {
+              "id": "r04-02",
+              "text": "Built and shipped collaborative project workspace and real-time commenting web applications in React 18 and TypeScript serving 650,000 monthly active creators."
+            },
+            {
+              "id": "r04-03",
+              "text": "Architected and maintained the Prism design system of 42 reusable component primitives in Storybook backed by automated Style Dictionary Figma design tokens, adopted by 6 product squads."
+            },
+            {
+              "id": "r04-04",
+              "text": "Offloaded third-party telemetry to Web Workers, introduced route-level code splitting, and preloaded AVIF hero assets, shrinking initial JS payload from 480KB to 155KB and cutting 75th-percentile largest paint from 3.8s to 1.4s."
+            },
+            {
+              "id": "r04-05",
+              "text": "Led an end-to-end a11y remediation initiative to achieve WCAG 2.1 AA compliance across billing and workspace views, fixing modal focus traps, ARIA live regions, and VoiceOver/NVDA announcements."
+            },
+            {
+              "id": "r04-06",
+              "text": "Migrated legacy Redux thunks to TanStack Query (React Query) for client/server-state caching and GraphQL/REST data fetching, removing 4,200 lines of boilerplate."
+            },
+            {
+              "id": "r04-07",
+              "text": "Authored 95 Playwright multi-viewport user-journey specs and Chromatic pixel-diff checks running on every pull request, cutting production UI hotfixes by 68%."
+            },
+            {
+              "id": "r04-08",
+              "text": "Embedded in weekly critique sessions with interaction leads and user study facilitators to iterate on fluid layouts from early napkin sketches through general availability."
+            },
+            {
+              "id": "r04-09",
+              "text": "Onboarded 3 associate engineers through paired PR walkthroughs and enforced strict ESLint and TypeScript strictNullChecks across the frontend monorepo."
+            },
+            {
+              "id": "r04-10",
+              "text": "Migrated build tooling from Webpack 4 to Vite and Turborepo, reducing local dev server cold start from 28 seconds to 1.8 seconds."
+            }
+          ]
+        },
+        {
+          "heading": "Frontend Developer | Harborleaf Retail | 2020 – 2022",
+          "items": [
+            {
+              "id": "r04-11",
+              "text": "Developed storefront product detail, filtering, and cart experiences in React and TypeScript for a multi-brand e-commerce platform."
+            },
+            {
+              "id": "r04-12",
+              "text": "Eliminated visual layout jumps during async price hydration by reserving CSS aspect-ratio skeleton boxes and virtualizing 5,000-row inventory tables with TanStack Virtual."
+            },
+            {
+              "id": "r04-13",
+              "text": "Implemented dark-mode theming using CSS custom properties and prefers-color-scheme media queries across 85 storefront screens."
+            },
+            {
+              "id": "r04-14",
+              "text": "Integrated Sentry client-side error boundaries and source-map uploads in GitHub Actions to surface uncaught runtime exceptions within 2 minutes of release."
+            },
+            {
+              "id": "r04-15",
+              "text": "Built responsive mobile-web checkout drawers and touch gesture carousels in React for iOS Safari and Android Chrome viewports."
+            },
+            {
+              "id": "r04-16",
+              "text": "Localized storefront copy, date/currency formatting, and RTL stylesheet mirroring across 7 European and Middle Eastern locales using react-intl."
+            },
+            {
+              "id": "r04-17",
+              "text": "Facilitated quarterly product discovery workshops using Miro and FigJam digital canvas boards."
+            },
+            {
+              "id": "r04-18",
+              "text": "Optimized inline SVG icon sprites and CSS three-column comparison tables for the enterprise pricing page."
+            },
+            {
+              "id": "r04-19",
+              "text": "Drafted reactive post-incident customer communication banners for the public system status page."
+            },
+            {
+              "id": "r04-20",
+              "text": "Organized biweekly browser-tab decluttering and developer ergonomics lightning talks for the remote engineering org."
+            },
+            {
+              "id": "r04-21",
+              "text": "Coordinated a swift rollback of edge CDN routing rules when a staging TLS certificate was inadvertently promoted."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.A. in Computer Science & Media Arts | Reed College | 2016 – 2020",
+          "items": [
+            {
+              "id": "r04-22",
+              "text": "Coursework: Human-Computer Interaction, Web Programming, Data Structures, Typography & Visual Systems."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r04-23",
+              "text": "Languages & Core Web: TypeScript, JavaScript (ES2023), HTML5, CSS3, CSS Modules, Tailwind CSS, GraphQL, REST"
+            },
+            {
+              "id": "r04-24",
+              "text": "Frameworks & State: React 18, Next.js, TanStack Query (React Query), TanStack Virtual, Redux, Storybook, Style Dictionary"
+            },
+            {
+              "id": "r04-25",
+              "text": "Testing, Tooling & Quality: Playwright, Vitest, Chromatic, WCAG 2.1 AA (a11y), axe-core, Vite, Turborepo, Figma, Sentry"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

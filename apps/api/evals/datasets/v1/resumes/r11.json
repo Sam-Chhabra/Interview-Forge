@@ -1,0 +1,168 @@
+{
+  "resume_id": "r11",
+  "candidate": "Jonah Vance",
+  "contact": "jonah.vance@example.com · Chicago, IL · linkedin.com/in/jonahvance-data",
+  "role_family": "data_analyst",
+  "seniority": "mid",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r11-01",
+              "text": "Product Data Analyst with 4.5 years of experience driving experimentation, funnel optimization, semantic data modeling, and executive BI across consumer subscription and marketplace products."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Product Data Analyst | Crate & Canopy Home | 2022 – Present",
+          "items": [
+            {
+              "id": "r11-02",
+              "text": "Wrote complex SQL queries using multi-stage CTEs and window functions across 4B+ clickstream rows in Snowflake and GCP BigQuery to model D1/D7/D30 cohort retention and 24-month customer LTV."
+            },
+            {
+              "id": "r11-03",
+              "text": "Designed A/B feature experiments, sample-size power calculations, guardrail metric checks, and CUPED variance reduction in Python (SciPy, statsmodels) across 40+ checkout and onboarding launches."
+            },
+            {
+              "id": "r11-04",
+              "text": "Architected governed LookML views and Explores in Looker and built 22 self-serve Tableau executive dashboards tracking MRR, involuntary churn, and activation, cutting ad-hoc data requests by 47%."
+            },
+            {
+              "id": "r11-05",
+              "text": "Pinpointed a 19% mobile drop-off between address entry and payment confirmation by mapping step-by-step user journey paths, driving a simplified single-page flow that lifted paid subscribers by 3.4 percentage points."
+            },
+            {
+              "id": "r11-06",
+              "text": "Maintained 85+ incremental dbt models with YAML schema assertions (unique, not_null, accepted_values) and lineage documentation in Snowflake."
+            },
+            {
+              "id": "r11-07",
+              "text": "Defined Segment client-side and server-side event tracking schemas and an audited Amplitude taxonomy for 140+ product actions, eliminating duplicate revenue counting across iOS and web."
+            },
+            {
+              "id": "r11-08",
+              "text": "Authored weekly executive experimentation readouts and partnered with PMs, UX researchers, and backend engineers to prioritize quarterly checkout roadmap bets."
+            },
+            {
+              "id": "r11-09",
+              "text": "Replaced 6 hours of weekly manual spreadsheet updates with scheduled Python (pandas, NumPy, SciPy) scripts that decomposed week-over-week metric movements and posted automated anomaly alerts to Slack."
+            },
+            {
+              "id": "r11-10",
+              "text": "Sparked cross-company adoption of standardized experiment pre-registration templates and hypothesis scorecards across 6 product pods."
+            },
+            {
+              "id": "r11-11",
+              "text": "Presented deep-dive churn survival analyses at monthly company all-hands, directly informing the launch of a pause-subscription retention offer that saved $1.1M ARR."
+            }
+          ]
+        },
+        {
+          "heading": "Product Analyst | SwiftCart Local Delivery | 2020 – 2022",
+          "items": [
+            {
+              "id": "r11-12",
+              "text": "Tuned slow analytical window queries on the production Postgres read replica and refactored 35 legacy reporting views into modular dbt staging tables."
+            },
+            {
+              "id": "r11-13",
+              "text": "Segmented referral-channel cohorts in Mixpanel and SQL to identify high-churn trial signups, reallocating $180k in quarterly paid social spend toward higher-LTV cohorts."
+            },
+            {
+              "id": "r11-14",
+              "text": "Analyzed how price-sensitive cohorts react to dynamic paywall copy and delivery-fee thresholds across mobile and web checkouts."
+            },
+            {
+              "id": "r11-15",
+              "text": "Built and launched an interactive Streamlit pricing-tier simulator in 48 hours for the annual executive sales offsite."
+            },
+            {
+              "id": "r11-16",
+              "text": "Built a lightweight Python Flask webhook service that ingested Qualtrics post-delivery survey payloads and wrote normalized rows into BigQuery."
+            },
+            {
+              "id": "r11-17",
+              "text": "Created geo-coded delivery zone polygons in GeoJSON and Folium to visualize courier dispatch bottlenecks across 12 metro areas."
+            },
+            {
+              "id": "r11-18",
+              "text": "Analyzed smart-thermostat HVAC airflow sensor readings for a seasonal home-energy partner co-marketing study."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "Internal Data Governance & Community",
+          "items": [
+            {
+              "id": "r11-19",
+              "text": "Chaired the biweekly open-source data governance and metric council to reconcile finance and product active-subscriber definitions."
+            },
+            {
+              "id": "r11-20",
+              "text": "Refinished a mid-century walnut tableau cabinet and organized the team's annual charity silent auction."
+            },
+            {
+              "id": "r11-21",
+              "text": "Published an internal Quarto cookbook on Bayesian vs. frequentist sequential testing trade-offs for product managers."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Applied Mathematics & Statistics | University of Illinois Urbana-Champaign | 2020",
+          "items": [
+            {
+              "id": "r11-22",
+              "text": "B.S. in Applied Mathematics & Statistics, Minor in Economics (GPA: 3.78/4.0)."
+            },
+            {
+              "id": "r11-23",
+              "text": "Coursework in Probability Theory, Statistical Inference, Linear Regression, Stochastic Processes, and Econometrics."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r11-24",
+              "text": "SQL & Data Modeling: SQL (Snowflake, BigQuery, Postgres), dbt, Jinja, Git, Star Schema Design"
+            },
+            {
+              "id": "r11-25",
+              "text": "BI & Product Analytics: Looker (LookML), Tableau, Amplitude, Mixpanel, Segment, Streamlit"
+            },
+            {
+              "id": "r11-26",
+              "text": "Programming & Statistics: Python (pandas, NumPy, SciPy, statsmodels), R, A/B Testing, CUPED, Cohort & Survival Analysis"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

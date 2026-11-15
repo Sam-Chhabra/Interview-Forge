@@ -1,0 +1,182 @@
+{
+  "resume_id": "r10",
+  "candidate": "Tessa Kowalski",
+  "contact": "tessa.kowalski@example.com · Madison, WI · github.com/tkowalski",
+  "role_family": "fullstack_engineer",
+  "seniority": "new_grad",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r10-01",
+              "text": "Senior Computer Science undergraduate at UW–Madison (graduating May 2025) with two software engineering internships and a track record of shipping full-stack TypeScript, React, Node.js, and Python applications."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Software Engineering Intern | FleetPulse Logistics | Summer 2024",
+          "items": [
+            {
+              "id": "r10-02",
+              "text": "Built a real-time shipment exception dashboard in TypeScript and React 18 with TanStack Table and Tailwind CSS, reducing dispatcher triage clicks by 42% across 15 regional depots."
+            },
+            {
+              "id": "r10-03",
+              "text": "Developed 14 RESTful endpoints in Node.js (Express) and Python (FastAPI) with Pydantic validation and Redis caching, serving 80k daily requests at sub-45ms median latency."
+            },
+            {
+              "id": "r10-04",
+              "text": "Designed normalized PG tables and composite B-tree indexes for shipment-history lookups, cutting p95 query execution time from 340ms to 19ms."
+            },
+            {
+              "id": "r10-05",
+              "text": "Authored 90+ Jest and Playwright specs executed automatically on every pull request via GitHub Actions, raising service line coverage from 48% to 86%."
+            },
+            {
+              "id": "r10-06",
+              "text": "Tracked sprint velocity events and bug burndown charts in Jira while participating in daily agile standups."
+            }
+          ]
+        },
+        {
+          "heading": "Software Engineering Intern | Brightleaf Civic Tech | Summer 2023",
+          "items": [
+            {
+              "id": "r10-07",
+              "text": "Implemented a municipal permit status portal in React and Python (Flask) used by 9,000+ residents in its first quarter after launch."
+            },
+            {
+              "id": "r10-08",
+              "text": "Demoed biweekly sprint prototypes to UX designers and product managers to refine mobile barcode-scanning and document-upload flows."
+            },
+            {
+              "id": "r10-09",
+              "text": "Migrated legacy PDF receipt generation to an asynchronous Celery + Redis worker queue, preventing HTTP request timeouts during peak Monday mornings."
+            },
+            {
+              "id": "r10-10",
+              "text": "Resolved 28 WCAG keyboard-navigation and color-contrast bugs audited with axe DevTools."
+            }
+          ]
+        },
+        {
+          "heading": "Undergraduate Teaching Assistant (CS 400) | University of Wisconsin–Madison | 2023 – Present",
+          "items": [
+            {
+              "id": "r10-11",
+              "text": "Held 6 hours of weekly office hours and recitation labs, explaining Dijkstra's algorithm, red-black trees, hash tables, and Git workflows to 120+ undergraduate students."
+            },
+            {
+              "id": "r10-12",
+              "text": "Automated data logging for undergraduate physics optics lab experiments using a Raspberry Pi serial reader."
+            },
+            {
+              "id": "r10-13",
+              "text": "Maintained a campus botany department script for cataloging leaf node growth rates in greenhouse trials."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "BadgerPool — Campus Ride-Share Matcher (Senior Capstone)",
+          "items": [
+            {
+              "id": "r10-14",
+              "text": "Built a collaborative campus ride-share web app in Next.js, TypeScript, and React with live driver map pins and instant chat notifications pushed from the server without page polling, supporting 600 concurrent students during finals week."
+            },
+            {
+              "id": "r10-15",
+              "text": "Implemented a GraphQL API in Node.js (Apollo Server) with JWT session authentication and role-based route guards."
+            },
+            {
+              "id": "r10-16",
+              "text": "Integrated Stripe Checkout test webhooks and automated email receipts with Postmark."
+            },
+            {
+              "id": "r10-17",
+              "text": "Packaged FastAPI and Node services into multi-stage Docker images deployed on GCP Cloud Run and EC2."
+            }
+          ]
+        },
+        {
+          "heading": "Hackathons & Side Builds",
+          "items": [
+            {
+              "id": "r10-18",
+              "text": "Won 1st Place Overall (out of 74 teams) at MadHacks 2024 by building and shipping a working full-stack accessibility browser extension in 36 hours."
+            },
+            {
+              "id": "r10-19",
+              "text": "Built Sublet Badger, a student sublease finder MVP in React and Postgres over a single weekend that reached 1,100 student signups in its first week."
+            },
+            {
+              "id": "r10-20",
+              "text": "Contributed 4 merged pull requests to an open-source Markdown table formatter in TypeScript."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Computer Science | University of Wisconsin–Madison | Expected May 2025",
+          "items": [
+            {
+              "id": "r10-21",
+              "text": "B.S. in Computer Science, University of Wisconsin–Madison (GPA: 3.86/4.0, Dean's List all semesters, graduating May 2025)."
+            },
+            {
+              "id": "r10-22",
+              "text": "Relevant Coursework: Operating Systems, Database Management Systems, Computer Networks, Algorithms, Artificial Intelligence, Software Engineering."
+            },
+            {
+              "id": "r10-23",
+              "text": "Vice President of UW Software Development Club; organized annual campus mock-interview workshops."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r10-24",
+              "text": "Languages: TypeScript, JavaScript (ES2023), Python, SQL, Java, HTML5, CSS3"
+            },
+            {
+              "id": "r10-25",
+              "text": "Frontend & Backend: React 18, Next.js, Tailwind CSS, Node.js, Express, GraphQL, FastAPI, Flask"
+            },
+            {
+              "id": "r10-26",
+              "text": "Databases & Caching: Postgres (PG), Redis, SQLite, Prisma ORM, SQLAlchemy"
+            },
+            {
+              "id": "r10-27",
+              "text": "DevOps & Testing: Docker, GitHub Actions, GCP Cloud Run, EC2, Jest, Playwright, Pytest, Git"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,179 @@
+{
+  "jd_id": "j10",
+  "title": "Software Engineer, Full-Stack (New Grad)",
+  "company": "ParcelLoop Logistics",
+  "text": "ParcelLoop Logistics builds modern dispatch, live parcel tracking, and reverse-logistics returns software for regional courier networks and omnichannel e-commerce brands. Our web dashboards and backend APIs power thousands of dispatchers, drivers, and warehouse operators across forty metropolitan hubs every single day.\n\nWe are looking for an ambitious, collaborative full-stack Software Engineer (New Grad / Early Career) to join our Core Product Engineering squad. You will own and ship customer-facing features across our TypeScript and React web applications, build reliable low-latency backend services in Node.js and Python, and collaborate directly with product designers, product managers, and senior engineers from your very first sprint.\n\nWhat You Will Do:\n- Build responsive, accessible web frontends using modern TypeScript, React, and component-driven state management.\n- Develop, document, and maintain RESTful and GraphQL backend APIs in Node.js and Python.\n- Design normalized relational database schemas, write migrations, and optimize slow queries in PostgreSQL or MySQL.\n- Rapidly prototype new product ideas and deliver working MVPs under tight deadlines in a fast-paced startup environment.\n- Write automated unit, integration, and end-to-end browser test suites and maintain continuous integration pipelines.\n- Communicate technical trade-offs clearly in design reviews and collaborate closely across product, design, and engineering peers.\n\nMinimum Qualifications:\n- B.S. or M.S. in Computer Science, Software Engineering, or a related quantitative technical field (graduating by Spring/Summer 2025 or recently graduated).\n- Hands-on experience shipping web applications through software engineering internships, capstone projects, or hackathons.\n\nNice to Have:\n- Experience deploying containerized backend services using Docker to Amazon Web Services or Google Cloud Platform.\n- Experience with real-time bidirectional communication using WebSockets or Server-Sent Events (SSE) for live UI updates.\n- Experience instrumenting product analytics, event tracking schemas, or A/B feature experiments.",
+  "pairs_with": ["r10", "r11"],
+  "requirements": [
+    {
+      "req_id": "j10-q01",
+      "text": "B.S. or M.S. in Computer Science, Software Engineering, or a related quantitative technical field",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-01": 1, "r10-21": 2},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {"r11-22": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j10-q02",
+      "text": "Proficiency building responsive web frontends with TypeScript and React",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-02": 2, "r10-07": 2, "r10-14": 2, "r10-25": 1},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-14"]
+        }
+      }
+    },
+    {
+      "req_id": "j10-q03",
+      "text": "Experience developing RESTful or GraphQL backend APIs in Node.js or Python",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-03": 2, "r10-15": 2, "r10-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r10-13"]
+        },
+        "r11": {
+          "relevant": {"r11-16": 1},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j10-q04",
+      "text": "Relational database schema design and query optimization in PostgreSQL or MySQL",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-04": 2, "r10-26": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {"r11-12": 1, "r11-24": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j10-q05",
+      "text": "Ability to rapidly prototype and deliver working MVPs under tight deadlines in fast-paced environments",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-18": 2, "r10-19": 2},
+          "match_type": "implicit",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {"r11-15": 1},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j10-q06",
+      "text": "Writing automated unit and end-to-end browser test suites and maintaining continuous integration pipelines",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-05": 2, "r10-27": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-03", "r11-06"]
+        }
+      }
+    },
+    {
+      "req_id": "j10-q07",
+      "text": "Clear technical communication and ability to collaborate across product, design, and engineering peers",
+      "priority": "must",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-08": 2, "r10-11": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {"r11-08": 2, "r11-11": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j10-q08",
+      "text": "Deploying containerized backend services to Amazon Web Services or Google Cloud Platform",
+      "priority": "nice",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-17": 2, "r10-27": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-02"]
+        }
+      }
+    },
+    {
+      "req_id": "j10-q09",
+      "text": "Real-time bidirectional communication using WebSockets or Server-Sent Events (SSE)",
+      "priority": "nice",
+      "judgments": {
+        "r10": {
+          "relevant": {"r10-14": 2},
+          "match_type": "implicit",
+          "distractors": []
+        },
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-07"]
+        }
+      }
+    },
+    {
+      "req_id": "j10-q10",
+      "text": "Experience instrumenting product analytics, event tracking schemas, or A/B feature experiments",
+      "priority": "nice",
+      "judgments": {
+        "r10": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r10-06", "r10-12"]
+        },
+        "r11": {
+          "relevant": {"r11-03": 2, "r11-07": 2, "r11-25": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    }
+  ]
+}

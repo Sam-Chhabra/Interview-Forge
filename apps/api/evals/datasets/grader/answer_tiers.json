@@ -1,0 +1,550 @@
+{
+  "version": "v1",
+  "description": "Evaluation dataset for testing the LLM-as-judge interview answer grader across 16 cases (6 behavioral, 6 technical_project, 4 technical_concept) spanning 8 engineering roles and 4 monotonically ordered quality tiers (4=excellent, 3=adequate, 2=weak, 1=non_answer), including length-confounded cases where tier-2 buzzword soup is longer than concise tier-3 answers.",
+  "cases": [
+    {
+      "case_id": "g01",
+      "role_context": "Senior Machine Learning Engineer — Ranking & Recommendations",
+      "length_confound": false,
+      "question": {
+        "question": "Tell me about a time when you had to push back on product leadership regarding a model launch because offline metrics did not reflect production risk.",
+        "type": "behavioral",
+        "difficulty": "medium",
+        "rationale": "Assesses ability to communicate statistical and operational risks to non-technical stakeholders while maintaining ownership of production ML quality.",
+        "anchor": "blocked premature rollout of two-tower retrieval model after uncovering position-bias leakage in offline NDCG evaluation"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "In Q3 last year, our PM wanted to ship our new two-tower retrieval model to 100% of home-feed traffic ahead of Black Friday because offline NDCG@10 showed a 6.4% lift. My task as lead ML engineer was to sign off on production readiness. While auditing feature attributions, I discovered our offline test split leaked historical display position into the item tower via a 7-day rolling click-through feature, artificially inflating offline NDCG for already-popular top-slot items. I immediately halted the launch checklist and ran a 2% shadow interleaving test over 48 hours, which showed the model actually reduced long-tail item discovery by 19% and hurt session dwell time by 3.1%. Rather than just saying no, I brought the PM a two-page visual breakdown comparing the biased offline metric with the interleaving results, plus a concrete four-day remediation plan to strip position-correlated aggregates and apply inverse propensity weighting. The PM agreed to delay launch by one week. When we shipped the corrected model, online A/B testing confirmed a genuine 2.8% lift in checkout conversion without cannibalizing tail inventory. It taught me to institutionalize counterfactual logging checks before sharing headline offline numbers with stakeholders."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "When I was working on our two-tower retrieval model, product leadership wanted to launch immediately because our offline NDCG score looked much better than the baseline. However, while checking the pipeline, I noticed we had position-bias leakage in the training data because a click feature implicitly encoded where items had previously been ranked. I knew that would cause the model to over-recommend popular items in production. I explained this issue to the PM in our launch review meeting and asked for extra time to retrain the model without the leaky feature and run a small online shadow test first. The PM agreed to push the release back by a week, and once we fixed the leakage, the production launch went smoothly and improved user engagement."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "In machine learning projects, offline metrics often do not match online results because of data distribution shifts or bias. Whenever product managers want to rush a model out, I usually sit down with them and explain that we need more testing. Doing an A/B test first is always safer so we do not break production."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I have never really had to push back on product managers; I just deploy whatever model gets the highest validation score in the notebook."
+        }
+      ]
+    },
+    {
+      "case_id": "g02",
+      "role_context": "Staff Backend Engineer — Payments & Ledger Infrastructure",
+      "length_confound": true,
+      "question": {
+        "question": "Describe a high-severity production incident you led where initial mitigation hypotheses were wrong, and how you coordinated the team under pressure.",
+        "type": "behavioral",
+        "difficulty": "hard",
+        "rationale": "Evaluates incident command, structured debugging under ambiguity, psychological safety, and post-mortem rigor anchored in their payment ledger experience.",
+        "anchor": "led SEV-1 incident response during double-settlement outage on Kafka-backed payment ledger"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "During a peak Friday payroll window, paging alerts fired for duplicate ACH settlement messages on our Kafka-backed payment ledger, putting $1.4M in merchant payouts at risk of double disbursement. As incident commander on the SEV-1 bridge, our initial hypothesis was that a recent consumer deployment broke idempotency key parsing, so an engineer proposed rolling back the settlement worker immediately. Before approving the rollback, I asked two engineers to pull four sample duplicate transaction traces while I froze outbound ACH batch submission at the gateway boundary to stop customer bleeding within three minutes. Trace inspection proved the worker code was untouched; instead, a broker disk stall triggered Kafka rebalance storms exceeding our 30-second `max.poll.interval.ms`, while Postgres advisory locks were releasing prior to Kafka offset commits under connection pool exhaustion. Had we rolled back the worker, we would have triggered another rebalance storm and doubled the duplicates. I split the five-person responder group into two clear tracks: one tuned HikariCP timeouts and wrapped offset state inside the same Postgres transaction outbox table, while the other wrote a reconciliation query isolating all 412 affected ledger rows. We restored clean processing in 38 minutes with zero unrecovered funds, and I subsequently instituted chaos testing for broker stall scenarios."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "I led a SEV-1 incident when our Kafka-backed payment ledger started producing duplicate settlement records during a high-traffic window. At first, the team thought a recent code deployment caused the bug and wanted to roll back right away. As incident commander, I paused external payout dispatches first so no duplicate money actually left the platform, and asked the team to verify the logs before rolling back. We found out the real issue was Kafka consumer rebalances happening while Postgres database transactions were timing out, breaking our idempotency check. I assigned one engineer to fix the database transaction locking and another to write a cleanup script for the duplicate ledger entries. We resolved the outage in under an hour and prevented any financial loss."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "When managing high-severity SEV-1 production incidents in mission-critical distributed backend architectures, it is fundamentally important to maintain a calm, collaborative, and blameless engineering culture while leveraging observability best practices. In our distributed environment, whenever an unexpected system outage occurs, people often jump to premature conclusions without looking at the holistic telemetry ecosystem. My leadership philosophy as a senior technologist is to facilitate cross-functional alignment across DevOps, SRE, and backend stakeholders so that everyone is communicating synergistically in the incident Slack channel. Rather than making knee-jerk infrastructure changes that could exacerbate systemic instability, I always advocate for taking a step back to holistic root-cause analysis using modern APM dashboards, distributed tracing paradigms, and log aggregation pipelines. By empowering team members to systematically validate their operational hypotheses and maintaining transparent executive communication cadences throughout the lifecycle of the outage, we are consistently able to restore service availability and follow up with actionable post-mortem documentation."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "Usually the on-call SRE handles the SEV-1 incidents on our team, so I mostly wait until they fix the servers and then pull the latest branch."
+        }
+      ]
+    },
+    {
+      "case_id": "g03",
+      "role_context": "Mid-Level Frontend Engineer — Design Systems & Web Platform",
+      "length_confound": false,
+      "question": {
+        "question": "Tell me about a time you resolved a disagreement between design and engineering over accessibility or UI complexity.",
+        "type": "behavioral",
+        "difficulty": "easy",
+        "rationale": "Checks cross-functional collaboration, empathy for both user accessibility and design intent, and ownership of component library standards.",
+        "anchor": "reconciled WCAG 2.1 AA keyboard navigation requirements with custom multi-select combobox design in React design system"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "While building v2 of our React design system, our lead product designer proposed a custom multi-select combobox where hovering over nested category pills opened floating sub-menus without focus traps. My task was to deliver the component for three enterprise dashboard teams while meeting our contractual WCAG 2.1 AA accessibility compliance. When I flagged that hover-only triggers and dual tab stops inside pills broke screen-reader announcements and keyboard-only navigation, the designer worried that standard WAI-ARIA listbox patterns would feel clunky for power users. Instead of arguing over static Figma mocks, I built two interactive Storybook prototypes in an afternoon: one implementing their exact hover spec, and an alternative using `aria-activedescendant` with arrow-key roving focus and a slash-key shortcut to expand nested categories. I invited the designer to test both using macOS VoiceOver and keyboard-only navigation for five minutes. Seeing VoiceOver trap focus infinitely on the first version immediately aligned us, and they loved how fast the roving-focus prototype felt. We shipped the accessible combobox across 14 views, cut keyboard task completion time by 28% in usability testing, and established a joint VoiceOver check in our Figma handoff template."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "When I was working on our React design system, a designer created a custom multi-select combobox that relied heavily on mouse hover states for nested options. I was responsible for implementing it, and I realized it would fail our WCAG 2.1 AA keyboard navigation and screen-reader requirements. The designer initially pushed back because they wanted to keep the interaction sleek. To resolve the disagreement, I built a quick prototype in Storybook using proper ARIA attributes and arrow-key navigation so they could see it didn't hurt the visual design. Once we walked through it together with a screen reader, the designer agreed to the keyboard-friendly interaction, and we shipped the compliant component on schedule."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Designers often create fancy UI components in Figma that are hard to code or bad for accessibility. When that happens, I explain the technical limitations in our sprint planning meeting and ask them to simplify the design so we can use standard HTML elements and meet our deadline."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I just build whatever is in the Figma file pixel-for-pixel; accessibility decisions are up to the product manager and designer."
+        }
+      ]
+    },
+    {
+      "case_id": "g04",
+      "role_context": "Senior Site Reliability Engineer — Cloud Platform & Kubernetes",
+      "length_confound": false,
+      "question": {
+        "question": "Tell me about a time you had to convince multiple product engineering teams to adopt a disruptive reliability standard or migration against their feature roadmap priorities.",
+        "type": "behavioral",
+        "difficulty": "hard",
+        "rationale": "Evaluates influence without authority, pragmatic migration tooling, and balancing developer velocity with reliability goals.",
+        "anchor": "drove 100% adoption of PodDisruptionBudgets and topologySpreadConstraints across 45 microservices after AZ brownout"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Following an AWS availability-zone brownout that knocked three tier-1 checkout services offline because all their replicas had bin-packed onto a single AZ, I was tasked with getting 45 microservice teams to adopt strict `PodDisruptionBudgets` and `topologySpreadConstraints` within six weeks. Product engineering leads pushed back hard, arguing that auditing Helm charts and tuning replica minimums would derail Q2 feature commitments and increase staging node costs. Recognizing that mandating manual YAML edits would stall, I first quantified the business impact—showing each director which of their services had single-AZ concentration during the outage—and then eliminated the toil by writing a Kyverno mutation policy and a CLI codemod that auto-generated PRs tailored to each service's historical HPA replica counts. To address the staging cost concern, I configured the policy to enforce strict multi-AZ spread only in production while allowing soft `ScheduleAnyway` constraints in dev environments. I held two 30-minute office-hour sessions for the six stateful services needing custom quorum tuning. Because reviewing an automated PR took ten minutes instead of two days, all 45 services merged the changes a week ahead of deadline, and our next Karpenter node consolidation event caused zero user-facing 5xx errors."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "After an AWS availability zone issue caused downtime for several services whose pods were all scheduled in the same zone, I needed to get 45 microservice teams to add `PodDisruptionBudgets` and `topologySpreadConstraints` to their Kubernetes deployments. Many teams resisted because they were busy with product roadmap features. Instead of just filing tickets and expecting them to figure out the YAML changes themselves, I wrote a script that automatically generated the pull requests for their Helm repositories and documented why each service was vulnerable during the previous outage. By making the change a simple PR review and holding office hours to answer questions, I got all 45 teams to merge the updates within the quarter."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Developers usually care more about shipping features than reliability configs in Kubernetes. When we needed teams to update their deployment manifests for high availability, I escalated the requirement to engineering leadership so it became an official quarterly OKR, and then tracked completion in Jira until everyone updated their configs."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "If product teams refuse to update their Kubernetes manifests, that is their problem when their service pages them at 2 a.m."
+        }
+      ]
+    },
+    {
+      "case_id": "g05",
+      "role_context": "Senior Data Scientist — Experimentation & Marketplace Economics",
+      "length_confound": true,
+      "question": {
+        "question": "Tell me about a time when your analysis invalidated a hippo (highest-paid person's opinion) hypothesis and how you handled delivering that conclusion.",
+        "type": "behavioral",
+        "difficulty": "medium",
+        "rationale": "Tests analytical integrity, stakeholder diplomacy, and ability to back up contrarian findings with rigorous methodology.",
+        "anchor": "proved via switchback experimentation that surge-pricing notifications reduced driver supply elasticity by 8% contrary to VP hypothesis"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Last year, our VP of Marketplace Operations championed a feature sending push notifications to idle drivers predicting upcoming surge zones 30 minutes in advance, convinced from a naive user-level A/B test that it boosted active driver hours by 11%. My responsibility as lead experimentation data scientist was to validate marketplace-wide net impact before global rollout. I suspected cannibalization and network interference between control and treatment drivers in the same city, so I designed a six-week spatio-temporal switchback experiment across 18 metro regions alternating 3-hour time blocks. The switchback data revealed the exact opposite of the user-level test: advance alerts caused drivers to log off and wait until the surge window began, reducing net supply elasticity by 8.2% and spiking rider ETA by 1.4 minutes in the 20 minutes preceding the predicted surge. Knowing the VP was publicly invested in the feature, I met with them 1-on-1 prior to the executive review. I validated their core intuition—that drivers respond strongly to earnings signals—while walking through a clear cohort flow chart showing the pre-surge withholding behavior, paired with an alternative design: conditioning bonus eligibility on maintaining continuous online status prior to peak windows. The VP championed the pivot in the review, and the revised continuous-online incentive lifted peak supply by 5.6%."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Our VP believed that sending predictive surge-pricing push notifications to drivers would increase overall supply, based on early user-split test numbers. Because drivers in the same city compete for rides, I ran a proper city-time switchback experiment to account for marketplace interference. My analysis showed that the notifications actually reduced driver supply elasticity by 8% because drivers waited offline until the surge started instead of taking standard rides beforehand. Before presenting to the wider leadership group, I scheduled a pre-read with the VP to walk through the switchback data and show exactly when drivers were dropping offline. By framing it around modifying the incentive rather than scrapping the project, the VP supported changing the feature before launch."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "In modern data-driven organizations, navigating executive stakeholder alignment when empirical insights contradict leadership intuition is one of the most critical soft skills for a senior data scientist. Executives often form strong hypotheses based on high-level business intuition or anecdotal market observations, which may not always hold up under rigorous statistical scrutiny. Whenever my analytical models surface findings that challenge a senior leader's perspective, I focus heavily on empathetic communication, storytelling with data, and building trust through collaborative alignment. Rather than presenting raw statistical p-values or complex econometric jargon in a confrontational way during a large all-hands meeting, I always strive to position data science as a strategic thought partner that empowers decision-makers. By creating intuitive dashboards, aligning on shared business KPIs, and fostering an open dialogue around continuous experimentation, we can constructively pivot product strategy toward positive outcomes."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I just put the numbers in a Jupyter notebook and email it out; how executives react to the data isn't really my responsibility."
+        }
+      ]
+    },
+    {
+      "case_id": "g06",
+      "role_context": "Senior Security Engineer — Application Security & IAM",
+      "length_confound": false,
+      "question": {
+        "question": "Tell me about a time you discovered a critical vulnerability shortly before a major release and how you balanced security risk against business deadlines.",
+        "type": "behavioral",
+        "difficulty": "medium",
+        "rationale": "Evaluates pragmatic risk assessment, collaborative remediation vs blocking mentality, and clear articulation of exploitability.",
+        "anchor": "identified cross-tenant IDOR in GraphQL batch resolver 48 hours before enterprise tier launch and shipped dataloader tenant-scoping patch"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Forty-eight hours before our flagship Enterprise multi-tenant launch—which had three Fortune 500 contracts tied to the release date—I was conducting a manual threat review of our new GraphQL API and discovered a critical cross-tenant Insecure Direct Object Reference (IDOR) in the batch document resolver. While top-level queries enforced `org_id` checks via JWT middleware, the underlying DataLoader batched document IDs across concurrent requests inside a shared Redis cache layer without scoping keys by tenant ID, allowing an authenticated user to enumerate another organization's confidential attachments. Simply issuing a 'stop ship' ticket and walking away would have blown the commercial launch because the platform team estimated five days to refactor their caching architecture. Instead, I built a working PoC exploit in 30 minutes to demonstrate the exact blast radius to the VP of Engineering and API lead, then paired directly with the backend tech lead for four hours to implement a surgical two-part mitigation: prefixing all DataLoader cache keys with the verified `org_id` from the request context and adding a mandatory Row-Level Security policy in Postgres as defense-in-depth. We wrote 12 multi-tenant regression tests, deployed to staging that evening, and hit the enterprise launch deadline with zero security compromises."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Two days before our major enterprise tier launch, I found a cross-tenant IDOR vulnerability in our GraphQL batch resolver during a security review. The top-level endpoint checked user permissions, but the DataLoader batching function fetched objects by raw ID without verifying the `org_id`, meaning a user could access another company's records. Because delaying the launch would hurt major enterprise deals, I didn't just file a blocker ticket; I sat down immediately with the backend developers to reproduce the issue and helped them write a patch that scoped the DataLoader queries to the authenticated tenant ID. We verified the fix with automated tests the next morning and launched on time."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Security should never be compromised for a business deadline. When I find a critical vulnerability like an IDOR or SQL injection before a release, I immediately escalate it to the CISO and block the deployment pipeline until the engineering team fixes the code and passes a full re-test."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "We run automated SAST scanners in CI, so if the scanner passes, I just approve the release ticket."
+        }
+      ]
+    },
+    {
+      "case_id": "g07",
+      "role_context": "Senior Machine Learning Engineer — Real-Time Fraud Detection",
+      "length_confound": true,
+      "question": {
+        "question": "Walk me through how you architected the sub-50ms online feature store for your GBDT fraud model and how you prevented training-serving skew.",
+        "type": "technical_project",
+        "difficulty": "hard",
+        "rationale": "Probes deep system ownership, latency budget allocation, streaming state consistency, and point-in-time correctness.",
+        "anchor": "architected Flink-to-Redis online feature pipeline and Feast point-in-time joins cutting card-not-present fraud inference p99 to 34ms"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "For our card-not-present checkout fraud model, we had a strict 50ms end-to-end p99 SLA, of which LightGBM inference consumed 8ms, leaving 42ms for network overhead and fetching 65 velocity and graph features. Previously, the service ran ad-hoc SQL aggregations against read replicas that spiked to 180ms p99 under flash-sale load and suffered severe training-serving skew because offline Snowflake backfills used UTC calendar windows while online queries used rolling timestamps. I re-architected the pipeline using Apache Flink for stateful stream processing backed by RocksDB checkpoints, materializing sliding-window counters (5m, 1h, 24h merchant-card velocity) into a Redis Cluster using hash tags `{card_id}` so all 65 features for an entity lived on a single shard and could be fetched in one pipelined `HMGET` taking 4.2ms p99. To eliminate training-serving skew, I unified feature definitions in Feast and modified our Flink sink to dual-write every mutated feature vector with its exact event-time watermark into an append-only Iceberg log. Offline training sets were then built exclusively by replaying that log with point-in-time ASOF joins rather than recomputing SQL logic. This brought end-to-end fraud scoring p99 down to 34ms and improved production precision-at-90%-recall by 4.7% simply by eliminating skew."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "To get our card-not-present fraud inference under 50ms p99, I replaced slow database queries with a streaming feature pipeline using Apache Flink and Redis alongside Feast. Flink consumed transaction events from Kafka to compute rolling velocity features and wrote them directly into Redis hashes keyed by user and card ID, allowing our scoring service to fetch all needed features in a single low-latency read and bringing overall p99 latency down to 34ms. To prevent training-serving skew between online Redis reads and offline training data, we defined features centrally in Feast and used point-in-time historical joins on logged feature values so the LightGBM model trained on the exact same feature semantics it saw in production."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Building a modern, high-throughput, low-latency online feature store for real-time machine learning inference is a cornerstone of scalable MLOps architecture. In our fraud detection ecosystem, achieving sub-50ms latency required leveraging industry-standard big data streaming frameworks and in-memory caching paradigms to ensure high availability and horizontal scalability. When designing enterprise ML pipelines, training-serving skew is a widely recognized challenge that occurs when the offline data science environment diverges from the production runtime environment. To address this holistically, we adopted a unified feature store platform that acts as a single source of truth for both batch training workflows and real-time serving microservices. By decoupling feature engineering pipelines from model serving containers and utilizing high-performance NoSQL key-value stores with optimized network serialization, our engineering organization was able to significantly accelerate inference performance while maintaining robust data governance, reproducible model lineage, and seamless cross-team collaboration across data scientists and platform engineers."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I mostly trained the gradient boosted trees in Python; the data engineering team handled the Flink and Redis infrastructure."
+        }
+      ]
+    },
+    {
+      "case_id": "g08",
+      "role_context": "Senior Frontend Engineer — Collaborative Canvas & Data Grid",
+      "length_confound": false,
+      "question": {
+        "question": "How did you eliminate main-thread frame drops when rendering and live-updating the 100,000-row financial order blotter in React?",
+        "type": "technical_project",
+        "difficulty": "medium",
+        "rationale": "Evaluates browser rendering internals, memory/GC management, React reconciliation overhead, and measurable performance profiling.",
+        "anchor": "re-engineered React virtualized blotter with Web Worker WebSocket ingestion and SharedArrayBuffer sustaining 60fps at 5k ticks/sec"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Our institutional trading blotter had to display 100,000 order rows while ingesting up to 5,000 WebSocket price ticks per second. Initially, parsing JSON payloads and dispatching Redux state updates on the main thread caused 320ms garbage-collection pauses and dropped scroll frame rates to 14fps because React re-reconciled row components faster than the 16.6ms frame budget. I moved the WebSocket connection, protobuf decoding, and sorting index completely off the main thread into a dedicated Web Worker writing normalized numeric columns directly into a pre-allocated `SharedArrayBuffer` backed by `Float64Array` and `Int32Array` views—eliminating per-tick object allocations and structured-clone serialization overhead. On the UI thread, I replaced standard React state subscriptions with a custom virtualizer that only mounted the ~35 visible DOM rows in the viewport and polled a dirty-bitmask in the `SharedArrayBuffer` once per `requestAnimationFrame` tick, mutating changed cell `textContent` directly via refs when scrolling was idle. A key tradeoff was requiring Cross-Origin-Opener-Policy (`COOP`) and `COEP` headers to enable `SharedArrayBuffer`, which meant proxying a third-party analytics script through our CDN. Chrome DevTools performance traces confirmed main-thread scripting time dropped from 41ms/frame to 3.8ms/frame, sustaining a locked 60fps under peak market open."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Our React order blotter struggled with severe frame drops when handling 100,000 rows and 5,000 WebSocket updates per second because JSON parsing and React state updates blocked the main thread. To fix this, I moved the WebSocket ingestion and data sorting into a Web Worker and used a `SharedArrayBuffer` so the worker and main thread could share typed numeric arrays without expensive message-copying overhead. On the main thread, I used row virtualization so only the 35 rows currently visible in the viewport were rendered in the DOM, and synced updates on `requestAnimationFrame` instead of triggering React re-renders on every tick. This kept the UI smooth at 60fps."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "When React apps are slow with large tables, I wrap the row components in `React.memo` and use `useMemo` and `useCallback` hooks so they do not re-render unnecessarily. We also added pagination and debounced the API calls to make the page feel faster."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "We just used an off-the-shelf table library from npm and let the browser handle the rendering."
+        }
+      ]
+    },
+    {
+      "case_id": "g09",
+      "role_context": "Senior Data Scientist — Churn & Uplift Modeling",
+      "length_confound": true,
+      "question": {
+        "question": "Why did you transition your retention campaign targeting from a standard churn propensity classifier to a causal uplift model, and how did you validate it offline and online?",
+        "type": "technical_project",
+        "difficulty": "medium",
+        "rationale": "Tests understanding of causal inference vs predictive modeling ('persuadables' vs 'sleeping dogs'), uplift evaluation metrics (Qini/AUUC), and business ROI.",
+        "anchor": "replaced XGBoost churn propensity targeting with T-learner causal uplift model increasing net retention ROI by 31%"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Our marketing team previously sent $15 renewal discount emails to the top 20% highest-risk subscribers scored by an XGBoost churn propensity model, yet an A/B holdout showed near-zero net retention lift and high subsidy waste. Analyzing the holdout by propensity decile, I discovered two failure modes: 'sure losses' who had already stopped using the product and ignored the coupon, and 'sleeping dogs'—annual-plan users on auto-renew whose churn probability actually increased by 4.3% when our email reminded them their billing cycle was approaching. I reformulated targeting as conditional average treatment effect (CATE) estimation using a regularized LightGBM T-learner trained on 400,000 randomized historical treatment/control assignments. Because individual counterfactual outcomes are unobserved, standard ROC-AUC was useless; instead, I evaluated offline candidate architectures (S-learner, T-learner, and Causal Forests) using bootstrapped Qini coefficients and Area Under the Uplift Curve (AUUC) across out-of-time validation folds, where the T-learner outperformed S-learner by 14% AUUC due to sharp treatment-interaction heterogeneity in usage recency. In a four-week production A/B test targeting only users with predicted uplift above the marginal discount cost threshold, we suppressed emails to 38% of previous targets and increased net incremental retained revenue ROI by 31%."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "We originally used an XGBoost churn propensity model to target high-risk users with retention discounts, but we realized that high churn risk does not mean a user will actually respond positively to an offer—in fact, emailing some dormant users reminded them to cancel. I replaced the propensity model with a T-learner causal uplift model trained on historical randomized campaign holdouts to predict the incremental treatment effect of sending the discount. We evaluated the model offline using Qini curves and Area Under the Uplift Curve rather than standard classification metrics, and then ran an online A/B test comparing uplift targeting against propensity targeting, which improved net campaign ROI by 31%."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Customer churn prevention is one of the highest-impact machine learning use cases in subscription businesses, and evolving our data science maturity toward advanced predictive and causal modeling techniques was a major strategic initiative for our team. Traditional machine learning classifiers are great at identifying patterns in historical user engagement telemetry, demographic attributes, and billing history, by leveraging gradient boosting algorithms and hyperparameter optimization frameworks like Optuna. However, in modern growth analytics, simply predicting churn probabilities is only the first step in a comprehensive customer lifecycle management strategy. By exploring sophisticated modeling architectures and collaborating closely with lifecycle marketing stakeholders to align on key performance indicators, we were able to refine our segmentation heuristics and optimize how promotional budgets were allocated across user cohorts. Validating these complex algorithms required extensive cross-validation pipelines, rigorous A/B testing frameworks, and continuous monitoring of precision, recall, and F1 scores to ensure sustained business value."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I was not the one who set up the evaluation metrics for that campaign; I just exported the CSV of user scores for marketing."
+        }
+      ]
+    },
+    {
+      "case_id": "g10",
+      "role_context": "Senior LLM / AI Engineer — Enterprise RAG & Agent Systems",
+      "length_confound": false,
+      "question": {
+        "question": "In your legal contract RAG pipeline, how did you diagnose and fix retrieval failures on cross-reference clauses, and why did you choose that chunking and reranking architecture?",
+        "type": "technical_project",
+        "difficulty": "hard",
+        "rationale": "Evaluates practical RAG engineering beyond naive vector search: hybrid lexical/dense retrieval, parent-document context preservation, cross-encoder latency vs recall tradeoffs.",
+        "anchor": "implemented hierarchical section-aware chunking with BM25+BGE-M3 reciprocal rank fusion and Cohere reranker lifting citation recall@5 from 61% to 89%"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "On our M&A contract analysis platform, naive 512-token recursive character chunking with dense OpenAI embeddings yielded only 61% citation Recall@5 on our 300-question legal benchmark. Error analysis showed two root causes: dense embeddings missed exact defined terms and section numbers (like 'Indemnification Cap under Section 8.4(b)'), and fixed token splits severed child clauses from the parent section header defining their scope and exceptions. I redesigned ingestion using an AST parser over Markdown-converted PDFs to build a two-level hierarchical index: small 256-token leaf chunks prepended with their full ancestor breadcrumb header path (e.g., `[Article VIII > Section 8.4 Indemnification > (b) Basket]`) linked to full parent sections stored in Postgres. For first-stage retrieval, I combined sparse BM25 (to catch exact clause identifiers and defined legal entities) with dense `bge-m3` embeddings via Reciprocal Rank Fusion ($k=60$) to pull the top 40 leaf candidates, then passed those 40 into a cross-encoder (`rerank-english-v3.0`) to select the top 5 and hydrated their parent sections for generation. We rejected LLM-based query expansion because it added 900ms latency, whereas our RRF + cross-encoder pipeline added only 115ms p95 while boosting Recall@5 from 61% to 89% and cutting hallucinated citations by two-thirds."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Our initial RAG pipeline for legal contracts struggled with cross-references and exact clause numbers because standard fixed-size chunking split sections mid-sentence and dense vector search missed exact keywords like section numbers. To fix this, I implemented hierarchical section-aware chunking that preserved parent section headers on every chunk, and replaced pure vector search with a hybrid retrieval pipeline combining BM25 lexical search and `bge-m3` dense embeddings merged via Reciprocal Rank Fusion. Finally, we added a Cohere cross-encoder reranker over the top candidates before passing the top 5 to the LLM. This improved our benchmark Recall@5 from 61% to 89% with acceptable latency overhead."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "For our RAG system, we stored document chunks in a vector database and used embeddings to find the most similar chunks to the user's prompt. When retrieval wasn't accurate enough, we adjusted the chunk size and overlap parameters and updated the system prompt to tell the LLM to only answer from the provided context."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "We just called the LangChain default `RetrievalQA` chain; I didn't look into how the chunking or ranking worked under the hood."
+        }
+      ]
+    },
+    {
+      "case_id": "g11",
+      "role_context": "Staff Cloud Security Engineer — Zero-Trust & Workload Identity",
+      "length_confound": true,
+      "question": {
+        "question": "How did you architect the migration from long-lived static AWS IAM keys to SPIFFE/SPIRE workload identity across your multi-cluster Kubernetes and bare-metal fleet without breaking active traffic?",
+        "type": "technical_project",
+        "difficulty": "hard",
+        "rationale": "Tests zero-trust architecture depth, X.509/JWT-SVID attestation mechanics, federation with cloud IAM, and zero-downtime dual-auth rollout strategy.",
+        "anchor": "eliminated 1,200 static IAM secrets by deploying SPIRE federated OIDC workload attestation across EKS and on-prem bare-metal nodes"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "We had 1,200 static AWS IAM user keys injected via Vault into both EKS pods and legacy on-prem bare-metal services, creating a severe credential-exfiltration blast radius and manual 90-day rotation toil. Standard EKS IRSA (IAM Roles for Service Accounts) couldn't solve this alone because 35% of workloads ran on bare-metal Linux hosts outside AWS. I architected a unified identity plane using SPIFFE/SPIRE with hierarchical nested SPIRE servers: node attestation used the AWS Instance Identity Document on EKS and TPM 2.0 hardware endorsement keys (`devid`) on bare metal, while workload attestation verified Kubernetes service-account UIDs and Linux kernel cgroup/binary SHA-256 hashes. Rather than issuing long-lived secrets, the local SPIRE agent exposed the Workload API over a Unix domain socket, vending short-lived 1-hour X.509-SVIDs for mTLS and JWT-SVIDs federated with AWS IAM via a custom OIDC discovery endpoint backed by CloudFront/S3. To achieve zero-downtime migration across 180 services, I built a custom credential-provider sidecar wrapper that intercepted the AWS SDK credential chain, attempting `AssumeRoleWithWebIdentity` via the SPIRE JWT-SVID first and transparently falling back to the legacy static key while emitting a Prometheus metric. Once fallback metrics hit zero for 14 days per service, we revoked all 1,200 static IAM keys cleanly."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "We needed to eliminate 1,200 static AWS IAM access keys across both EKS clusters and on-prem bare-metal servers. Because AWS IRSA only works natively inside EKS, I deployed SPIFFE/SPIRE across both environments to provide uniform workload identity. SPIRE agents attested workloads locally on each node and issued short-lived JWT-SVID tokens over a Unix socket, which we federated with AWS IAM using an OIDC provider so workloads could assume IAM roles dynamically via `AssumeRoleWithWebIdentity`. To migrate without breaking production traffic, we rolled out a dual-credential fallback mechanism in our service base images and monitored CloudTrail until no services were using static keys before deleting them."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Migrating enterprise infrastructure toward a modern Zero-Trust security architecture is critical for reducing the attack surface and preventing unauthorized lateral movement in hybrid cloud environments. Static credentials and hardcoded secrets represent a major compliance and operational security risk across the industry, which is why adopting identity-based access management and least-privilege principles is a top priority for security engineering teams. In our environment, we focused on modernizing how microservices authenticate with cloud resources by leveraging industry-standard cryptographic protocols, automated secret rotation policies, and centralized identity governance frameworks. By integrating cloud-native authentication mechanisms with our continuous integration and deployment pipelines, and partnering closely with DevOps and platform engineering teams to enforce strict role-based access controls, we successfully transitioned our fleet away from legacy credential patterns while maintaining high availability and seamless developer workflows across all production clusters."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I mostly reviewed compliance checklists; the infrastructure team was the one that actually configured AWS IAM and Kubernetes."
+        }
+      ]
+    },
+    {
+      "case_id": "g12",
+      "role_context": "Senior Mobile Engineer (iOS / Swift) — Offline-First Field Service App",
+      "length_confound": false,
+      "question": {
+        "question": "How did you design the offline-first sync engine in your iOS field technician app to handle conflict resolution when technicians edited the same work order without cellular connectivity?",
+        "type": "technical_project",
+        "difficulty": "easy",
+        "rationale": "Evaluates practical mobile persistence architecture (SQLite/GRDB), mutation outbox patterns, deterministic conflict resolution, and battery/network efficiency.",
+        "anchor": "built SQLite GRDB offline mutation outbox with field-level HLC last-write-wins merge cutting sync data loss incidents to zero"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Our field technicians regularly spent four to six hours underground in utility vaults with zero cellular coverage while multiple crew members updated the same work order on iPads. Previously, the app used whole-record REST `PUT` overwrites from CoreData when connectivity returned, meaning whoever gained signal second silently clobbered their partner's inspection checklist and photo attachments. I replaced the persistence layer with SQLite via GRDB in WAL mode and designed a field-level Hybrid Logical Clock (HLC) state-based CRDT combined with an append-only local mutation outbox. Rather than syncing full JSON blobs, every UI edit recorded an atomic `{entity_id, field_path, value, hlc_timestamp, device_id}` delta in the outbox table and updated the local projection immediately for instant UI responsiveness. We chose HLCs over raw wall-clock timestamps because technicians frequently had drifted device clocks, and over full Operational Transformation because work order schemas were structured key-value fields rather than free-form collaborative text. On `NWPathMonitor` connectivity restoration, a `BGProcessingTask` drained deltas in idempotent batches; orthogonal fields merged automatically, while true concurrent edits to the same scalar field resolved deterministically via HLC and flagged a non-blocking audit badge. This reduced sync data-loss tickets from ~40/month to zero."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Technicians using our iOS app often worked offline in basements and overwrote each other's changes when their devices reconnected because the old app sent full-object updates. To fix this, I built an offline mutation outbox using SQLite and GRDB that logged individual field-level changes along with a Hybrid Logical Clock (HLC) timestamp instead of overwriting the entire work order record. When the device regained network connectivity, a background sync task uploaded the queued field deltas to the server. Because updates were tracked per field with HLC ordering, two technicians editing different parts of the same work order merged cleanly without any data loss."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "To support offline mode in the iOS app, we cached the API responses locally on the device using local storage and saved user edits in a queue. When the internet connection came back online, the app looped through the queue and sent the requests to the backend server."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "If the user doesn't have an internet connection, we just show an alert telling them to retry when they have Wi-Fi."
+        }
+      ]
+    },
+    {
+      "case_id": "g13",
+      "role_context": "Senior Backend Engineer — Distributed Storage & Databases",
+      "length_confound": true,
+      "question": {
+        "question": "Explain the difference between PostgreSQL's `READ COMMITTED` and `REPEATABLE READ` (Snapshot Isolation) transaction isolation levels, what anomalies still occur under `REPEATABLE READ`, and how that impacted your inventory reservation service.",
+        "type": "technical_concept",
+        "difficulty": "medium",
+        "rationale": "Tests precise conceptual grasp of MVCC snapshot semantics, write skew anomalies vs lost updates, and grounding in their concrete inventory service.",
+        "anchor": "prevented flash-sale overselling in Postgres inventory service by resolving write-skew anomaly between concurrent reservation checks"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "In PostgreSQL's MVCC engine, both `READ COMMITTED` and `REPEATABLE READ` rely on non-blocking transaction snapshots, but they differ in snapshot lifecycle and conflict detection. Under `READ COMMITTED` (the default), Postgres takes a fresh snapshot at the start of each individual SQL statement within a transaction, allowing non-repeatable reads and phantom reads if another transaction commits between statements. Under `REPEATABLE READ`—which Postgres implements as Snapshot Isolation—a single snapshot is frozen at the first non-control statement of the transaction, guaranteeing repeatable reads and preventing standard lost updates because Postgres aborts the transaction with `ERROR: could not serialize access due to concurrent update` if a target row was modified after the snapshot began. However, `REPEATABLE READ` does NOT prevent **write skew**, where two concurrent transactions read overlapping row sets satisfying an invariant and then modify disjoint rows, violating the invariant upon commit. In our flash-sale inventory service, warehouse stock was sharded across bin rows (`bin_A=1`, `bin_B=1`) with an invariant that total reserved stock across bins could not exceed `total_available - safety_buffer`. Two concurrent `REPEATABLE READ` transactions both saw total stock = 2 and decremented separate bins without row-level conflict, overselling by 1. We fixed this by locking the parent SKU summary row via `SELECT ... FOR UPDATE` (choosing explicit pessimistic row locking over full `SERIALIZABLE` SSI to avoid high retry-storm latency at 2,000 RPS)."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "In PostgreSQL, `READ COMMITTED` takes a new data snapshot for every individual query inside a transaction, so if another transaction commits in between, a second `SELECT` can see different data. `REPEATABLE READ` takes one snapshot at the start of the first query and keeps it for the whole transaction, and it automatically aborts if two transactions try to update the exact same row concurrently. However, `REPEATABLE READ` still allows write skew, where two transactions read the same set of rows to check a business rule and then update different rows. In our inventory reservation service, this caused flash-sale overselling when concurrent workers updated separate bin records, which we solved using `SELECT ... FOR UPDATE` locks."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Database transaction isolation levels and ACID compliance are foundational concepts in building reliable, high-concurrency backend microservices with relational database management systems like PostgreSQL. When designing scalable e-commerce and inventory management platforms, engineers must carefully balance data consistency guarantees against system throughput and query latency. Isolation levels essentially control how transactions interact with each other when multiple users are reading and writing data at the same time in a multi-threaded environment. Higher isolation levels provide stronger protection against concurrency bugs and race conditions by restricting how uncommitted or concurrent data changes become visible across sessions, whereas lower isolation levels prioritize performance and concurrency by relaxing locking constraints. In our inventory service, ensuring that database transactions were properly configured and indexed was critical for maintaining accurate stock counts and delivering a seamless checkout experience during high-traffic promotional events."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I usually just use the default settings in SQLAlchemy and let Postgres handle the transactions automatically."
+        }
+      ]
+    },
+    {
+      "case_id": "g14",
+      "role_context": "Senior Site Reliability Engineer — Networking & Service Mesh",
+      "length_confound": false,
+      "question": {
+        "question": "Explain why TCP head-of-line blocking occurs in HTTP/2 over a single connection despite stream multiplexing, how gRPC load balancing in Kubernetes is affected by it, and how you resolved it on your telemetry ingestion tier.",
+        "type": "technical_concept",
+        "difficulty": "hard",
+        "rationale": "Evaluates deep networking fundamentals (L4 vs L7 multiplexing, TCP congestion window/retransmit stalling all streams) tied directly to their Kubernetes gRPC production work.",
+        "anchor": "mitigated HTTP/2 TCP head-of-line blocking and L4 kube-proxy connection pinning on gRPC telemetry collectors via Envoy L7 ring-hash balancing"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "While HTTP/2 eliminates application-layer head-of-line (HOL) blocking by interleaving frames from multiple logical streams over one TCP connection, the underlying Linux kernel TCP stack remains strictly an ordered byte stream with no awareness of HTTP/2 stream boundaries. If a single TCP packet carrying a frame for Stream A is dropped on the network, the kernel cannot deliver subsequent already-arrived packets belonging to independent Streams B and C to userspace until Stream A's lost segment is retransmitted and acknowledged, stalling every multiplexed request on that socket and collapsing the TCP congestion window (`cwnd`). Furthermore, in Kubernetes, standard ClusterIP `kube-proxy` operates at L4 (TCP connection creation): because gRPC reuses a single long-lived HTTP/2 connection, all RPCs from a client pod get pinned to a single backend pod while newly scaled pods sit idle. On our gRPC telemetry ingestion tier handling 120k spans/sec, a 0.2% cross-AZ packet loss rate combined with L4 connection pinning caused periodic 400ms p99 latency spikes and uneven CPU saturation (85% on two pods vs 15% on six others). We solved both by deploying Envoy proxy sidecars configured for L7 gRPC request-level load balancing with a connection pool of 4 HTTP/2 connections per upstream endpoint, distributing both RPC load and packet-loss blast radius evenly and cutting p99 latency from 410ms to 19ms."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "HTTP/2 solves HTTP/1.1 head-of-line blocking by multiplexing multiple requests as streams over a single TCP connection, but it introduces TCP-level head-of-line blocking. Because TCP guarantees strict in-order byte delivery, if one TCP packet is lost, the operating system holds back all subsequent packets on that connection until the lost packet is retransmitted—blocking every HTTP/2 stream sharing that socket. Additionally, because gRPC keeps a single long-lived HTTP/2 connection open, Kubernetes' default L4 `kube-proxy` pins all traffic from a client to a single backend pod instead of balancing individual RPCs. On our gRPC telemetry collectors, we fixed this by introducing Envoy L7 load balancing with multiple connections per upstream pod."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "HTTP/2 is much faster than HTTP/1.1 because it supports multiplexing, binary framing, and header compression. In Kubernetes, if gRPC services are overloaded, we usually configure a HorizontalPodAutoscaler to spin up more pods and put an Ingress controller in front of the cluster to distribute the network traffic."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "I'm not really sure how HTTP/2 frames work at the TCP packet level; we just use standard REST JSON APIs most of the time."
+        }
+      ]
+    },
+    {
+      "case_id": "g15",
+      "role_context": "Senior LLM Inference Engineer — Model Serving & GPU Optimization",
+      "length_confound": true,
+      "question": {
+        "question": "Explain how KV-cache memory fragmentation limits LLM serving batch sizes, how PagedAttention addresses it, and what trade-offs you encountered tuning vLLM prefix caching for your multi-turn coding assistant.",
+        "type": "technical_concept",
+        "difficulty": "medium",
+        "rationale": "Tests deep understanding of autoregressive transformer inference mechanics, GPU HBM allocation, PagedAttention block tables, and real operational tuning.",
+        "anchor": "tuned vLLM PagedAttention block sizes and APC (Automatic Prefix Caching) on H100 cluster doubling concurrent coding-agent throughput"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "During autoregressive LLM decoding, each generated token requires attending to the Key and Value tensors of all preceding tokens, which are cached in GPU HBM to avoid quadratic recomputation. Because output sequence lengths are unknown ahead of time, naive serving engines pre-allocate a contiguous HBM buffer sized to `max_seq_len` (e.g., 32k tokens) per request. This causes severe internal fragmentation (unused slots reserved for future tokens) and external fragmentation between variable-sized contiguous allocations, wasting 60–80% of KV-cache memory and starving the scheduler's continuous batching capacity. PagedAttention solves this by borrowing operating-system virtual memory paging: it partitions the KV cache into fixed-size non-contiguous physical KV blocks (e.g., 16 tokens per block) mapped via a per-sequence logical block table, allocating new physical blocks on-demand only as tokens are generated and reducing waste to under 4% (strictly bounded by the last partially filled block). When tuning vLLM on H100 GPUs for our multi-turn coding assistant—where turns shared a 12k-token repository context prefix—enabling Automatic Prefix Caching (APC) allowed requests with identical SHA-256 block hashes to share physical KV blocks zero-copy. The critical trade-off was block size selection: switching from 16-token to 64-token blocks sped up FlashAttention kernel throughput by 11% on prefill, but lowered cache hit rates at diverging user edits; 32-token blocks gave the optimal Pareto frontier, cutting Time-To-First-Token (TTFT) p95 by 58% and doubling concurrent request throughput."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "In LLM inference, the KV cache stores attention keys and values for previous tokens in GPU memory so they aren't recomputed at every decoding step. Traditional serving systems pre-allocated contiguous memory up to the maximum context length for each request, wasting most of GPU memory to internal and external fragmentation and limiting batch size. PagedAttention in vLLM fixes this by splitting the KV cache into small fixed-size blocks that can be stored non-contiguously in GPU memory and tracked with a block table, similar to OS virtual memory pages. On our H100 coding assistant cluster, we also enabled vLLM Automatic Prefix Caching so multi-turn prompts shared physical KV blocks for the static codebase prefix, doubling our serving throughput."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Deploying large language models efficiently in production at scale requires sophisticated GPU memory optimization and deep understanding of modern transformer inference architectures. As enterprise applications increasingly adopt generative AI and multi-turn conversational agents, managing GPU compute costs and minimizing token generation latency become top engineering priorities. When serving large foundation models with billions of parameters, memory bandwidth and VRAM capacity on NVIDIA hardware often become the primary system bottlenecks during high-concurrency traffic spikes. By leveraging state-of-the-art open-source inference engines like vLLM alongside advanced batching algorithms, quantization techniques, and hardware-accelerated attention kernels, AI engineering teams can dramatically improve hardware utilization. In our multi-turn coding assistant platform, optimizing the inference configuration and caching repetitive context allowed us to deliver a much snappier developer experience while significantly reducing our cloud GPU infrastructure spend."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "We just called the hosted API endpoint for our LLM features, so I haven't worked with GPU memory or vLLM directly."
+        }
+      ]
+    },
+    {
+      "case_id": "g16",
+      "role_context": "Mid-Level Android / Mobile Engineer — Media & Feed Performance",
+      "length_confound": false,
+      "question": {
+        "question": "Explain how Android's garbage collector handles generational heap memory and why allocating bitmap transformations inside `RecyclerView.onBindViewHolder` caused UI jank in your social media feed.",
+        "type": "technical_concept",
+        "difficulty": "easy",
+        "rationale": "Checks fundamental understanding of ART generational GC, allocation rates during 120Hz scroll frames, bitmap memory footprint, and practical fix grounded in their resume.",
+        "anchor": "eliminated scroll hitching in Kotlin feed RecyclerView by replacing onBindViewHolder bitmap allocations with Coil bitmap-pool pre-sizing"
+      },
+      "answers": [
+        {
+          "tier": 4,
+          "label": "excellent",
+          "text": "Android Runtime (ART) uses a concurrent copying generational garbage collector that divides the heap into a Young Generation (for newly allocated short-lived objects) and an Old/Large-Object Space. Most small objects die young and are reclaimed cheaply during minor GC sweeps, whereas large byte arrays and `Bitmap` pixel buffers exceeding the large-object threshold (typically 12KB) bypass the young nursery or trigger rapid heap footprint growth that forces frequent concurrent mark-compact cycles and short stop-the-world thread pauses. In our Kotlin social feed, `RecyclerView.onBindViewHolder` fires directly on the main UI thread every time a new card scrolls into the viewport—which on a 120Hz display leaves only 8.33ms per frame. The legacy code was instantiating a new `Canvas` and calling `Bitmap.createBitmap()` inside `onBindViewHolder` to apply rounded corners and aspect-ratio crops on each bound avatar and post image, allocating ~4MB of native/heap pixel buffers per fast fling. This spiked young/large-object GC throughput, stole CPU cores from the `RenderThread`, and caused 24ms frame hitches in Perfetto traces. I removed all allocation and transformation work from `onBindViewHolder` by configuring Coil with a shared `BitmapPool` (`inBitmap` reuse), downsampling images to exact view dimensions asynchronously on `Dispatchers.Default`, and delegating rounded corners to hardware-accelerated `ViewOutlineProvider` clipping on the GPU, dropping janky frames from 18% to 0.4%."
+        },
+        {
+          "tier": 3,
+          "label": "adequate",
+          "text": "Android's ART runtime uses a generational garbage collector where new objects are allocated in the young generation and large objects like bitmaps consume significant heap space. Because `RecyclerView.onBindViewHolder` runs on the main UI thread every time a row scrolls into view, creating new `Bitmap` objects for image cropping or rounded corners inside `onBindViewHolder` causes heavy memory churn during fast scrolling. This triggers frequent garbage collection pauses that block the main thread past the 16ms or 8ms frame deadline, resulting in visible scroll jank. In our Kotlin feed, I fixed this by offloading image decoding and sizing to background threads with Coil's bitmap pool reuse and using hardware view outlines for rounded corners."
+        },
+        {
+          "tier": 2,
+          "label": "weak",
+          "text": "Garbage collection in Android automatically frees up memory that is no longer being used by the app. If you create too many objects in `RecyclerView`, the app uses too much RAM and slows down or crashes with an `OutOfMemoryError`, so it is better to use an image loading library."
+        },
+        {
+          "tier": 1,
+          "label": "non_answer",
+          "text": "Since Kotlin manages memory automatically without manual `malloc` or `free`, you don't really need to worry about garbage collection."
+        }
+      ]
+    }
+  ]
+}

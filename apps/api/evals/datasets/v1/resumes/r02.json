@@ -1,0 +1,170 @@
+{
+  "resume_id": "r02",
+  "candidate": "Marcus Vance",
+  "contact": "marcus.vance@example.com · Austin, TX · linkedin.com/in/mvance-ds",
+  "role_family": "data_scientist",
+  "seniority": "mid",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r02-01",
+              "text": "Data Scientist with 4 years of experience in product experimentation, causal inference, demand forecasting, and executive decision analytics using Python and SQL."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Data Scientist, Growth & Experimentation | Hearthstone Home | 2023 – Present",
+          "items": [
+            {
+              "id": "r02-02",
+              "text": "Led design and analysis of 50+ controlled online A/B experiments across checkout and onboarding flows, implementing CUPED variance reduction, sequential testing, and automated guardrail metrics."
+            },
+            {
+              "id": "r02-03",
+              "text": "Estimated incremental lift of regional out-of-home and connected-TV campaigns where randomized trials were infeasible using Difference-in-Differences and Bayesian synthetic control, reallocating $3.8M in marketing budget."
+            },
+            {
+              "id": "r02-04",
+              "text": "Wrote complex analytical SQL and Python pipelines over 12TB of event clickstream data in GCP BigQuery to uncover activation funnel bottlenecks, lifting Day-30 buyer retention by 2.4 percentage points."
+            },
+            {
+              "id": "r02-05",
+              "text": "Developed batch customer propensity and LTV scoring models in Python (scikit-learn, statsmodels) refreshed weekly via Cloud Composer for CRM lifecycle email targeting."
+            },
+            {
+              "id": "r02-06",
+              "text": "Engineered 45 reusable behavioral features and canonical experiment exposure tables in dbt on GCP BigQuery, replacing 3,000+ lines of fragile ad-hoc scheduled queries."
+            },
+            {
+              "id": "r02-07",
+              "text": "Projected 52-week recurring billing renewals and seasonal churn trajectories using hierarchical ARIMA and Prophet state-space models, achieving 3.1% MAPE for quarterly finance planning."
+            },
+            {
+              "id": "r02-08",
+              "text": "Built an internal Python power-calculation and minimum detectable effect (MDE) simulator used by 15 product managers prior to A/B test launch."
+            },
+            {
+              "id": "r02-09",
+              "text": "Analyzed weekly paid search ad spend elasticity and diminishing returns across channels using Bayesian Marketing Mix Modeling (MMM)."
+            },
+            {
+              "id": "r02-10",
+              "text": "Onboarded and guided 2 associate data scientists on quasi-experimental methodology and peer-reviewed all study pre-registrations before launch."
+            },
+            {
+              "id": "r02-11",
+              "text": "Partnered with retail operations on seasonal inventory allocation across 600+ physical flagship stores and pop-up locations."
+            }
+          ]
+        },
+        {
+          "heading": "Data Scientist | Verve Subscription Box | 2021 – 2023",
+          "items": [
+            {
+              "id": "r02-12",
+              "text": "Applied propensity score nearest-neighbor matching and doubly robust estimation in Python to quantify the causal impact of loyalty rewards on unexposed cohorts."
+            },
+            {
+              "id": "r02-13",
+              "text": "Distilled open-ended merchandising inquiries into interactive Looker views and cohort explorer workbooks adopted by 40+ category managers."
+            },
+            {
+              "id": "r02-14",
+              "text": "Authored quarterly executive recommendations and briefed the VP of Product and CFO on pricing tier elasticity, driving a $6.5M annual margin expansion."
+            },
+            {
+              "id": "r02-15",
+              "text": "Applied Benjamini-Hochberg step-up adjustments across 24-metric launch scorecards to cap family-wise false positives below 5% during multi-arm checkout rollouts."
+            },
+            {
+              "id": "r02-16",
+              "text": "Detected a 51.8/48.2 treatment-control traffic skew caused by iOS background push token drops via automated chi-square ingestion checks, halting 4 corrupted rollouts before readout."
+            },
+            {
+              "id": "r02-17",
+              "text": "Reduced Looker executive dashboard query load time from 45s to 6s via pre-aggregated BigQuery materialized views and partition pruning."
+            },
+            {
+              "id": "r02-18",
+              "text": "Integrated third-party weather forecast APIs to annotate regional carrier delay anomalies in historical fulfillment tables."
+            },
+            {
+              "id": "r02-19",
+              "text": "Trained offline gradient-boosted classification trees (LightGBM) to flag high-risk subscription pause requests for retention outreach."
+            },
+            {
+              "id": "r02-20",
+              "text": "Audited stratified random sampling logic in annual customer NPS email surveys to correct for demographic non-response bias."
+            },
+            {
+              "id": "r02-21",
+              "text": "Observed 15+ qualitative usability lab sessions alongside UX researchers to test low-fidelity prototype wireframes."
+            },
+            {
+              "id": "r02-22",
+              "text": "Sparked a company-wide experimentation guild with biweekly paper readings and self-serve hypothesis templates."
+            },
+            {
+              "id": "r02-23",
+              "text": "Passed the Torch culture award to the incoming analytics guild lead at the annual company offsite."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Statistics & Economics | University of Michigan | 2017 – 2021",
+          "items": [
+            {
+              "id": "r02-24",
+              "text": "Minor in Behavioral Psychology (research thesis on operant conditioning and positive reinforcement schedules in consumer habit formation)."
+            },
+            {
+              "id": "r02-25",
+              "text": "Coursework: Econometrics, Applied Regression, Time-Series Analysis, Experimental Design, Probability Theory."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r02-26",
+              "text": "Experimentation & Causal Inference: A/B Testing, CUPED, Sequential Testing, Difference-in-Differences, Synthetic Control, Propensity Score Matching, Instrumental Variables"
+            },
+            {
+              "id": "r02-27",
+              "text": "Modeling & Forecasting: ARIMA, Prophet, State-Space Models, Linear/Logistic Regression, LightGBM, scikit-learn, statsmodels, PyMC"
+            },
+            {
+              "id": "r02-28",
+              "text": "Languages & BI: Python (pandas, NumPy, SciPy), SQL, R, Looker, Tableau"
+            },
+            {
+              "id": "r02-29",
+              "text": "Data Stack: GCP (BigQuery, Cloud Composer), dbt, Git, Jupyter"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

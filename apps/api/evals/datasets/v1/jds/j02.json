@@ -1,0 +1,129 @@
+{
+  "jd_id": "j02",
+  "title": "Data Scientist, Growth & Experimentation",
+  "company": "Canopy Subscriptions",
+  "text": "About Canopy Subscriptions\nCanopy Subscriptions is a direct-to-consumer wellness and household replenishment platform serving 4.5 million active members across North America. Data science sits at the center of our product, pricing, and lifecycle decisions—helping teams distinguish genuine member value from statistical noise.\n\nThe Role\nWe are seeking a Data Scientist for our Growth & Experimentation team. You will partner closely with Product, Growth Marketing, and Finance leaders to design high-velocity online experiments, estimate causal lift when randomized trials aren't possible, and forecast long-term subscriber demand.\n\nWhat You Will Do\n- Design, execute, and analyze online A/B tests across acquisition, checkout, and retention flows, applying CUPED variance reduction, power calculations, and sequential testing.\n- Apply quasi-experimental and causal inference methods (such as Difference-in-Differences, synthetic control, and propensity score matching) to measure marketing and pricing initiatives where randomized trials are infeasible.\n- Build time-series forecasting models for demand, revenue, and subscriber retention to guide quarterly capacity and financial planning.\n- Translate ambiguous business questions into self-serve dashboards and present actionable insights to non-technical executives.\n- Maintain canonical experiment exposure and metric tables in dbt on Google Cloud Platform.\n- Safeguard statistical rigor by controlling False Discovery Rate across multi-metric scorecards and diagnosing sample ratio mismatch (SRM) or telemetry bugs.\n\nRequirements (Must-Haves)\n- 3+ years of experience in data science or quantitative analytics using Python and SQL.\n- Deep expertise designing and analyzing online A/B tests, including power calculations, CUPED variance reduction, and sequential testing.\n- Hands-on experience with quasi-experimental and causal inference methods (Difference-in-Differences, synthetic control, or propensity score matching) when randomized trials are infeasible.\n- Experience building time-series forecasting models for demand, revenue, or subscriber retention.\n- Ability to translate ambiguous business questions into self-serve dashboards and present actionable insights to non-technical executives.\n- Proficiency querying cloud data warehouses on Google Cloud Platform and building modular analytical tables with dbt.\n- Statistical rigor in handling multiple hypothesis testing and controlling False Discovery Rate across multi-metric experiment scorecards.\n\nNice-to-Haves\n- Experience diagnosing sample ratio mismatch (SRM) and telemetry instrumentation bugs in experiment pipelines.\n- Track record of mentoring junior analysts and elevating experimentation culture across product teams.\n- Familiarity with contextual bandits, reinforcement learning, or Thompson sampling for dynamic traffic allocation.",
+  "pairs_with": ["r02"],
+  "requirements": [
+    {
+      "req_id": "j02-q01",
+      "text": "3+ years of experience in data science or quantitative analytics using Python and SQL",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-01": 2, "r02-04": 2, "r02-05": 2, "r02-28": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q02",
+      "text": "Deep expertise designing and analyzing online A/B tests, including power calculations, CUPED variance reduction, and sequential testing",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-02": 2, "r02-08": 2, "r02-26": 1},
+          "match_type": "lexical",
+          "distractors": ["r02-21"]
+        }
+      }
+    },
+    {
+      "req_id": "j02-q03",
+      "text": "Hands-on experience with quasi-experimental and causal inference methods (Difference-in-Differences, synthetic control, or propensity score matching) when randomized trials are infeasible",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-03": 2, "r02-12": 2, "r02-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q04",
+      "text": "Experience building time-series forecasting models for demand, revenue, or subscriber retention",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-07": 2, "r02-25": 1, "r02-27": 1},
+          "match_type": "paraphrase",
+          "distractors": ["r02-18"]
+        }
+      }
+    },
+    {
+      "req_id": "j02-q05",
+      "text": "Ability to translate ambiguous business questions into self-serve dashboards and present actionable insights to non-technical executives",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-13": 2, "r02-14": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r02-17"]
+        }
+      }
+    },
+    {
+      "req_id": "j02-q06",
+      "text": "Proficiency querying cloud data warehouses on Google Cloud Platform and building modular analytical tables with dbt",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-04": 1, "r02-06": 2, "r02-29": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q07",
+      "text": "Statistical rigor in handling multiple hypothesis testing and controlling False Discovery Rate across multi-metric experiment scorecards",
+      "priority": "must",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-15": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q08",
+      "text": "Experience diagnosing sample ratio mismatch (SRM) and telemetry instrumentation bugs in experiment pipelines",
+      "priority": "nice",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-16": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q09",
+      "text": "Track record of mentoring junior analysts and elevating experimentation culture across product teams",
+      "priority": "nice",
+      "judgments": {
+        "r02": {
+          "relevant": {"r02-10": 2, "r02-22": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j02-q10",
+      "text": "Familiarity with contextual bandits, reinforcement learning, or Thompson sampling for dynamic traffic allocation",
+      "priority": "nice",
+      "judgments": {
+        "r02": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r02-20", "r02-24"]
+        }
+      }
+    }
+  ]
+}

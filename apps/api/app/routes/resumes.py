@@ -1,5 +1,5 @@
 """
-Resume endpoints: upload, list, retrieve.
+Resume endpoints: upload, list, retrieve, and multi-strategy RAG search.
 
 All routes require a valid access token. Handlers stay thin — file I/O and
 queries live in app.services.resume_service.
@@ -26,6 +26,7 @@ from app.db.session import get_db
 from app.models.resume import ParseStatus, Resume
 from app.models.user import User
 from app.schemas.resume import ResumeChunkMatch, ResumeListItem, ResumeRead
+from app.services.retrieval_service import VALID_STRATEGIES
 from app.services.resume_service import (
     get_resume_by_id,
     list_resumes_for_user,
@@ -98,9 +99,16 @@ async def search_resume(
     resume_id: uuid.UUID,
     q: str = Query(..., min_length=1, max_length=500),
     top_k: int = Query(5, ge=1, le=20),
+    strategy: str = Query("hybrid_rerank"),
+    use_mmr: bool = Query(False),
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[dict]:
+    if strategy not in VALID_STRATEGIES:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unknown strategy '{strategy}'. Choose from {sorted(VALID_STRATEGIES)}",
+        )
     resume = await get_resume_by_id(db, resume_id, current_user.id)
     if resume is None:
         raise HTTPException(status_code=404, detail="Resume not found")
@@ -109,4 +117,12 @@ async def search_resume(
             status_code=status.HTTP_409_CONFLICT,
             detail=f"Resume is not yet processed (status: {resume.parse_status.value})",
         )
-    return await search_chunks(db, resume_id, current_user.id, q, top_k)
+    return await search_chunks(
+        db,
+        resume_id,
+        current_user.id,
+        q,
+        top_k,
+        strategy=strategy,  # type: ignore[arg-type]
+        use_mmr=use_mmr,
+    )

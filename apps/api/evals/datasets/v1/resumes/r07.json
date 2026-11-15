@@ -1,0 +1,186 @@
+{
+  "resume_id": "r07",
+  "candidate": "Mateo Lindqvist",
+  "contact": "mateo.lindqvist@example.com · Austin, TX · github.com/mlindqvist",
+  "role_family": "llm_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r07-01",
+              "text": "Senior Applied NLP & LLM Engineer with 6 years of experience shipping retrieval-augmented generation (RAG) systems, domain-adapted language models, and automated evaluation suites in Python."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Applied AI Engineer | Briarwood Support Cloud | 2022 – Present",
+          "items": [
+            {
+              "id": "r07-02",
+              "text": "Architected a multi-tenant retrieval-augmented generation (RAG) pipeline in Python (FastAPI, AsyncIO) serving 140k daily customer-support queries across 85 enterprise tenants with 99.9% uptime."
+            },
+            {
+              "id": "r07-03",
+              "text": "Migrated 18M embedded knowledge-base passages from Pinecone to self-hosted Qdrant with scalar quantization and custom HNSW parameters, cutting p95 vector retrieval latency from 92ms to 24ms and saving $4.2k/month."
+            },
+            {
+              "id": "r07-04",
+              "text": "Fine-tuned Llama-3-8B and Mistral-7B checkpoints using QLoRA and DoRA adapters on 4x A100 GPUs to specialize in insurance policy summarization, matching GPT-4 win-rates at 6x lower per-token cost."
+            },
+            {
+              "id": "r07-05",
+              "text": "Built a nightly LLM-as-a-judge grading harness verifying groundedness, factual attribution, and unsupported claim rates across 2,400 golden test cases, automatically blocking releases when quality thresholds regressed."
+            },
+            {
+              "id": "r07-06",
+              "text": "Implemented hybrid semantic search combining SPLADE sparse lexical expansion, dense BGE-large embeddings, and cross-encoder reranking, boosting top-5 recall by 19 percentage points on long-tail acronym queries."
+            },
+            {
+              "id": "r07-07",
+              "text": "Engineered system prompts, constrained decoding with Pydantic JSON schemas, and function-calling routers to orchestrate multi-step billing resolution tools, raising autonomous resolution from 61% to 84%."
+            },
+            {
+              "id": "r07-08",
+              "text": "Cached external CRM REST API responses in Redis with a 15-minute TTL and speculative prefetching of customer account metadata to trim end-to-end webhook latency."
+            },
+            {
+              "id": "r07-09",
+              "text": "Curated, filtered, and deduplicated 45B tokens of domain support transcripts using MinHashLSH and Ray Data on GKE spot node pools."
+            },
+            {
+              "id": "r07-10",
+              "text": "Deployed pre-inference input sanitizers to block jailbreak attempts and regex+Presidio NER scrubbers to strip customer SSNs, payment card numbers, and medical identifiers prior to model invocation."
+            },
+            {
+              "id": "r07-11",
+              "text": "Generated synthetic adversarial question-answering sets from policy change logs to stress-test citation grounding before production model swaps."
+            },
+            {
+              "id": "r07-12",
+              "text": "Embedded with claims adjusters and underwriting leads for three weeks to shadow manual policy reviews, turning their decision heuristics into an automated clause-extraction copilot adopted by 320 adjusters."
+            },
+            {
+              "id": "r07-13",
+              "text": "Mentored 3 mid-level ML engineers on embedding model selection, chunking strategies, and on-call incident runbooks."
+            }
+          ]
+        },
+        {
+          "heading": "NLP Engineer | Crestline Legal Analytics | 2019 – 2022",
+          "items": [
+            {
+              "id": "r07-14",
+              "text": "Trained RoBERTa and DeBERTa sequence classifiers in PyTorch to extract indemnification, governing-law, and termination clauses from commercial contracts with 0.91 macro-F1."
+            },
+            {
+              "id": "r07-15",
+              "text": "Led on-call incident rotations and delivered prompt triage of customer escalations during quarterly filing traffic spikes."
+            },
+            {
+              "id": "r07-16",
+              "text": "Trained linear Support Vector Machine (SVM) and TF-IDF baselines in scikit-learn to benchmark legacy document routing taxonomies."
+            },
+            {
+              "id": "r07-17",
+              "text": "Authored the 2022 technical vision document laying out the team's migration roadmap from rule-based regex parsers to transformer encoders."
+            },
+            {
+              "id": "r07-18",
+              "text": "Built an active-learning annotation queue in Prodigy and PostgreSQL (pgvector prototype) that cut paralegal labeling hours by 35%."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "PromptForge-CLI (Open Source)",
+          "items": [
+            {
+              "id": "r07-19",
+              "text": "Created a Python CLI for versioning Jinja2 prompt templates, running A/B prompt evaluations against OpenAI and Anthropic APIs, and exporting cost/latency diffs (650+ GitHub stars)."
+            },
+            {
+              "id": "r07-20",
+              "text": "Added JSON Schema validation and retry-with-error-feedback loops for malformed tool-call outputs."
+            }
+          ]
+        },
+        {
+          "heading": "Community & Volunteering",
+          "items": [
+            {
+              "id": "r07-21",
+              "text": "Co-organizer of the Austin Applied NLP Meetup; hosted monthly paper reading groups on retrieval and alignment."
+            },
+            {
+              "id": "r07-22",
+              "text": "Volunteered with the Texas Open Weightlifting Foundation to modernize their regional tournament scoring spreadsheets and live leaderboard."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "M.S. in Computer Science (Computational Linguistics) | University of Texas at Austin | 2019",
+          "items": [
+            {
+              "id": "r07-23",
+              "text": "Graduate coursework in Statistical Natural Language Processing, Deep Learning, Information Retrieval, and Convex Optimization."
+            },
+            {
+              "id": "r07-24",
+              "text": "Master's report on cross-lingual entity linking in low-resource news corpora."
+            }
+          ]
+        },
+        {
+          "heading": "B.S. in Computer Science | Rice University | 2017",
+          "items": [
+            {
+              "id": "r07-25",
+              "text": "Graduated cum laude; undergraduate researcher in text mining."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r07-26",
+              "text": "Languages & Core: Python, SQL, Bash, FastAPI, Pydantic, AsyncIO, PyTorch, Hugging Face Transformers, Ray"
+            },
+            {
+              "id": "r07-27",
+              "text": "LLM & Retrieval: RAG, Qdrant, Pinecone, pgvector, BM25, SPLADE, PEFT (LoRA, QLoRA, DoRA), Presidio, LangSmith"
+            },
+            {
+              "id": "r07-28",
+              "text": "Infrastructure: Docker, GKE, AWS (S3, Bedrock, EC2), Redis, PostgreSQL, GitHub Actions"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

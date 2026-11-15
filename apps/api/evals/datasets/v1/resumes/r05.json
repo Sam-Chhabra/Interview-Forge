@@ -1,0 +1,162 @@
+{
+  "resume_id": "r05",
+  "candidate": "Elena Rostova",
+  "contact": "elena.rostova@example.com · Denver, CO · github.com/erostova-sre",
+  "role_family": "sre_platform",
+  "seniority": "staff",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r05-01",
+              "text": "Staff Site Reliability & Platform Engineer with 8+ years of experience operating multi-cluster k8s infrastructure, cloud automation, observability stacks, and high-availability production systems."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Staff Site Reliability Engineer | Stratos Cloud Platform | 2021 – Present",
+          "items": [
+            {
+              "id": "r05-02",
+              "text": "Architected and operated 14 production k8s clusters (EKS and GKE) spanning 2,400+ compute nodes and 350 microservices at 99.99% control-plane availability."
+            },
+            {
+              "id": "r05-03",
+              "text": "Automated zero-downtime k8s control-plane upgrades, blue/green node-group cordoning, and PodDisruptionBudget validation across all environments."
+            },
+            {
+              "id": "r05-04",
+              "text": "Provisioned multi-account AWS and GCP landing zones using modular TF and Terragrunt with Atlantis pull-request workflows and OPA policy guardrails."
+            },
+            {
+              "id": "r05-05",
+              "text": "Built a unified observability platform with Prometheus, Thanos, Grafana, and OpenTelemetry distributed tracing ingesting 1.2M active time-series across 90 microservices."
+            },
+            {
+              "id": "r05-06",
+              "text": "Authored custom k8s operators in Go (controller-runtime) and self-serve platform CLI tools in Python to automate namespace bootstrapping and RDS credential rotation."
+            },
+            {
+              "id": "r05-07",
+              "text": "Negotiated 99.95% availability targets and p99 latency thresholds with 12 product squads, automatically freezing non-emergency deploys when 30-day burn rates exceeded 25% of allowable downtime."
+            },
+            {
+              "id": "r05-08",
+              "text": "Directed live mitigation war rooms for SEV-1 outages as primary incident commander and instituted no-fault retrospective reviews that cut repeat pages by 62% over 12 months."
+            },
+            {
+              "id": "r05-09",
+              "text": "Engineered cross-region traffic shifting between us-east-1 and us-west-2 with automated Route53 health checks and ran monthly fault-injection drills terminating production AZ nodes, validating sub-90s RPO/RTO."
+            },
+            {
+              "id": "r05-10",
+              "text": "Rolled out Cilium CNI with eBPF kube-proxy replacement and Istio mTLS across 600+ nodes, enforcing zero-trust service-to-service traffic policies."
+            },
+            {
+              "id": "r05-11",
+              "text": "Trimmed annual cloud infrastructure bill by $1.1M (28%) by migrating stateless worker pools to Karpenter-managed preemptible EC2 capacity and purchasing 3-year Compute Savings Plans."
+            }
+          ]
+        },
+        {
+          "heading": "Senior Platform Engineer | CloudVault Security | 2018 – 2021",
+          "items": [
+            {
+              "id": "r05-12",
+              "text": "Migrated 800+ legacy console-created cloud resources into version-controlled TF state with automated drift detection running every 4 hours."
+            },
+            {
+              "id": "r05-13",
+              "text": "Designed GitOps continuous delivery pipelines using ArgoCD and Helm charts, reducing mean time to rollback failed production releases from 22 minutes to 45 seconds."
+            },
+            {
+              "id": "r05-14",
+              "text": "Hardened container runtime security with Falco syscall monitoring, read-only root filesystems, and HashiCorp Vault dynamic secret injection."
+            },
+            {
+              "id": "r05-15",
+              "text": "Replaced self-managed Elasticsearch log clusters with Grafana Loki backed by S3 object storage, cutting log storage expenditure by 54%."
+            },
+            {
+              "id": "r05-16",
+              "text": "Mentored 5 senior and mid-level infrastructure engineers and authored the engineering-wide production readiness checklist required for tier-1 service launches."
+            },
+            {
+              "id": "r05-17",
+              "text": "Eliminated noisy alert fatigue by consolidating 180 threshold-based Nagios checks into symptom-based multi-window Prometheus alerting rules."
+            },
+            {
+              "id": "r05-18",
+              "text": "Built an internal Slack bot in Python to notify engineering managers when quarterly security training compliance budgets were exhausted."
+            },
+            {
+              "id": "r05-19",
+              "text": "Tuned Linux sysctl kernel parameters (net.core.somaxconn, tcp_tw_reuse) on cloud VM base images to prevent ephemeral port exhaustion under load."
+            },
+            {
+              "id": "r05-20",
+              "text": "Conducted peer-to-peer architecture reviews with application security and compliance teams prior to SOC 2 Type II audits."
+            },
+            {
+              "id": "r05-21",
+              "text": "Collaborated with the enterprise analytics group to evaluate domain-oriented data mesh ownership boundaries in Snowflake."
+            },
+            {
+              "id": "r05-22",
+              "text": "Configured temporary office Wi-Fi Ubiquiti access points and conference room VLANs during headquarters relocation."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Computer Science | University of Colorado Boulder | 2014 – 2018",
+          "items": [
+            {
+              "id": "r05-23",
+              "text": "Coursework: Operating Systems, Computer Networks, Distributed Systems, Linux System Administration."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r05-24",
+              "text": "Orchestration & Cloud: k8s (EKS, GKE), Docker, containerd, Helm, ArgoCD, Karpenter, AWS, GCP"
+            },
+            {
+              "id": "r05-25",
+              "text": "IaC & Networking: TF (Terragrunt, Atlantis), OPA, Cilium (eBPF), Istio Service Mesh, Envoy, Route53"
+            },
+            {
+              "id": "r05-26",
+              "text": "Observability & Security: Prometheus, Thanos, Grafana, Loki, OpenTelemetry, PagerDuty, HashiCorp Vault, Falco"
+            },
+            {
+              "id": "r05-27",
+              "text": "Languages: Go (Golang), Python, Bash, HCL, YAML"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

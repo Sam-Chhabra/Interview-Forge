@@ -1,0 +1,129 @@
+{
+  "jd_id": "j06",
+  "title": "Senior Data Engineer, Lakehouse & Core Data Platform",
+  "company": "Keystone Supply Network",
+  "text": "About Keystone Supply Network\nKeystone Supply Network connects manufacturers, freight carriers, and distribution centers across 40 countries with real-time supply-chain visibility and predictive inventory analytics. Our data platform ingests billions of operational events every day to power customer-facing telemetry, financial reporting, and machine learning.\n\nThe Role\nWe are looking for a Senior Data Engineer to join our Lakehouse & Core Data Platform team. You will architect distributed batch and streaming pipelines, model mission-critical dimensional tables in Snowflake and dbt, and ensure high data reliability across petabyte-scale datasets.\n\nWhat You Will Do\n- Build and scale distributed batch and streaming ETL pipelines in Python, Scala, and Apache Spark.\n- Orchestrate complex production DAGs, SLAs, and historical backfill workflows with Apache Airflow.\n- Design dimensional data warehouse models (Kimball star schemas, Slowly Changing Dimensions) using modular transformations in dbt and Snowflake.\n- Build real-time Change Data Capture replication pipelines from operational relational databases into our streaming lakehouse.\n- Diagnose and resolve data skew, shuffle spill, and Out-Of-Memory bottlenecks in petabyte-scale lakehouse jobs.\n- Implement automated data quality testing, schema contract enforcement, and upstream/downstream lineage tracking.\n- Optimize cloud data warehouse compute costs and table clustering while mentoring mid-level data engineers.\n\nRequirements (Must-Haves)\n- 5+ years of data engineering experience building distributed batch and streaming ETL pipelines in Python, Scala, and Apache Spark.\n- Hands-on experience orchestrating production DAGs, SLAs, and backfill workflows with Apache Airflow.\n- Deep expertise in dimensional data warehouse modeling (Kimball star schemas, Slowly Changing Dimensions) using dbt and Snowflake.\n- Experience building real-time Change Data Capture replication pipelines from operational relational databases.\n- Proven ability to diagnose and resolve data skew, shuffle spill, and Out-Of-Memory bottlenecks in petabyte-scale lakehouse jobs.\n- Experience implementing automated data quality testing, schema contract enforcement, and lineage tracking.\n\nNice-to-Haves\n- Track record of optimizing cloud data warehouse compute costs, table clustering, and storage footprint.\n- Experience mentoring mid-level data engineers and partnering with analytics and ML teams on data governance standards.\n- Hands-on experience with stateful stream processing in Apache Flink (RocksDB state backends, event-time watermarking).\n- Experience administering enterprise BI semantic layers in LookML or Microsoft Power BI DAX.",
+  "pairs_with": ["r06"],
+  "requirements": [
+    {
+      "req_id": "j06-q01",
+      "text": "5+ years of data engineering experience building distributed batch and streaming ETL pipelines in Python, Scala, and Apache Spark",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-01": 2, "r06-02": 2, "r06-11": 2, "r06-14": 2, "r06-23": 1, "r06-24": 1},
+          "match_type": "lexical",
+          "distractors": ["r06-20"]
+        }
+      }
+    },
+    {
+      "req_id": "j06-q02",
+      "text": "Hands-on experience orchestrating production DAGs, SLAs, and backfill workflows with Apache Airflow",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-03": 2, "r06-15": 2, "r06-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r06-19"]
+        }
+      }
+    },
+    {
+      "req_id": "j06-q03",
+      "text": "Deep expertise in dimensional data warehouse modeling (Kimball star schemas, Slowly Changing Dimensions) using dbt and Snowflake",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-04": 2, "r06-12": 1, "r06-25": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j06-q04",
+      "text": "Experience building real-time Change Data Capture replication pipelines from operational relational databases",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-05": 2, "r06-24": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j06-q05",
+      "text": "Proven ability to diagnose and resolve data skew, shuffle spill, and Out-Of-Memory bottlenecks in petabyte-scale lakehouse jobs",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-06": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j06-q06",
+      "text": "Experience implementing automated data quality testing, schema contract enforcement, and lineage tracking",
+      "priority": "must",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-07": 2, "r06-25": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j06-q07",
+      "text": "Track record of optimizing cloud data warehouse compute costs, table clustering, and storage footprint",
+      "priority": "nice",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-08": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j06-q08",
+      "text": "Experience mentoring mid-level data engineers and partnering with analytics and ML teams on data governance standards",
+      "priority": "nice",
+      "judgments": {
+        "r06": {
+          "relevant": {"r06-09": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r06-20"]
+        }
+      }
+    },
+    {
+      "req_id": "j06-q09",
+      "text": "Hands-on experience with stateful stream processing in Apache Flink (RocksDB state backends, event-time watermarking)",
+      "priority": "nice",
+      "judgments": {
+        "r06": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r06-17", "r06-18"]
+        }
+      }
+    },
+    {
+      "req_id": "j06-q10",
+      "text": "Experience administering enterprise BI semantic layers in LookML or Microsoft Power BI DAX",
+      "priority": "nice",
+      "judgments": {
+        "r06": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r06-16"]
+        }
+      }
+    }
+  ]
+}

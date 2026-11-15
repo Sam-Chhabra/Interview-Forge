@@ -1,0 +1,129 @@
+{
+  "jd_id": "j11",
+  "title": "Senior Product Data Analyst, Growth & Subscriptions",
+  "company": "Hearthstone Home Subscriptions",
+  "text": "Hearthstone Home Subscriptions powers recurring home-maintenance deliveries, water-filtration refills, and smart-home protection memberships for over 900,000 households nationwide. Data sits at the center of how we price plans, streamline our mobile and web checkout funnels, and keep subscribers engaged year after year.\n\nWe are seeking a Senior Product Data Analyst to partner with our Growth and Core Subscription product squads in Chicago or remote. You will own end-to-end experimentation, funnel diagnostics, governed BI reporting, and warehouse data modeling—turning raw clickstream, fulfillment, and recurring billing events into high-conviction product decisions.\n\nResponsibilities:\n- Write complex SQL (CTEs, window functions, cohort retention queries) on cloud data warehouses (Snowflake or BigQuery) to uncover acquisition, activation, and long-term retention drivers.\n- Build and maintain self-serve executive dashboards and governed semantic data models in Looker (LookML) or Tableau.\n- Design, size, and analyze A/B experiments, including statistical power calculations, guardrail metrics, and variance reduction techniques.\n- Build modular warehouse transformation DAGs, automated schema tests, and lineage documentation using data build tool.\n- Diagnose user acquisition, onboarding, and checkout conversion funnels in Amplitude or Mixpanel to uncover high-leverage growth opportunities.\n- Use Python or R to automate recurring anomaly reporting, variance decomposition, and deep-dive statistical analysis.\n- Establish data governance, standardized metric definitions, and reliable event instrumentation across client and server surfaces.\n- Translate complex analytical findings into clear executive readouts and partner with PMs, designers, and engineers to shape quarterly product roadmaps.\n\nNice to Have:\n- Experience with marketing mix modeling (MMM), multi-touch attribution (MTA), or geo-lift incrementality testing.\n- Experience orchestrating production data pipelines with Apache Airflow, Dagster, or Prefect and processing large datasets in Apache Spark.",
+  "pairs_with": ["r11"],
+  "requirements": [
+    {
+      "req_id": "j11-q01",
+      "text": "3+ years in product analytics writing complex SQL (CTEs, window functions, cohort retention queries) on cloud data warehouses (Snowflake or BigQuery)",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-01": 1, "r11-02": 2, "r11-24": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q02",
+      "text": "Building and maintaining self-serve executive dashboards and semantic data models in Looker (LookML) or Tableau",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-04": 2, "r11-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r11-20"]
+        }
+      }
+    },
+    {
+      "req_id": "j11-q03",
+      "text": "Designing, sizing, and analyzing A/B experiments, including statistical power calculations, guardrail metrics, and variance reduction",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-03": 2, "r11-21": 1, "r11-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q04",
+      "text": "Building modular warehouse transformation DAGs, automated schema tests, and documentation using data build tool",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-06": 2, "r11-12": 1, "r11-24": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q05",
+      "text": "Diagnosing user acquisition, onboarding, and checkout conversion funnels to uncover high-leverage growth opportunities",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-05": 2, "r11-13": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q06",
+      "text": "Using Python or R to automate recurring anomaly reporting, variance decomposition, and statistical analysis",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-09": 2, "r11-26": 1},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q07",
+      "text": "Establishing data governance, standardized metric definitions, and reliable event instrumentation across client and server surfaces",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-07": 2, "r11-19": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q08",
+      "text": "Translating complex analytical findings into clear executive readouts and partnering with PMs, designers, and engineers to shape product roadmaps",
+      "priority": "must",
+      "judgments": {
+        "r11": {
+          "relevant": {"r11-08": 2, "r11-11": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j11-q09",
+      "text": "Experience with marketing mix modeling (MMM), multi-touch attribution (MTA), or geo-lift incrementality testing",
+      "priority": "nice",
+      "judgments": {
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-13", "r11-17"]
+        }
+      }
+    },
+    {
+      "req_id": "j11-q10",
+      "text": "Orchestrating production data pipelines with Apache Airflow, Dagster, or Prefect and processing large datasets in Apache Spark",
+      "priority": "nice",
+      "judgments": {
+        "r11": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r11-10", "r11-18"]
+        }
+      }
+    }
+  ]
+}

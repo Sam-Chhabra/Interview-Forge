@@ -1,0 +1,179 @@
+{
+  "jd_id": "j05",
+  "title": "Staff Site Reliability & Platform Engineer",
+  "company": "Nimbus Cloud Systems",
+  "text": "About Nimbus Cloud Systems\nNimbus Cloud Systems provides mission-critical developer workflow and deployment infrastructure for over 6,000 enterprise engineering organizations. Our platform teams run multi-region compute fleets where reliability, security, and developer velocity reinforce one another.\n\nThe Role\nWe are seeking a Staff Site Reliability & Platform Engineer to lead our Core Compute & Reliability architecture. You will own our multi-cluster container orchestration platform, multi-account cloud provisioning, observability stack, and incident management practices across global regions.\n\nWhat You Will Do\n- Architect and operate production multi-cluster Kubernetes environments supporting hundreds of microservices at four-nines availability.\n- Evolve modular Infrastructure as Code using HashiCorp Terraform across Amazon Web Services and Google Cloud Platform.\n- Build and scale unified observability stacks with Prometheus, Grafana, and OpenTelemetry distributed tracing.\n- Write custom operators, controllers, and platform CLI automation tools in Go and Python.\n- Partner with product engineering leadership to define SLIs, SLOs, and error budgets that govern release velocity and platform reliability.\n- Lead 24/7 on-call incident response for high-severity outages and champion a blameless postmortem culture.\n- Design multi-region disaster recovery, active-active failover, and regular chaos engineering game days.\n\nRequirements (Must-Haves)\n- 6+ years in Site Reliability or Platform Engineering operating multi-cluster Kubernetes in production.\n- Deep expertise in Infrastructure as Code using HashiCorp Terraform across Amazon Web Services and Google Cloud Platform.\n- Hands-on experience building and operating observability stacks with Prometheus, Grafana, and OpenTelemetry distributed tracing.\n- Proficiency in Go or Python for building custom operators, controllers, or platform CLI automation tools.\n- Experience defining SLIs, SLOs, and error budgets to govern release velocity and platform reliability.\n- Track record of leading 24/7 on-call incident response and driving a blameless postmortem culture.\n- Experience designing multi-region disaster recovery, active-active failover, and chaos engineering game days.\n\nNice-to-Haves\n- Experience with service mesh and eBPF networking using Istio or Cilium for mTLS and zero-trust traffic policies.\n- Proven impact in cloud FinOps cost optimization, Spot instance fleet management, and Reserved capacity planning.\n- Experience operating bare-metal data centers, BGP/ASN peering, and hardware kernel bypass (DPDK/SR-IOV).",
+  "pairs_with": ["r05", "r03"],
+  "requirements": [
+    {
+      "req_id": "j05-q01",
+      "text": "6+ years in Site Reliability or Platform Engineering operating multi-cluster Kubernetes in production",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-01": 2, "r05-02": 2, "r05-03": 2, "r05-24": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r03": {
+          "relevant": {"r03-08": 1, "r03-27": 1},
+          "match_type": "abbreviation",
+          "distractors": ["r03-22"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q02",
+      "text": "Deep expertise in Infrastructure as Code using HashiCorp Terraform across Amazon Web Services and Google Cloud Platform",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-04": 2, "r05-12": 2, "r05-25": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r03-22"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q03",
+      "text": "Hands-on experience building and operating observability stacks with Prometheus, Grafana, and OpenTelemetry distributed tracing",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-05": 2, "r05-17": 2, "r05-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        },
+        "r03": {
+          "relevant": {"r03-14": 1, "r03-27": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j05-q04",
+      "text": "Proficiency in Go or Python for building custom operators, controllers, or platform CLI automation tools",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-06": 2, "r05-27": 1},
+          "match_type": "lexical",
+          "distractors": ["r05-18"]
+        },
+        "r03": {
+          "relevant": {"r03-02": 1, "r03-15": 2, "r03-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r03-18"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q05",
+      "text": "Experience defining SLIs, SLOs, and error budgets to govern release velocity and platform reliability",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-07": 2},
+          "match_type": "implicit",
+          "distractors": ["r05-18"]
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j05-q06",
+      "text": "Track record of leading 24/7 on-call incident response and driving a blameless postmortem culture",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-08": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        },
+        "r03": {
+          "relevant": {"r03-09": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j05-q07",
+      "text": "Experience designing multi-region disaster recovery, active-active failover, and chaos engineering game days",
+      "priority": "must",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-09": 2},
+          "match_type": "implicit",
+          "distractors": []
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r03-16"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q08",
+      "text": "Experience with service mesh and eBPF networking using Istio or Cilium for mTLS and zero-trust traffic policies",
+      "priority": "nice",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-10": 2, "r05-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r05-21"]
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r03-17"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q09",
+      "text": "Proven impact in cloud FinOps cost optimization, Spot instance fleet management, and Reserved capacity planning",
+      "priority": "nice",
+      "judgments": {
+        "r05": {
+          "relevant": {"r05-11": 2, "r05-15": 1},
+          "match_type": "paraphrase",
+          "distractors": ["r05-18"]
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r03-23"]
+        }
+      }
+    },
+    {
+      "req_id": "j05-q10",
+      "text": "Experience operating bare-metal data centers, BGP/ASN peering, and hardware kernel bypass (DPDK/SR-IOV)",
+      "priority": "nice",
+      "judgments": {
+        "r05": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r05-19", "r05-20", "r05-22"]
+        },
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": []
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,154 @@
+{
+  "resume_id": "r06",
+  "candidate": "Tariq Al-Mansoor",
+  "contact": "tariq.almansoor@example.com · New York, NY · github.com/talmansoor-de",
+  "role_family": "data_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r06-01",
+              "text": "Senior Data Engineer with 6.5 years of experience architecting distributed batch and streaming ETL pipelines, lakehouse tables, and dimensional data warehouses using Python, Scala, Apache Spark, Airflow, and dbt."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Data Engineer | Crestline Logistics & Freight | 2021 – Present",
+          "items": [
+            {
+              "id": "r06-02",
+              "text": "Designed and operated distributed batch and micro-batch streaming ETL pipelines in Python, Scala, and Apache Spark (Databricks / Delta Lake) processing 9TB of daily shipment telemetry."
+            },
+            {
+              "id": "r06-03",
+              "text": "Architected and maintained 160+ production DAGs in Apache Airflow with KubernetesPodOperators, SLA miss callbacks, and idempotent historical backfill workflows."
+            },
+            {
+              "id": "r06-04",
+              "text": "Modeled core enterprise finance and supply-chain Kimball star schemas (Type-2 Slowly Changing Dimensions and conformed fact tables) in Snowflake using modular dbt transformations."
+            },
+            {
+              "id": "r06-05",
+              "text": "Streamed row-level binlog events from 24 production MySQL and Postgres shards into Kafka using Debezium CDC connectors with sub-5-second warehouse landing latency."
+            },
+            {
+              "id": "r06-06",
+              "text": "Salted hot merchant partition keys, broadcast 40MB lookup dimensions, and enabled Adaptive Query Execution (AQE) across a 1.8PB clickstream join, eliminating executor container kills and cutting runtime from 4.2 hours to 38 minutes."
+            },
+            {
+              "id": "r06-07",
+              "text": "Embedded Great Expectations null/uniqueness assertions and OpenLineage upstream impact graphs into every staging-to-mart promotion gate, blocking 28 malformed vendor payloads before they reached executive dashboards."
+            },
+            {
+              "id": "r06-08",
+              "text": "Cut monthly Snowflake credit consumption by 34% ($29K/mo) by right-sizing virtual warehouse auto-suspend timers, pruning unused staging clones, and re-clustering multi-billion-row order tables on event date."
+            },
+            {
+              "id": "r06-09",
+              "text": "Coached 3 mid-level data engineers through architectural reviews and co-authored the company's canonical naming and table ownership handbook with BI and data science leads."
+            },
+            {
+              "id": "r06-10",
+              "text": "Migrated 400+ legacy S3 Parquet tables to Apache Iceberg with hidden partitioning and snapshot time-travel, enabling GDPR right-to-be-forgotten deletes without full table rewrites."
+            }
+          ]
+        },
+        {
+          "heading": "Data Engineer | Northstar Retail Analytics | 2018 – 2021",
+          "items": [
+            {
+              "id": "r06-11",
+              "text": "Built daily point-of-sale ingestion and inventory reconciliation pipelines in PySpark and Scala Spark on AWS EMR across 1,400 retail locations."
+            },
+            {
+              "id": "r06-12",
+              "text": "Automated dbt Cloud CI jobs on GitHub pull requests using slim state comparison (state:modified+) to validate schema changes against zero-copy Snowflake dev clones."
+            },
+            {
+              "id": "r06-13",
+              "text": "Implemented PII column masking policies and role-based access control (RBAC) in Snowflake for CCPA and HIPAA compliance audits."
+            },
+            {
+              "id": "r06-14",
+              "text": "Constructed a Spark Structured Streaming pipeline consuming Kafka point-of-sale topics to update regional stockout alerts every 60 seconds."
+            },
+            {
+              "id": "r06-15",
+              "text": "Replaced fragile cron shell scripts on EC2 with version-controlled Airflow DAGs and PagerDuty failure alerts, improving daily 8 AM warehouse SLA attainment from 84% to 99.4%."
+            },
+            {
+              "id": "r06-16",
+              "text": "Maintained warehouse service-account read grants and network allowlists for downstream Looker and Power BI analyst groups."
+            },
+            {
+              "id": "r06-17",
+              "text": "Applied digital watermark metadata tags to exported PDF vendor invoices for accounts-payable compliance archival."
+            },
+            {
+              "id": "r06-18",
+              "text": "Evaluated Apache Flink vs Spark Structured Streaming in a 3-page architecture RFC (team standardized on Spark Structured Streaming; Flink was not adopted)."
+            },
+            {
+              "id": "r06-19",
+              "text": "Coordinated with server room facilities to balance cold-aisle HVAC airflow across legacy on-prem racks prior to AWS cloud migration."
+            },
+            {
+              "id": "r06-20",
+              "text": "Sparked a quarterly cross-team data literacy brown-bag series for 50+ commercial operations analysts."
+            },
+            {
+              "id": "r06-21",
+              "text": "Wrote Python scripts to parse EDIFACT and X12 supply-chain flat files from maritime freight carriers into staging S3 buckets."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Computer Science | Rutgers University | 2014 – 2018",
+          "items": [
+            {
+              "id": "r06-22",
+              "text": "Coursework: Database Systems, Distributed Computing, Algorithms, Data Structures."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r06-23",
+              "text": "Languages: Python, Scala, SQL, Bash"
+            },
+            {
+              "id": "r06-24",
+              "text": "Big Data & Streaming: Apache Spark (PySpark, Spark SQL, Structured Streaming), Databricks, Delta Lake, Apache Iceberg, Kafka, Debezium (CDC)"
+            },
+            {
+              "id": "r06-25",
+              "text": "Orchestration, Warehouse & Quality: Apache Airflow, dbt, Snowflake, AWS (EMR, S3, Glue), Great Expectations, OpenLineage, Docker, Git"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

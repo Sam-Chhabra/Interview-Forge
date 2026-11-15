@@ -1,0 +1,15 @@
+{
+  "venvPath": "apps/api",
+  "venv": "venv",
+  "pythonVersion": "3.13",
+  "extraPaths": [
+    "apps/api"
+  ],
+  "include": [
+    "apps/api/app",
+    "apps/api/evals",
+    "apps/api/tests",
+    "apps/api/alembic"
+  ],
+  "reportMissingTypeStubs": false
+}

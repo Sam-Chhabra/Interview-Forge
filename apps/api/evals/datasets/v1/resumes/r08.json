@@ -1,0 +1,186 @@
+{
+  "resume_id": "r08",
+  "candidate": "Soraia Monteiro",
+  "contact": "soraia.monteiro@example.com · New York, NY · github.com/smonteiro-dev",
+  "role_family": "ios_engineer",
+  "seniority": "staff",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r08-01",
+              "text": "Staff iOS Engineer with 8 years of experience architecting high-performance Swift and SwiftUI consumer applications, offline-first sync engines, and modular mobile platforms at scale."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Staff iOS Engineer | Wayfarer Air & Travel | 2021 – Present",
+          "items": [
+            {
+              "id": "r08-02",
+              "text": "Led the incremental migration of 45+ core booking and itinerary screens from legacy UIKit to declarative SwiftUI in Swift 5.9 for a 3.2M MAU flagship travel application."
+            },
+            {
+              "id": "r08-03",
+              "text": "Architected an offline-first persistence and background synchronization engine using GRDB (SQLite), BGTaskScheduler, and deterministic CRDT conflict resolution, enabling full itinerary edits in airplane mode."
+            },
+            {
+              "id": "r08-04",
+              "text": "Shaved cold start duration from 2.4s to 890ms and eliminated 60fps collection-view frame drops by diagnosing main-thread dyld stalls, zombie allocations, and runaway location polling with Time Profiler and Allocations traces."
+            },
+            {
+              "id": "r08-05",
+              "text": "Replaced nested DispatchQueue callback pyramids with Swift structured concurrency (async/await, custom Actor isolation, and TaskGroups) alongside Combine publishers, eliminating 94% of data-race crashes."
+            },
+            {
+              "id": "r08-06",
+              "text": "Orchestrated weekly TestFlight drops, dSYM symbolication, and 7-day staged App Store Connect rollouts (1% → 10% → 50% → 100%) gated by automated MetricKit and Crashlytics halt triggers across 3.2M monthly active users."
+            },
+            {
+              "id": "r08-07",
+              "text": "Decomposed a 420k-LOC monolithic Xcode project into 18 feature and core SPM modules with strict interface targets, cutting clean builds by 54% and incremental debug builds from 68s to 11s."
+            },
+            {
+              "id": "r08-08",
+              "text": "Authored 9 technical design proposals for client networking and deep-link navigation, ran biweekly code-review clinics, and coached 4 mid-level developers through promotions to Senior iOS Engineer."
+            },
+            {
+              "id": "r08-09",
+              "text": "Shipped real-time gate-change banners on the Lock Screen and Dynamic Island alongside a wrist companion experience syncing QR boarding passes over Bluetooth to paired Apple Watches."
+            },
+            {
+              "id": "r08-10",
+              "text": "Implemented WCAG 2.1 AA accessibility support across the app, including Dynamic Type scaling, VoiceOver rotor actions, and reduced-motion transitions."
+            }
+          ]
+        },
+        {
+          "heading": "Senior iOS Engineer | Ridgemont Field Maps | 2018 – 2021",
+          "items": [
+            {
+              "id": "r08-11",
+              "text": "Designed a multi-context Core Data persistence layer with background NSManagedObjectContext batch imports to ingest 120k forestry waypoint records without blocking UI gestures."
+            },
+            {
+              "id": "r08-12",
+              "text": "Built breadcrumb trail recording with adaptive GPS geofencing and rendered 50,000+ offline topographic contour overlays at 60fps on iPad and iPhone."
+            },
+            {
+              "id": "r08-13",
+              "text": "Pinned TLS leaf certificates and migrated sensitive OAuth refresh tokens from NSUserDefaults into the hardware-backed iOS Keychain with biometric LAContext protection."
+            },
+            {
+              "id": "r08-14",
+              "text": "Built an internal feature-flag store kit and debug overlay menu for QA testers to toggle staging endpoints and inspect network payloads on physical test devices."
+            },
+            {
+              "id": "r08-15",
+              "text": "Combined three regional localization spreadsheets into an automated XLIFF string catalog pipeline supporting 11 European and Asian languages."
+            }
+          ]
+        },
+        {
+          "heading": "iOS Developer | PulseNote Media | 2016 – 2018",
+          "items": [
+            {
+              "id": "r08-16",
+              "text": "Developed custom AVFoundation audio playback queues with background lock-screen media controls and AirPlay routing for a long-form journalism app."
+            },
+            {
+              "id": "r08-17",
+              "text": "Wrote 180+ XCTest and XCUITest snapshot and UI automation tests executed nightly on a self-hosted Mac mini Jenkins node."
+            },
+            {
+              "id": "r08-18",
+              "text": "Migrated legacy Objective-C view controllers to Swift 4 with full nullability annotations and interoperability bridges."
+            },
+            {
+              "id": "r08-19",
+              "text": "Facilitated swift resolution of cross-team GraphQL and REST API contract disputes between mobile and backend squads."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "SPMGraphLint (Open Source)",
+          "items": [
+            {
+              "id": "r08-20",
+              "text": "Author of a command-line Swift tool that parses Package.swift manifests, detects circular dependency edges, and renders Graphviz module topology diagrams (410+ GitHub stars)."
+            },
+            {
+              "id": "r08-21",
+              "text": "Published a GitHub Action that fails pull requests when feature modules import concrete implementation targets instead of interface protocols."
+            }
+          ]
+        },
+        {
+          "heading": "VeloSynth Mini (Weekend Audio Project)",
+          "items": [
+            {
+              "id": "r08-22",
+              "text": "Designed brushed-metal skeuomorphic audio dials and CoreAudio polyphonic oscillator voices for an experimental iPad synthesizer toy."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Computer Engineering | Northeastern University | 2016",
+          "items": [
+            {
+              "id": "r08-23",
+              "text": "Completed two 6-month mobile engineering co-ops in Boston; President of the Mobile App Club."
+            },
+            {
+              "id": "r08-24",
+              "text": "Coursework in Operating Systems, Embedded Design, Computer Networks, and Human-Computer Interaction."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r08-25",
+              "text": "Languages: Swift (5.9/6.0), Objective-C, SQL, Bash, Python"
+            },
+            {
+              "id": "r08-26",
+              "text": "iOS Frameworks: SwiftUI, UIKit, Combine, Swift Concurrency (async/await, Actors), AVFoundation, Keychain, MetricKit"
+            },
+            {
+              "id": "r08-27",
+              "text": "Data & Offline: GRDB, SQLite, Core Data, BGTaskScheduler, URLSession, Codable"
+            },
+            {
+              "id": "r08-28",
+              "text": "Tooling & Delivery: Xcode, Time Profiler, Allocations, SPM, Fastlane, GitHub Actions, XCTest, XCUITest, Crashlytics"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

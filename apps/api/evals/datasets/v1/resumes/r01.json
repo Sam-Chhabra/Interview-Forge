@@ -1,0 +1,166 @@
+{
+  "resume_id": "r01",
+  "candidate": "Priya Raman",
+  "contact": "priya.raman@example.com · Seattle, WA · github.com/praman-ml",
+  "role_family": "ml_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r01-01",
+              "text": "Senior Machine Learning Engineer with 6+ years of experience designing, training, and operating large-scale personalized recommendation and search ranking systems in Python and PyTorch."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior ML Engineer, Personalization | Lumen Commerce | 2022 – Present",
+          "items": [
+            {
+              "id": "r01-02",
+              "text": "Architected and deployed a multi-stage homepage recommendation and search ranking pipeline in Python and PyTorch serving 18M daily active shoppers, lifting click-through rate (CTR) by 7.4%."
+            },
+            {
+              "id": "r01-03",
+              "text": "Built and operated an online feature store using Feast backed by Redis Cluster and Kafka streaming ingestion, serving 140+ real-time user-item interaction features with 99.95% availability."
+            },
+            {
+              "id": "r01-04",
+              "text": "Quantized two-tower and DLRM scoring models to FP16 on NVIDIA Triton Inference Server, cutting p99 scoring response time from 62ms to 19ms at 28,000 QPS during peak holiday traffic."
+            },
+            {
+              "id": "r01-05",
+              "text": "Ran 30+ split-traffic randomized trials for feed ranking algorithms using CUPED pre-experiment covariate adjustment and automated latency/diversity circuit-breakers, driving a +4.2% lift in net GMV."
+            },
+            {
+              "id": "r01-06",
+              "text": "Mitigated position bias in click-through-rate (CTR) prediction models using inverse propensity weighting and shallow tower dropout, improving calibration (ECE reduced from 0.041 to 0.012)."
+            },
+            {
+              "id": "r01-07",
+              "text": "Indexed 45M catalog item embeddings in Faiss HNSW and ScaNN indices for candidate generation, achieving 0.96 recall@100 within a 6ms retrieval budget."
+            },
+            {
+              "id": "r01-08",
+              "text": "Authored distributed point-in-time feature join and training dataset generation jobs in PySpark on GCP Dataproc and BigQuery, processing 4.5TB of daily impression logs."
+            },
+            {
+              "id": "r01-09",
+              "text": "Implemented request coalescing and embedding cache warming in the Go/Python ranking gateway, keeping p95 end-to-end latency under 32ms during flash-sale traffic spikes."
+            },
+            {
+              "id": "r01-10",
+              "text": "Coached 3 new-grad hires and 2 interns from onboarding to first production launch; chaired weekly RFC architecture critiques for the 14-person personalization group."
+            }
+          ]
+        },
+        {
+          "heading": "Machine Learning Engineer | BrightCart Marketplace | 2019 – 2022",
+          "items": [
+            {
+              "id": "r01-11",
+              "text": "Replaced separate click and purchase scorers with a shared-bottom multi-gate mixture-of-experts network trained with listwise ranking objectives in PyTorch, lifting conversion 2.8%."
+            },
+            {
+              "id": "r01-12",
+              "text": "Trained gradient-boosted ranking models (LightGBM) for sponsored products CTR prediction across 8M SKUs, increasing ad revenue per search session by 5.1%."
+            },
+            {
+              "id": "r01-13",
+              "text": "Orchestrated daily model retraining, shadow evaluation, and canary rollout workflows on GCP Vertex AI and Airflow with automated data-drift gates."
+            },
+            {
+              "id": "r01-14",
+              "text": "Reduced offline nightly backfill pipeline runtime from 9 hours to 3.5 hours by repartitioning Parquet tables and tuning PySpark shuffle partitions."
+            },
+            {
+              "id": "r01-15",
+              "text": "Partnered with merchant ops to onboard 1,200 brick-and-mortar partner stores into the regional same-day delivery catalog."
+            },
+            {
+              "id": "r01-16",
+              "text": "Collaborated with the C++ core search engine team to define Protobuf contracts and payload schemas for candidate handoff."
+            },
+            {
+              "id": "r01-17",
+              "text": "Built real-time feature freshness monitors in Prometheus and Grafana, paging on-call when Kafka consumer lag exceeded 90 seconds."
+            },
+            {
+              "id": "r01-18",
+              "text": "Handled primary on-call rotations for the recommendation scoring service, authoring 12 runbooks and leading blameless postmortems after a Redis cluster failover incident."
+            },
+            {
+              "id": "r01-19",
+              "text": "Implemented a deterministic business-rule reranking filter to enforce brand-safety, cold-start impression quotas, and seller diversity constraints post-scoring."
+            },
+            {
+              "id": "r01-20",
+              "text": "Evaluated RBF and polynomial kernels in legacy scikit-learn SVM baselines during a deprecation audit of heritage fraud heuristics."
+            },
+            {
+              "id": "r01-21",
+              "text": "Sparked cross-org adoption of standardized model cards and lineage tracking across 4 product squads."
+            },
+            {
+              "id": "r01-22",
+              "text": "Ran 120+ offline hyperparameter grid-search experiments in Weights & Biases to tune cosine annealing learning rate schedules."
+            },
+            {
+              "id": "r01-23",
+              "text": "Participated in an internal 2-day hackathon exploring prompt templates for customer support ticket routing (prototype only, not shipped)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "M.S. in Computer Science | University of Washington | 2017 – 2019",
+          "items": [
+            {
+              "id": "r01-24",
+              "text": "Graduate Teaching Assistant for CSE 341 Programming Languages (lambda calculus, functional programming, static type inference)."
+            },
+            {
+              "id": "r01-25",
+              "text": "Coursework: Statistical Machine Learning, Information Retrieval, Distributed Systems, Convex Optimization."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r01-26",
+              "text": "ML & Ranking: PyTorch, LightGBM, scikit-learn, Feast Feature Store, Triton Inference Server, Multi-Task Learning, Learning-to-Rank"
+            },
+            {
+              "id": "r01-27",
+              "text": "Retrieval & Storage: Faiss (HNSW, IVF), ScaNN, Redis Cluster, Kafka, BigQuery, Parquet"
+            },
+            {
+              "id": "r01-28",
+              "text": "Languages & Cloud: Python, SQL, Bash, PySpark, GCP (Dataproc, Vertex AI, GCS), Docker, Airflow, Weights & Biases"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

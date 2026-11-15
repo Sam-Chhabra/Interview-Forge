@@ -1,0 +1,129 @@
+{
+  "jd_id": "j03",
+  "title": "Senior Backend Engineer, Core Payments & Ledger",
+  "company": "Ironclad Financial",
+  "text": "About Ironclad Financial\nIronclad Financial provides real-time treasury, clearing, and multi-currency payout infrastructure for thousands of B2B platforms and marketplaces. Our core ledger and settlement engines move billions of dollars each month with strict correctness, auditability, and uptime guarantees.\n\nThe Role\nWe are hiring a Senior Backend Engineer for our Core Payments & Ledger team. You will architect and operate distributed microservices, event-driven settlement pipelines, and high-throughput APIs where every transaction must be accounted for accurately.\n\nWhat You Will Do\n- Build and scale production backend microservices in Go and Java supporting real-time payment clearing and double-entry ledger operations.\n- Design high-throughput event-driven architectures with Apache Kafka to process tens of thousands of settlement events per second.\n- Evolve public REST and internal gRPC APIs, maintaining strict Protobuf schema evolution and backward compatibility.\n- Tune relational database performance, partitioning, query plans, and indexing in PostgreSQL at multi-terabyte scale.\n- Guarantee idempotent and exactly-once processing across distributed financial workflows despite network retries or downstream failures.\n- Operate distributed Redis caches while preventing cache stampedes and hot-key bottlenecks during peak merchant traffic.\n- Deploy containerized services on Amazon Web Services with automated CI/CD pipelines, participate in on-call rotations, and mentor junior engineers.\n\nRequirements (Must-Haves)\n- 5+ years of backend software engineering experience building production microservices in Go or Java.\n- Strong experience designing high-throughput event-driven architectures with Apache Kafka.\n- Expertise in REST and gRPC API design, Protobuf schema evolution, and backward compatibility.\n- Deep hands-on experience tuning relational databases, query plans, and indexing in PostgreSQL.\n- Experience guaranteeing idempotent or exactly-once processing in distributed financial or transactional workflows.\n- Proficiency with distributed caching (Redis) and mitigating cache stampedes or hot-key bottlenecks.\n- Experience deploying containerized services on Amazon Web Services and building automated CI/CD pipelines.\n\nNice-to-Haves\n- Track record of participating in 24/7 on-call rotations, leading incident response, and driving blameless postmortems.\n- Experience mentoring mid-level and junior engineers through code reviews, pair programming, and system design coaching.\n- Familiarity with GraphQL federation (Apollo Router/Subgraphs) or multi-region CockroachDB.",
+  "pairs_with": ["r03"],
+  "requirements": [
+    {
+      "req_id": "j03-q01",
+      "text": "5+ years of backend software engineering experience building production microservices in Go or Java",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-01": 2, "r03-02": 2, "r03-11": 2, "r03-25": 1},
+          "match_type": "lexical",
+          "distractors": ["r03-18", "r03-20"]
+        }
+      }
+    },
+    {
+      "req_id": "j03-q02",
+      "text": "Strong experience designing high-throughput event-driven architectures with Apache Kafka",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-03": 2, "r03-12": 2, "r03-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q03",
+      "text": "Expertise in REST and gRPC API design, Protobuf schema evolution, and backward compatibility",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-04": 2, "r03-25": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q04",
+      "text": "Deep hands-on experience tuning relational databases, query plans, and indexing in PostgreSQL",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-05": 2, "r03-13": 2, "r03-26": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q05",
+      "text": "Experience guaranteeing idempotent or exactly-once processing in distributed financial or transactional workflows",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-06": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q06",
+      "text": "Proficiency with distributed caching (Redis) and mitigating cache stampedes or hot-key bottlenecks",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-07": 2, "r03-26": 1},
+          "match_type": "implicit",
+          "distractors": ["r03-23"]
+        }
+      }
+    },
+    {
+      "req_id": "j03-q07",
+      "text": "Experience deploying containerized services on Amazon Web Services and building automated CI/CD pipelines",
+      "priority": "must",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-08": 2, "r03-27": 1},
+          "match_type": "abbreviation",
+          "distractors": ["r03-22"]
+        }
+      }
+    },
+    {
+      "req_id": "j03-q08",
+      "text": "Track record of participating in 24/7 on-call rotations, leading incident response, and driving blameless postmortems",
+      "priority": "nice",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-09": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q09",
+      "text": "Experience mentoring mid-level and junior engineers through code reviews, pair programming, and system design coaching",
+      "priority": "nice",
+      "judgments": {
+        "r03": {
+          "relevant": {"r03-10": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j03-q10",
+      "text": "Familiarity with GraphQL federation (Apollo Router/Subgraphs) or multi-region CockroachDB",
+      "priority": "nice",
+      "judgments": {
+        "r03": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r03-19", "r03-21"]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "jd_id": "j09",
+  "title": "Senior Cloud & Application Security Engineer",
+  "company": "Aegis Ledger Financial",
+  "text": "Aegis Ledger Financial provides modern treasury, clearing, and real-time settlement infrastructure for commercial banks and high-growth fintech platforms across North America. Every day, our APIs move billions of dollars in regulated payment volume, which means security is foundational to every line of code we ship and every cloud account we operate.\n\nWe are looking for a pragmatic, builder-minded Senior Cloud & Application Security Engineer to join our Security Engineering team in Washington, DC (or hybrid). In this role, you will partner directly with infrastructure and product engineering squads to harden our multi-account AWS and Kubernetes footprint, build high-signal detection and response capabilities, and embed automated security guardrails into our developer workflows without slowing down delivery.\n\nResponsibilities:\n- Own cloud security, detection engineering, and application security initiatives across regulated financial production environments.\n- Architect least-privilege AWS IAM permissions, Service Control Policies (SCPs), and zero-standing-privilege access workflows across dozens of accounts.\n- Lead structured STRIDE threat modeling and security architecture reviews with product engineering teams before new payment and ledger services launch.\n- Write high-signal detections-as-code (Sigma, YARA, or SQL rules) in cloud SIEM platforms (Panther, Snowflake, or Splunk) and tune alert fidelity.\n- Lead end-to-end security incident response, digital forensics, containment, and blameless postmortems when high-priority alerts fire.\n- Embed SAST, DAST, software composition analysis (SCA), and secret scanning into CI/CD pipelines so vulnerabilities are caught before merge.\n- Secure containerized Kubernetes workloads with admission controllers, network policies, and runtime kernel monitoring.\n- Translate deep technical security risks into actionable priorities for executive leadership and non-security stakeholders.\n\nMinimum Qualifications:\n- 4+ years of hands-on experience in cloud security, detection engineering, or application security within regulated production environments.\n- Strong proficiency in Python, Go, or SQL for security automation and telemetry analysis.\n\nNice to Have:\n- Experience managing external penetration tests and running public or private bug bounty programs (HackerOne or Bugcrowd).\n- Hands-on experience with hardware security modules (HSMs), PKCS#11, or post-quantum cryptography migration.",
+  "pairs_with": ["r09"],
+  "requirements": [
+    {
+      "req_id": "j09-q01",
+      "text": "4+ years in cloud security, detection engineering, or application security within regulated production environments",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-01": 1, "r09-02": 2, "r09-10": 2},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q02",
+      "text": "Designing least-privilege AWS IAM architectures, Service Control Policies (SCPs), and zero-standing-privilege access workflows",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-03": 2, "r09-19": 2, "r09-27": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q03",
+      "text": "Leading structured STRIDE threat modeling and security architecture reviews with product engineering teams",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-04": 2, "r09-26": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q04",
+      "text": "Writing high-signal detections-as-code (Sigma, YARA, or SQL rules) in cloud SIEM platforms (Panther, Snowflake, or Splunk)",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-05": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r09-21"]
+        }
+      }
+    },
+    {
+      "req_id": "j09-q05",
+      "text": "Leading end-to-end security incident response, digital forensics, containment, and blameless postmortems",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-06": 2, "r09-24": 1, "r09-26": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q06",
+      "text": "Embedding SAST, DAST, software composition analysis (SCA), and secret scanning into CI/CD pipelines",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-11": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q07",
+      "text": "Securing containerized Kubernetes workloads with admission controllers, network policies, and runtime kernel monitoring",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-07": 2, "r09-27": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q08",
+      "text": "Translating deep technical security risks into actionable priorities for executive leadership and non-security stakeholders",
+      "priority": "must",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-08": 2},
+          "match_type": "implicit",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q09",
+      "text": "Managing external penetration tests and running public or private bug bounty programs (HackerOne or Bugcrowd)",
+      "priority": "nice",
+      "judgments": {
+        "r09": {
+          "relevant": {"r09-12": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j09-q10",
+      "text": "Hands-on experience with hardware security modules (HSMs), PKCS#11, or post-quantum cryptography migration",
+      "priority": "nice",
+      "judgments": {
+        "r09": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r09-16", "r09-18"]
+        }
+      }
+    }
+  ]
+}

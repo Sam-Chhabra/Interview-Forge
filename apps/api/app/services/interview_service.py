@@ -183,7 +183,7 @@ async def submit_answer(
     )
 
     if (
-        answered_count >= session.num_questions
+        (answered_count or 0) >= session.num_questions
         and session.status != InterviewSessionStatus.completed
     ):
         session.status = InterviewSessionStatus.completed

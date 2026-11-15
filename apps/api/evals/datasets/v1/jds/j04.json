@@ -1,0 +1,129 @@
+{
+  "jd_id": "j04",
+  "title": "Frontend Engineer, Design Systems & Web Experience",
+  "company": "Vellum Collaborative",
+  "text": "About Vellum Collaborative\nVellum Collaborative builds real-time document, whiteboarding, and project workflow software used by over 800,000 product designers, engineers, and writers worldwide. We care deeply about craft, speed, and inclusivity—every interaction should feel instantaneous and work seamlessly for every user.\n\nThe Role\nWe are looking for a Frontend Engineer to join our Design Systems & Web Experience team. You will own our shared component primitives, champion web performance and accessibility across product surfaces, and partner closely with design and research to ship high-craft user interfaces.\n\nWhat You Will Do\n- Build and maintain complex, interactive web applications using React and TypeScript.\n- Architect and evolve our reusable component library and design system in Storybook, synchronized with Figma design tokens.\n- Optimize Core Web Vitals (LCP, CLS, INP) and client-side rendering performance across data-heavy views.\n- Uphold Web Content Accessibility Guidelines, ensuring full keyboard navigation and screen reader compatibility.\n- Manage client and server-state caching using TanStack Query (React Query) over GraphQL and REST APIs.\n- Prevent UI regressions through automated cross-browser end-to-end and visual snapshot testing.\n- Partner closely with product designers and UX researchers from early wireframes to polished responsive interfaces, while mentoring junior frontend developers.\n\nRequirements (Must-Haves)\n- 3+ years of frontend engineering experience building web applications with React and TypeScript.\n- Hands-on experience architecting and maintaining a reusable component library or design system with Storybook and Figma design tokens.\n- Proven track record optimizing Core Web Vitals (LCP, CLS, INP) and client-side rendering performance.\n- Deep commitment to Web Content Accessibility Guidelines, screen reader compatibility, and keyboard navigation.\n- Experience with server-state caching using TanStack Query (React Query) and GraphQL/REST data fetching.\n- Experience preventing UI regressions through automated cross-browser end-to-end and visual snapshot testing.\n\nNice-to-Haves\n- Close collaboration with product designers and UX researchers to turn wireframes into polished, responsive interfaces.\n- Track record of mentoring junior frontend developers and establishing frontend code quality standards.\n- Hands-on experience with WebGL, Three.js, or 60fps HTML5 Canvas 3D graphics rendering.\n- Experience building native mobile applications with React Native or Swift/Kotlin.",
+  "pairs_with": ["r04"],
+  "requirements": [
+    {
+      "req_id": "j04-q01",
+      "text": "3+ years of frontend engineering experience building web applications with React and TypeScript",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-01": 2, "r04-02": 2, "r04-11": 2, "r04-23": 1, "r04-24": 1},
+          "match_type": "lexical",
+          "distractors": ["r04-19"]
+        }
+      }
+    },
+    {
+      "req_id": "j04-q02",
+      "text": "Hands-on experience architecting and maintaining a reusable component library or design system with Storybook and Figma design tokens",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-03": 2, "r04-24": 1, "r04-25": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j04-q03",
+      "text": "Proven track record optimizing Core Web Vitals (LCP, CLS, INP) and client-side rendering performance",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-04": 2, "r04-12": 2},
+          "match_type": "implicit",
+          "distractors": ["r04-10"]
+        }
+      }
+    },
+    {
+      "req_id": "j04-q04",
+      "text": "Deep commitment to Web Content Accessibility Guidelines, screen reader compatibility, and keyboard navigation",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-05": 2, "r04-25": 1},
+          "match_type": "abbreviation",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j04-q05",
+      "text": "Experience with server-state caching using TanStack Query (React Query) and GraphQL/REST data fetching",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-06": 2, "r04-23": 1, "r04-24": 1},
+          "match_type": "lexical",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j04-q06",
+      "text": "Experience preventing UI regressions through automated cross-browser end-to-end and visual snapshot testing",
+      "priority": "must",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-07": 2, "r04-25": 1},
+          "match_type": "paraphrase",
+          "distractors": ["r04-20"]
+        }
+      }
+    },
+    {
+      "req_id": "j04-q07",
+      "text": "Close collaboration with product designers and UX researchers to turn wireframes into polished, responsive interfaces",
+      "priority": "nice",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-08": 2},
+          "match_type": "paraphrase",
+          "distractors": ["r04-17"]
+        }
+      }
+    },
+    {
+      "req_id": "j04-q08",
+      "text": "Track record of mentoring junior frontend developers and establishing frontend code quality standards",
+      "priority": "nice",
+      "judgments": {
+        "r04": {
+          "relevant": {"r04-09": 2},
+          "match_type": "paraphrase",
+          "distractors": []
+        }
+      }
+    },
+    {
+      "req_id": "j04-q09",
+      "text": "Hands-on experience with WebGL, Three.js, or 60fps HTML5 Canvas 3D graphics rendering",
+      "priority": "nice",
+      "judgments": {
+        "r04": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r04-17", "r04-18"]
+        }
+      }
+    },
+    {
+      "req_id": "j04-q10",
+      "text": "Experience building native mobile applications with React Native or Swift/Kotlin",
+      "priority": "nice",
+      "judgments": {
+        "r04": {
+          "relevant": {},
+          "match_type": "gap",
+          "distractors": ["r04-15", "r04-21"]
+        }
+      }
+    }
+  ]
+}

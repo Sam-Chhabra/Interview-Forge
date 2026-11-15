@@ -2,7 +2,8 @@
 Resume service layer.
 
 Route handlers stay thin — all DB queries, file I/O, and the resume parse
-pipeline (extract -> chunk -> embed -> store) live here.
+pipeline (extract -> structure-aware contextual chunk -> embed -> store)
+live here.
 """
 
 import asyncio
@@ -10,7 +11,6 @@ import logging
 import uuid
 from pathlib import Path
 
-import sqlalchemy as sa
 from fastapi import HTTPException, UploadFile, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -18,9 +18,13 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.db.session import AsyncSessionLocal
 from app.models.resume import ParseStatus, Resume
 from app.models.resume_chunk import ResumeChunk
-from app.services.chunking_service import chunk_text
+from app.services.chunking_service import chunk_resume_structured, chunk_text
 from app.services.embedding_service import embed_texts
 from app.services.pdf_service import extract_text_from_pdf
+from app.services.retrieval_service import (
+    RetrievalStrategy,
+    retrieve_chunks_for_resume,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -84,10 +88,9 @@ async def list_resumes_for_user(
 async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
     """Full resume processing pipeline, run as a background task.
 
-    extract text -> chunk -> embed -> store chunks. Atomic: any failure marks
-    the resume 'failed' and rolls back first, so no partial chunks are ever
-    committed. Opens its own session — the request's session is long closed
-    by the time this runs.
+    extract text -> contextual bullet chunk -> embed -> store chunks.
+    Atomic: any failure marks the resume 'failed' and rolls back first, so no
+    partial chunks are ever committed.
     """
     async with AsyncSessionLocal() as db:
         try:
@@ -104,19 +107,26 @@ async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
             resume.raw_text = text
             await db.commit()
 
-            chunks = chunk_text(text)
+            structured_chunks = chunk_resume_structured(
+                text, strategy="bullet_contextual"
+            )
+            chunks = (
+                [c.content for c in structured_chunks]
+                if structured_chunks
+                else chunk_text(text)
+            )
             if not chunks:
                 raise ValueError("Chunking produced zero chunks")
-            embeddings = await embed_texts(chunks)
+            embeddings = await embed_texts(chunks, is_query=False)
             assert len(embeddings) == len(chunks), (
                 f"Embedding count {len(embeddings)} != chunk count {len(chunks)}"
             )
 
-            for i, (chunk, emb) in enumerate(zip(chunks, embeddings)):
+            for i, (chunk_str, emb) in enumerate(zip(chunks, embeddings)):
                 db.add(
                     ResumeChunk(
                         resume_id=resume_id,
-                        content=chunk,
+                        content=chunk_str,
                         chunk_index=i,
                         embedding=emb,
                     )
@@ -126,8 +136,6 @@ async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
             await db.commit()
         except Exception as exc:
             logger.exception("Resume %s parse failed: %s", resume_id, exc)
-            # Discard any pending ResumeChunk inserts so the 'failed' update
-            # commits cleanly and we don't persist a half-processed resume.
             await db.rollback()
             try:
                 resume = await db.get(Resume, resume_id)
@@ -144,11 +152,13 @@ async def search_chunks(
     user_id: uuid.UUID,
     query_text: str,
     top_k: int = 5,
+    strategy: RetrievalStrategy = "hybrid_rerank",
+    use_mmr: bool = False,
 ) -> list[dict]:
-    """Return the top-k most similar chunks for a query, scoped to one resume.
+    """Return the top-k most relevant chunks for a query using the chosen strategy.
 
-    Ownership is re-verified here so the function is safe to call standalone.
-    Similarity is cosine similarity in [0, 1] — higher is a better match.
+    Defaults to our two-stage `hybrid_rerank` pipeline (Reciprocal Rank Fusion
+    over dense + lexical BM25/Postgres FTS followed by Cross-Encoder reranking).
     """
     resume = await get_resume_by_id(db, resume_id, user_id)
     if resume is None:
@@ -156,31 +166,12 @@ async def search_chunks(
             status_code=status.HTTP_404_NOT_FOUND, detail="Resume not found"
         )
 
-    query_embedding = (await embed_texts([query_text]))[0]
-    # pgvector accepts a bracketed literal; cast it to `vector` in-query so we
-    # don't depend on a type adapter being registered on the raw connection.
-    query_vec = "[" + ",".join(str(x) for x in query_embedding) + "]"
-
-    sql = sa.text(
-        """
-        SELECT chunk_index,
-               content,
-               1 - (embedding <=> CAST(:query_vec AS vector)) AS similarity
-        FROM resume_chunks
-        WHERE resume_id = :resume_id
-        ORDER BY embedding <=> CAST(:query_vec AS vector)
-        LIMIT :top_k
-        """
+    results, _ = await retrieve_chunks_for_resume(
+        db,
+        resume_id,
+        query_text,
+        strategy=strategy,
+        top_k=top_k,
+        use_mmr=use_mmr,
     )
-    result = await db.execute(
-        sql,
-        {"query_vec": query_vec, "resume_id": resume_id, "top_k": top_k},
-    )
-    return [
-        {
-            "chunk_index": row.chunk_index,
-            "content": row.content,
-            "similarity": row.similarity,
-        }
-        for row in result
-    ]
+    return results

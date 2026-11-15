@@ -1,0 +1,182 @@
+{
+  "resume_id": "r09",
+  "candidate": "Devon Al-Mansoor",
+  "contact": "devon.almansoor@example.com · Washington, DC · github.com/dalmansoor",
+  "role_family": "security_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r09-01",
+              "text": "Senior Security Engineer with 6+ years of experience across cloud security, detection engineering, DFIR, and application security in regulated fintech and health-tech environments."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Security Engineer | IronVault Payments | 2021 – Present",
+          "items": [
+            {
+              "id": "r09-02",
+              "text": "Technical lead for cloud security and detection engineering across a PCI-DSS Level 1 and SOC 2 Type II regulated payment processing platform handling $14B in annual volume."
+            },
+            {
+              "id": "r09-03",
+              "text": "Hardened a 70-account AWS Organization by enforcing Service Control Policies (SCPs), eliminating 1,400+ wildcard IAM policies via IAM Access Analyzer, and rolling out ephemeral just-in-time role elevation."
+            },
+            {
+              "id": "r09-04",
+              "text": "Conducted 60+ STRIDE threat modeling workshops and security architecture reviews with product engineering squads prior to launch, uncovering 23 high-severity broken-access-control and SSRF flaws pre-code."
+            },
+            {
+              "id": "r09-05",
+              "text": "Authored version-controlled behavioral alert queries in Python and SQL over centralized CloudTrail, Okta, and EDR telemetry tables, cutting false-positive pager volume by 64% while catching anomalous token minting within 90 seconds."
+            },
+            {
+              "id": "r09-06",
+              "text": "Served as primary Incident Commander on 14 sev-1 DFIR engagements—isolating compromised EC2 workloads, capturing volatile memory and EBS snapshots, rotating leaked OAuth secrets, and driving corrective action tracking."
+            },
+            {
+              "id": "r09-07",
+              "text": "Locked down multi-tenant EKS and k8s clusters using Kyverno admission webhooks, default-deny Calico CNI rules, distroless container base images, and Falco eBPF kernel-event sensors."
+            },
+            {
+              "id": "r09-08",
+              "text": "Presented quarterly board-level risk heatmaps and ROI models that secured $480k in headcount and tooling budget to retire legacy VPN concentrators in favor of BeyondCorp zero-trust access."
+            },
+            {
+              "id": "r09-09",
+              "text": "Built automated Terraform Sentinel policy-as-code guardrails that block public S3 buckets, unencrypted RDS instances, and permissive security groups at plan time."
+            }
+          ]
+        },
+        {
+          "heading": "Application Security Engineer | Veridian Care Systems | 2018 – 2021",
+          "items": [
+            {
+              "id": "r09-10",
+              "text": "Owned application security for a HIPAA-regulated telehealth platform serving 1.8M patients across web, iOS, and microservices."
+            },
+            {
+              "id": "r09-11",
+              "text": "Wired Semgrep custom AST checks, OWASP ZAP dynamic scans, TruffleHog pre-commit hooks, and automated dependency vulnerability gates into GitHub pull requests across 190 repositories, blocking 310 leaked credentials and critical CVEs before merge."
+            },
+            {
+              "id": "r09-12",
+              "text": "Triaged 180+ vulnerability disclosures from external security researchers, validated proof-of-concept exploits, managed bounty payouts, and coordinated 7-day SLA remediation sprints with feature squads."
+            },
+            {
+              "id": "r09-13",
+              "text": "Designed and rolled out a Security Champions program across 12 product squads, training 25 engineers on IDOR prevention, parameterized queries, and CSRF defenses."
+            },
+            {
+              "id": "r09-14",
+              "text": "Migrated workforce authentication to Okta with phishing-resistant WebAuthn factors and automated SCIM deprovisioning tied to HR termination webhooks."
+            },
+            {
+              "id": "r09-15",
+              "text": "Performed manual source-code audits and Burp Suite Pro assessments on OAuth 2.0 / OIDC patient portal flows."
+            },
+            {
+              "id": "r09-16",
+              "text": "Organized internal Capture-the-Flag (CTF) cryptography puzzles on Caesar and Vigenère ciphers for annual Security Awareness Month."
+            },
+            {
+              "id": "r09-17",
+              "text": "Automated SOC 2 and HIPAA evidence collection using Python scripts querying AWS Config and GitHub branch-protection APIs, cutting audit prep time by 70%."
+            },
+            {
+              "id": "r09-18",
+              "text": "Enforced YubiKey FIDO2 hardware security keys for privileged production bastion and SSO logins across all 340 employees."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "IAM-Prune (Open Source)",
+          "items": [
+            {
+              "id": "r09-19",
+              "text": "Wrote a Go CLI that correlates 90 days of AWS CloudTrail action logs against attached IAM role policies to generate least-privilege Terraform diffs (520+ GitHub stars)."
+            },
+            {
+              "id": "r09-20",
+              "text": "Added support for cross-account AssumeRole chain visualization and unused access-key expiration alerts."
+            }
+          ]
+        },
+        {
+          "heading": "Vendor Risk Workflow Automation",
+          "items": [
+            {
+              "id": "r09-21",
+              "text": "Applied Six Sigma process metrics and Jira automation rules to cut third-party vendor security questionnaire turnaround times from 18 days to 5 days."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "B.S. in Information Security & Computer Science | University of Maryland, College Park | 2018",
+          "items": [
+            {
+              "id": "r09-22",
+              "text": "Member of the Maryland Cybersecurity Center (MC2) competition team; 2nd Place at Mid-Atlantic CCDC."
+            },
+            {
+              "id": "r09-23",
+              "text": "Coursework in Network Security, Operating Systems Internals, Applied Cryptography, and Reverse Engineering."
+            }
+          ]
+        },
+        {
+          "heading": "Certifications",
+          "items": [
+            {
+              "id": "r09-24",
+              "text": "AWS Certified Security – Specialty; GIAC Certified Incident Handler (GCIH)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r09-25",
+              "text": "Languages: Python, Go, SQL, Bash, HCL (Terraform), Rego"
+            },
+            {
+              "id": "r09-26",
+              "text": "AppSec & SecOps: STRIDE Threat Modeling, Semgrep, Burp Suite Pro, OWASP ZAP, TruffleHog, DFIR, OSQuery, CrowdStrike"
+            },
+            {
+              "id": "r09-27",
+              "text": "Cloud & Containers: AWS (IAM, SCPs, CloudTrail, KMS, GuardDuty, Config), k8s, EKS, Kyverno, Falco, Calico, Docker"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

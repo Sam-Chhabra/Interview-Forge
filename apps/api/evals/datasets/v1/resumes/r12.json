@@ -1,0 +1,182 @@
+{
+  "resume_id": "r12",
+  "candidate": "Kieran Varga",
+  "contact": "kieran.varga@example.com · Pittsburgh, PA · github.com/kvarga-robotics",
+  "role_family": "cv_robotics_engineer",
+  "seniority": "senior",
+  "sections": [
+    {
+      "title": "Summary",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r12-01",
+              "text": "Senior Computer Vision and Robotics Perception Engineer with 6+ years building real-time 3D perception, sensor fusion, and edge-deployed deep learning systems for autonomous mobile robots (AMRs)."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Experience",
+      "entries": [
+        {
+          "heading": "Senior Perception Engineer | Ironclad Robotics | 2021 – Present",
+          "items": [
+            {
+              "id": "r12-02",
+              "text": "Architected multi-task 2D/3D object detection and panoptic semantic segmentation networks in PyTorch for warehouse autonomous forklifts, achieving 94.6 mAP@50 on pallet and dynamic pedestrian classes."
+            },
+            {
+              "id": "r12-03",
+              "text": "Quantized YOLOv8 and SegFormer models to INT8 with post-training calibration and compiled custom TensorRT plugins on NVIDIA Jetson AGX Orin, hitting 60 FPS inference under a 22W thermal budget."
+            },
+            {
+              "id": "r12-04",
+              "text": "Implemented zero-copy ROS 2 Humble C++17 lifecycle nodes over CycloneDDS and a Python utility pipeline for retrieving calibration frames from onboard ring buffers, streaming synchronized RGB-D point clouds at 30 Hz."
+            },
+            {
+              "id": "r12-05",
+              "text": "Orchestrated multi-node PyTorch DDP distributed training across 32 AWS EC2 p4d GPUs and curated 1.8M annotated LiDAR-camera frames stored on S3."
+            },
+            {
+              "id": "r12-06",
+              "text": "Adapted a DINOv2 ViT-L vision foundation model using LoRA adapters to detect shrink-wrap tears and damaged pallet stringers from 3,000 labeled warehouse images."
+            },
+            {
+              "id": "r12-07",
+              "text": "Developed automated extrinsic alignment routines and an Extended Kalman Filter blending 3D laser rangefinder sweeps, stereo depth frames, and inertial angular rates to hold sub-2cm pose accuracy during wheel slip."
+            },
+            {
+              "id": "r12-08",
+              "text": "Built an automated hardware-in-the-loop regression harness in Jenkins using Gazebo and NVIDIA Isaac Sim to benchmark obstacle avoidance trajectories across 500 domain-randomized warehouse lighting scenarios."
+            },
+            {
+              "id": "r12-09",
+              "text": "Integrated ByteTrack and Kalman-filter multi-object tracking in C++ to maintain persistent worker IDs through 3-second racking occlusions."
+            },
+            {
+              "id": "r12-10",
+              "text": "Spearheaded on-site war rooms with electrical, embedded firmware, and motion-planning engineers to diagnose intermittent CAN-bus drops and safety curtain interlock / collision guardrails stalls, cutting fleet MTBF incidents by 52%."
+            },
+            {
+              "id": "r12-11",
+              "text": "Implemented GPU-accelerated ICP scan matching and stereo VIO state vectors in C++/CUDA, reducing loop-closure drift by 44% across 10,000m² fulfillment centers."
+            },
+            {
+              "id": "r12-12",
+              "text": "Partnered with warehouse operations leads and product managers to translate ambiguous dock-unloading workflows into concrete perception specs and ship updated pallet-slot detectors."
+            },
+            {
+              "id": "r12-13",
+              "text": "Built fleet telemetry triggers that automatically uploaded high-entropy model disagreement clips from deployed robots to the labeling queue, cutting manual annotation spend by 35%."
+            }
+          ]
+        },
+        {
+          "heading": "Computer Vision Engineer | Stratos Aerial Inspection | 2019 – 2021",
+          "items": [
+            {
+              "id": "r12-14",
+              "text": "Configured real-time RTOS function call hooks and JSON telemetry schemas for gimbal-mounted 6-DOF inspection arm controllers."
+            },
+            {
+              "id": "r12-15",
+              "text": "Applied Gaussian blur, bilateral filtering, and morphological operations in OpenCV to denoise disparity maps from structured-light stereo sensors."
+            },
+            {
+              "id": "r12-16",
+              "text": "Pruned stale Git branches and unused Docker base layers from onboard NVMe flash storage to cut OTA update bundle sizes by 40%."
+            },
+            {
+              "id": "r12-17",
+              "text": "Trained Mask R-CNN instance segmentation models in PyTorch to localize wind-turbine blade delamination and lightning strike pits from drone imagery."
+            },
+            {
+              "id": "r12-18",
+              "text": "Mentored 2 junior engineers through weekly reinforcement of modern C++ memory-safety guidelines and deterministic unit testing."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Projects",
+      "entries": [
+        {
+          "heading": "SignageNav: Multimodal Corridor Navigator",
+          "items": [
+            {
+              "id": "r12-19",
+              "text": "Built a multimodal vision-language navigation prototype combining CLIP visual encoders with layout-aware PaddleOCR text spotting to read hospital and warehouse aisle signage."
+            },
+            {
+              "id": "r12-20",
+              "text": "Exported the dual-encoder backbone to ONNX Runtime for 18 Hz execution on an embedded Jetson Xavier NX."
+            }
+          ]
+        },
+        {
+          "heading": "Custom Carrier PCB Bring-Up",
+          "items": [
+            {
+              "id": "r12-21",
+              "text": "Fused dual 24V/12V power rails and hardware GPIO trigger lines on a custom Jetson carrier board to synchronize four-camera global shutters within 150 microseconds."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Education",
+      "entries": [
+        {
+          "heading": "M.S. in Robotics | Carnegie Mellon University | 2019",
+          "items": [
+            {
+              "id": "r12-22",
+              "text": "Coursework in Computer Vision, Visual SLAM, Probabilistic Graphical Models, and Kinematics & Dynamic Systems."
+            },
+            {
+              "id": "r12-23",
+              "text": "Graduate thesis on dense stereo reconstruction in specular industrial environments."
+            }
+          ]
+        },
+        {
+          "heading": "B.S. in Electrical & Computer Engineering | Purdue University | 2017",
+          "items": [
+            {
+              "id": "r12-24",
+              "text": "Senior design lead for autonomous IEEE SoutheastCon hardware competition robot."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Skills",
+      "entries": [
+        {
+          "heading": null,
+          "items": [
+            {
+              "id": "r12-25",
+              "text": "Languages: C++17, Python, CUDA, Bash, CMake"
+            },
+            {
+              "id": "r12-26",
+              "text": "Vision & ML: PyTorch, TorchVision, TensorRT, ONNX Runtime, OpenCV, PCL (Point Cloud Library), LoRA, MMDetection"
+            },
+            {
+              "id": "r12-27",
+              "text": "Robotics & Edge: ROS 2 (Humble), CycloneDDS, NVIDIA Jetson (AGX Orin, Xavier NX), Isaac Sim, Gazebo, Docker, Linux RT"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

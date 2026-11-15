@@ -4,12 +4,32 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { StatusBadge } from '@/components/status-badge';
-import { api, ApiError, type Resume } from '@/lib/api';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+  api,
+  ApiError,
+  type Resume,
+  type ResumeChunkMatch,
+} from '@/lib/api';
+
+const STRATEGIES = [
+  { id: 'hybrid_rerank', label: 'Hybrid RRF + Cross-Encoder Rerank (Default)' },
+  { id: 'hybrid_rrf', label: 'Hybrid Reciprocal Rank Fusion (RRF)' },
+  { id: 'dense', label: 'Dense Vector Search (pgvector Cosine)' },
+  { id: 'bm25', label: 'Lexical BM25 (Tech Tokenizer)' },
+  { id: 'fts', label: 'PostgreSQL Full-Text Search (ts_rank_cd)' },
+];
 
 export function ResumeDetail({ id }: { id: string }) {
   const [resume, setResume] = useState<Resume | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const [query, setQuery] = useState('distributed systems scalability Python');
+  const [strategy, setStrategy] = useState('hybrid_rerank');
+  const [matches, setMatches] = useState<ResumeChunkMatch[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -59,6 +79,20 @@ export function ResumeDetail({ id }: { id: string }) {
     };
   }, [id]);
 
+  async function handleSearch(e: React.FormEvent) {
+    e.preventDefault();
+    if (!query.trim()) return;
+    setIsSearching(true);
+    try {
+      const res = await api.resumes.search(id, query, strategy, 5);
+      setMatches(res);
+    } catch {
+      /* ignore */
+    } finally {
+      setIsSearching(false);
+    }
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-6 py-12">
       <Link
@@ -85,9 +119,78 @@ export function ResumeDetail({ id }: { id: string }) {
             </span>
           </div>
           {resume.parse_status === 'completed' && (
-            <p className="mt-4 text-sm text-muted-foreground">
-              Resume processed. (Chunks and embeddings are stored.)
-            </p>
+            <div className="mt-8 space-y-6">
+              <div className="rounded-lg border p-5">
+                <h2 className="text-base font-semibold">
+                  Interactive Multi-Strategy Retrieval Inspector
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Test how Dense pgvector, PostgreSQL FTS, BM25, Hybrid RRF, and
+                  Cross-Encoder Reranking score your indexed contextual resume chunks.
+                </p>
+                <form onSubmit={handleSearch} className="mt-4 flex flex-col gap-3 sm:flex-row">
+                  <Input
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
+                    placeholder="Enter a job requirement or skill query..."
+                    className="flex-1"
+                  />
+                  <select
+                    value={strategy}
+                    onChange={(e) => setStrategy(e.target.value)}
+                    className="h-10 rounded-md border border-input bg-background px-3 text-sm"
+                  >
+                    {STRATEGIES.map((s) => (
+                      <option key={s.id} value={s.id}>
+                        {s.label}
+                      </option>
+                    ))}
+                  </select>
+                  <Button type="submit" disabled={isSearching}>
+                    {isSearching ? 'Retrieving…' : 'Search Chunks'}
+                  </Button>
+                </form>
+
+                {matches.length > 0 && (
+                  <div className="mt-5 space-y-3">
+                    {matches.map((m, i) => (
+                      <div
+                        key={m.chunk_index}
+                        className="rounded-md border bg-muted/20 p-3 text-sm"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                          <span className="font-mono font-medium text-foreground">
+                            #{i + 1} · Chunk {m.chunk_index}
+                            {m.section_title ? ` · ${m.section_title}` : ''}
+                          </span>
+                          <div className="flex flex-wrap gap-3 font-mono">
+                            <span>Score: {m.similarity.toFixed(3)}</span>
+                            {m.dense_score != null && (
+                              <span>
+                                Dense: {m.dense_score.toFixed(3)} (#{m.dense_rank})
+                              </span>
+                            )}
+                            {m.lexical_score != null && (
+                              <span>
+                                Lexical: {m.lexical_score.toFixed(2)} (#{m.lexical_rank})
+                              </span>
+                            )}
+                            {m.rerank_prob != null && (
+                              <span>
+                                Cross-Encoder P: {(m.rerank_prob * 100).toFixed(1)}%
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <p className="mt-2 text-foreground">
+                          {m.raw_content || m.content}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
           )}
           {resume.parse_status === 'failed' && (
             <p className="mt-4 text-sm text-destructive">
