@@ -24,7 +24,6 @@ import { LandingFooter } from '@/app/_landing/footer';
 import {
   AnimatedShinyBadge,
   BlurFade,
-  BorderBeam,
   GridPattern,
   MagicCard,
   MetricBar,
@@ -316,13 +315,7 @@ export default function BenchmarksLabPage() {
           {report && (
             <BlurFade delay={0.12} className="mt-8">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <MagicCard className="p-5 relative">
-                  <BorderBeam
-                    size={110}
-                    duration={9}
-                    colorFrom="#10b981"
-                    colorTo="#3b82f6"
-                  />
+                <MagicCard className="p-5">
                   <div className="flex items-center justify-between text-xs font-mono uppercase tracking-wider text-muted-foreground">
                     <span>Best Retrieval nDCG@5</span>
                     <Cpu className="h-4 w-4 text-emerald-500" />

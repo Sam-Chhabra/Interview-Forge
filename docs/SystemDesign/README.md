@@ -1,27 +1,50 @@
-# System Design
+# System Design & Architecture Overview
 
-> Living document — updated whenever the architecture changes.
-> For full RAG benchmark results, ablations, and statistical tests, see [`docs/AI-Pipelines/RAG-Evaluation-Report.md`](../AI-Pipelines/RAG-Evaluation-Report.md).
+> Living document — explains how **Interview Forge** works in plain terms and how its AI/ML pipeline was upgraded from a basic RAG prototype into a production-style retrieval and evaluation system.
+> For full statistical tables, confidence intervals, and ablations, see [`docs/AI-Pipelines/RAG-Evaluation-Report.md`](../AI-Pipelines/RAG-Evaluation-Report.md).
 
-## Overview
+---
 
-Interview Forge is a three-tier AI/ML web application with a two-stage hybrid retrieval engine, deterministic citation grounding guardrails, and an end-to-end reproducible evaluation suite:
+## 1. What Does This System Do? (In Simple Words)
 
-1. **Next.js 16 frontend** (`apps/web`) — handles interview workflows and the interactive **AI/ML Evaluation & Retrieval Lab** (`/benchmarks`).
-2. **FastAPI async backend** (`apps/api`) — handles auth, structure-aware contextual chunking, multi-strategy RAG orchestration, requirement fit-gap analysis, citation grounding verification, and answer evaluation.
-3. **PostgreSQL 16 with `pgvector` + Full-Text Search GIN indexing** — unified store for relational models, 1536-d HNSW vector indices, and `to_tsvector('english', content)` lexical indices.
+**Interview Forge** takes a candidate's **Resume PDF** and a target **Job Description (JD)** and runs an evidence-grounded mock interview:
 
-## End-to-End RAG & Verification Data Flow
+1. **Finds Matches & Skill Gaps:** Breaks the job description into individual requirements and checks your resume for proof, marking each requirement as **Covered**, **Partial**, or **Gap**.
+2. **Asks Verifiable Questions:** Generates tailored technical and behavioral questions where **every question cites an exact quote from your resume**—and automatically checks that the AI didn't make up or exaggerate the quote.
+3. **Grades Answers Fairly:** Scores your answers on 4 dimensions (*Relevance*, *Specificity*, *Structure*, *Clarity*) without being tricked by long, buzzword-heavy rambling answers.
 
-1. **Structure-Aware Contextual Indexing (`chunking_service.py`):**
-   - When a user uploads a PDF (`POST /resumes`), `pypdf` extracts raw text off the event loop and `chunk_resume_structured(strategy="bullet_contextual")` parses section headers (`EXPERIENCE`, `PROJECTS`, `SKILLS`) and role headers (`Senior ML Engineer | Lumen Commerce | 2021–Present`).
-   - Each atomic bullet is prefixed with `[Section: <SECTION> | Role: <ROLE>]` before embedding, raising Signal-to-Noise Ratio (`SNR@3`) from `8.1%` (legacy 500-token chunks) to `52.7%` and `Focus-nDCG@5` from `0.244` to `0.727`.
-2. **Requirement-Decomposed Two-Stage Retrieval (`retrieval_service.py`, `grounding_service.py`):**
-   - Instead of querying the vector store with an entire raw Job Description, `extract_jd_requirements` decomposes the JD into atomic `must` and `nice` requirements.
-   - **Stage 1 (Hybrid RRF):** Combines Dense Bi-Encoder similarity (`pgvector` cosine / `BAAI/bge-small-en-v1.5` & `bge-base-en-v1.5`), tech-tokenized `BM25Okapi`, and PostgreSQL `ts_rank_cd` Full-Text Search via Reciprocal Rank Fusion ($k=60$).
-   - **Stage 2 (Neural Cross-Encoder Reranking + MMR):** Scores top candidate chunks jointly with the query via `cross-encoder/ms-marco-MiniLM-L-6-v2` or `BAAI/bge-reranker-base` and applies Maximal Marginal Relevance (MMR) diversification, improving `nDCG@5` by **+18.3%** ($0.633 \to 0.749, p = 0.0005$) and `Recall@3` from $61.0\% \to 72.6\%$.
-3. **Citation Grounding & Hallucination Guardrail (`grounding_service.py`):**
-   - Every generated question's `anchor` is checked against the resume via normalized exact substring match, RapidFuzz partial span alignment, tech-token recall, and bi-encoder semantic entailment (`AUROC = 1.000`).
-   - Any ungrounded/hallucinated anchor is automatically repaired to the highest-scoring verbatim phrase from the matched resume chunk (`100%` post-guardrail grounding rate).
-4. **Length-Deconfounded Rubric Evaluation (`evaluation_service.py`):**
-   - Evaluates candidate answers across `clarity`, `structure`, `depth`, and `relevance` (0–5) while penalizing verbose low-specificity "buzzword soup" (`Spearman rho = 0.830`, `Quadratic Weighted Kappa = 0.727`, `100%` accuracy on length-confound test cases).
+---
+
+## 2. Three-Tier Application Stack
+
+1. **Next.js 16 Frontend (`apps/web`):**
+   - Handles PDF uploads, job description management, interactive interview sessions, and the public **AI Benchmark & Retrieval Lab (`/benchmarks`)**.
+2. **FastAPI Async Backend (`apps/api`):**
+   - Handles JWT authentication, structure-aware resume parsing, 8-strategy retrieval & Cross-Encoder reranking, fit-gap classification, citation grounding verification, and rubric grading.
+3. **PostgreSQL 16 (`pgvector` + Full-Text Search):**
+   - Stores relational data alongside **HNSW vector indexes** (for semantic search) and **GIN `tsvector` indexes** (for exact keyword search).
+
+---
+
+## 3. How the AI Pipeline Changed (From Basic Prototype to Production Architecture)
+
+### Step 1: Resume Chunking (`chunking_service.py`)
+- **How It Started:** The original app split resumes into fixed 500-word blocks. Since a resume is only 1–2 pages long, a 500-word block mashed multiple unrelated jobs into a single noisy paragraph (**only 8.1% Signal-to-Noise Ratio**).
+- **How We Improved It:** We built a structure-aware parser (`bullet_contextual`) that detects section headers (`Experience`, `Projects`, `Skills`, `Education`) and role titles, keeping each bullet point separate and prefixing it with `[Section | Role]`.
+- **Result:** Context fed to the LLM is **6.5× cleaner** (`SNR@3` rose from **8.1% → 52.7%**, and `Recall@150tok` jumped from **17.2% → 77.6%**).
+
+### Step 2: Two-Stage Hybrid Search & Neural Reranking (`retrieval_service.py`)
+- **How It Started:** Relied on a single vector embedding lookup, which often missed exact technical terms (`gRPC`, `pgvector`, `CUDA`) or confused look-alike words (*"JavaScript"* vs. *"Java"*).
+- **How We Improved It:**
+  - **Stage 1 (Hybrid Search):** Runs Keyword Search (PostgreSQL Full-Text Search + BM25) and Vector Search (`pgvector` + BGE embeddings) in parallel and merges their rankings using **Reciprocal Rank Fusion (`RRF`)**.
+  - **Stage 2 (Cross-Encoder Reranker + MMR):** Takes the top 15 candidates and re-scores each `(job requirement, resume bullet)` pair jointly using a neural Cross-Encoder (`BAAI/bge-reranker-base`), then removes near-duplicate bullets with Maximal Marginal Relevance (`MMR`).
+- **Result:** Improved search ranking accuracy (`nDCG@5`) by **+18.3%** (`0.633 → 0.749`, $p = 0.0005$) and lifted top-5 recall to **83.5%**.
+
+### Step 3: Anti-Hallucination Quote Checker (`grounding_service.py`)
+- **How It Started:** Trusted the LLM to copy quotes from the resume accurately, which meant the LLM sometimes invented or exaggerated resume claims.
+- **How We Improved It:** Every generated question's `evidence_anchor` is verified against the candidate's actual resume using exact substring checks, fuzzy matching (`RapidFuzz`), and semantic similarity. If a quote is fabricated, the guardrail catches it (**100% detection rate / `1.000 F1`**) and automatically swaps in the closest real verbatim sentence from the resume (**100% grounded citations**).
+
+### Step 4: Anti-Rambling Answer Grader (`evaluation_service.py`)
+- **How It Started:** Single-pass grading with no calibration benchmark to verify whether longer answers automatically got higher scores.
+- **How We Improved It:** Calibrated a 4-dimensional rubric evaluator on 64 multi-tier answers (including adversarial pairs comparing concise 70-word expert answers with concrete metrics against 280-word buzzword-filled rambling answers).
+- **Result:** Achieved **91.7% pairwise ranking accuracy** (`Spearman rho = 0.830`) and **100% (7/7) accuracy** on length-confound test cases.
