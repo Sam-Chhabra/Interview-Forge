@@ -1,10 +1,3 @@
-"""
-Resume model.
-
-A resume belongs to a user and is split into chunks for embedding-based
-retrieval. parse_status tracks the async parse/chunk/embed pipeline.
-"""
-
 import enum
 import uuid
 from typing import TYPE_CHECKING
@@ -21,13 +14,11 @@ if TYPE_CHECKING:
     from app.models.resume_chunk import ResumeChunk
     from app.models.user import User
 
-
 class ParseStatus(str, enum.Enum):
     pending = "pending"
     processing = "processing"
     completed = "completed"
     failed = "failed"
-
 
 class Resume(Base):
     __tablename__ = "resumes"

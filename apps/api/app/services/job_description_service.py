@@ -1,10 +1,3 @@
-"""
-Job description service layer.
-
-JDs don't need a parse pipeline — they're stored as the user submits them.
-This module just wraps the persistence + lookup so route handlers stay thin.
-"""
-
 import uuid
 
 from sqlalchemy import select
@@ -14,16 +7,11 @@ from app.models.job_description import JobDescription
 from app.models.resume import ParseStatus
 from app.schemas.job_description import JobDescriptionCreate
 
-
 async def create_job_description(
     db: AsyncSession,
     user_id: uuid.UUID,
     payload: JobDescriptionCreate,
 ) -> JobDescription:
-    """Persist a JD owned by user_id.
-
-    JDs are 'completed' on save — there is no async processing pipeline.
-    """
     jd = JobDescription(
         user_id=user_id,
         title=payload.title,
@@ -36,7 +24,6 @@ async def create_job_description(
     await db.refresh(jd)
     return jd
 
-
 async def get_job_description(
     db: AsyncSession,
     jd_id: uuid.UUID,
@@ -48,7 +35,6 @@ async def get_job_description(
             JobDescription.user_id == user_id,
         )
     )
-
 
 async def list_job_descriptions(
     db: AsyncSession,

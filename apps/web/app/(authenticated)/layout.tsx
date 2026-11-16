@@ -20,8 +20,6 @@ export default function AuthenticatedLayout({
     }
   }, [accessToken, isLoading, router]);
 
-  // While the auth hydration is in flight or we're about to redirect, render
-  // nothing so the protected content never flashes for an unauthenticated user.
   if (isLoading || !accessToken) {
     return null;
   }

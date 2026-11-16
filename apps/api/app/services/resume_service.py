@@ -1,11 +1,3 @@
-"""
-Resume service layer.
-
-Route handlers stay thin — all DB queries, file I/O, and the resume parse
-pipeline (extract -> structure-aware contextual chunk -> embed -> store)
-live here.
-"""
-
 import asyncio
 import logging
 import uuid
@@ -28,8 +20,7 @@ from app.services.retrieval_service import (
 
 logger = logging.getLogger(__name__)
 
-_CHUNK_SIZE = 8 * 1024  # 8 KB
-
+_CHUNK_SIZE = 8 * 1024
 
 async def save_uploaded_file(
     file: UploadFile,
@@ -37,11 +28,6 @@ async def save_uploaded_file(
     upload_dir: str,
     max_bytes: int,
 ) -> tuple[int, str]:
-    """Stream an upload to disk in 8 KB chunks, enforcing a size ceiling.
-
-    Returns (bytes_written, file_path). On overflow the partial file is
-    removed before raising.
-    """
     Path(upload_dir).mkdir(parents=True, exist_ok=True)
     dest = Path(upload_dir) / f"{resume_id}.pdf"
 
@@ -65,14 +51,12 @@ async def save_uploaded_file(
 
     return total, str(dest)
 
-
 async def get_resume_by_id(
     db: AsyncSession, resume_id: uuid.UUID, user_id: uuid.UUID
 ) -> Resume | None:
     return await db.scalar(
         select(Resume).where(Resume.id == resume_id, Resume.user_id == user_id)
     )
-
 
 async def list_resumes_for_user(
     db: AsyncSession, user_id: uuid.UUID
@@ -84,14 +68,7 @@ async def list_resumes_for_user(
     )
     return list(result)
 
-
 async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
-    """Full resume processing pipeline, run as a background task.
-
-    extract text -> contextual bullet chunk -> embed -> store chunks.
-    Atomic: any failure marks the resume 'failed' and rolls back first, so no
-    partial chunks are ever committed.
-    """
     async with AsyncSessionLocal() as db:
         try:
             resume = await db.get(Resume, resume_id)
@@ -102,7 +79,6 @@ async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
             resume.parse_status = ParseStatus.processing
             await db.commit()
 
-            # pypdf is synchronous — run it off the event loop.
             text = await asyncio.to_thread(extract_text_from_pdf, file_path)
             resume.raw_text = text
             await db.commit()
@@ -145,7 +121,6 @@ async def parse_resume(resume_id: uuid.UUID, file_path: str) -> None:
             except Exception:
                 await db.rollback()
 
-
 async def search_chunks(
     db: AsyncSession,
     resume_id: uuid.UUID,
@@ -155,11 +130,6 @@ async def search_chunks(
     strategy: RetrievalStrategy = "hybrid_rerank",
     use_mmr: bool = False,
 ) -> list[dict]:
-    """Return the top-k most relevant chunks for a query using the chosen strategy.
-
-    Defaults to our two-stage `hybrid_rerank` pipeline (Reciprocal Rank Fusion
-    over dense + lexical BM25/Postgres FTS followed by Cross-Encoder reranking).
-    """
     resume = await get_resume_by_id(db, resume_id, user_id)
     if resume is None:
         raise HTTPException(

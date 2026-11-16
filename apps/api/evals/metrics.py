@@ -1,24 +1,3 @@
-r"""
-Information Retrieval, Grounding, and Grader Calibration metrics with
-paired bootstrap confidence intervals and permutation significance tests.
-
-Implements:
-- Standard IR metrics: `Recall@k`, `MRR@k`, `nDCG@k` (graded 0/1/2), `MAP@k`
-- Granularity-aware RAG metrics:
-  - `Recall@TokenBudget` (e.g. `Recall@150tok`, `Recall@300tok`) — measures
-    how much relevant evidence is retrieved within a fixed LLM context budget,
-    exposing why bloated 500-token chunks lose to atomic contextual bullets.
-  - `Focus-nDCG@k` (`f_ndcg@5`) — discounts the gain of coarse chunks that
-    bundle $m$ unrelated bullets by $1 / \sqrt{m}$ to penalize context dilution.
-  - `Signal-to-Noise Ratio (SNR@k)` — fraction of retrieved tokens that belong
-    to relevant resume items.
-  - `Distractor Trap Rate@k` (`trap_rate@3`) — how often a planted lexical trap
-    is ranked in the top-$k$.
-  - `Gap Detection AUROC` — ability of top-1 score to distinguish supported
-    requirements from true skill gaps (`match_type == 'gap'`).
-- Paired bootstrap 95% CIs and paired permutation p-values.
-"""
-
 from __future__ import annotations
 
 import math
@@ -29,9 +8,7 @@ import numpy as np
 from app.services.chunking_service import ChunkRecord, count_tokens
 from evals.datasets.loader import Item, Resume
 
-
 def items_in_chunk(chunk: ChunkRecord, resume: Resume) -> list[Item]:
-    """Return all resume `Item`s whose character span overlaps `chunk`."""
     overlapped: list[Item] = []
     for it in resume.items:
         overlap = min(chunk.end_char, it.end) - max(chunk.start_char, it.start)
@@ -40,7 +17,6 @@ def items_in_chunk(chunk: ChunkRecord, resume: Resume) -> list[Item]:
         elif it.text.lower() in chunk.raw_content.lower():
             overlapped.append(it)
     return overlapped
-
 
 @dataclass
 class QueryEvalResult:
@@ -59,9 +35,8 @@ class QueryEvalResult:
     recall_at_150tok: float
     recall_at_300tok: float
     snr_at_3: float
-    trap_at_3: float | None  # Only defined when query has planted distractors
+    trap_at_3: float | None
     latency_ms: float
-
 
 def evaluate_ranked_chunks(
     *,
@@ -74,10 +49,8 @@ def evaluate_ranked_chunks(
     resume: Resume,
     latency_ms: float = 0.0,
 ) -> QueryEvalResult:
-    """Score a ranked list of `(ChunkRecord, score)` against item-level qrels."""
     top1_score = float(ranked_chunks[0][1]) if ranked_chunks else 0.0
     if not relevant:
-        # Gap query: IR ranking metrics are N/A (0.0); used for Gap AUROC
         return QueryEvalResult(
             qid=qid,
             match_type=match_type,
@@ -101,7 +74,6 @@ def evaluate_ranked_chunks(
     total_rel_items = len(relevant)
     distractor_set = set(distractors)
 
-    # Map each ranked chunk to: (contained_items, new_rel_items, max_grade, focus_factor)
     seen_rel_for_dcg: set[str] = set()
     chunk_hits_by_rank: list[set[str]] = []
     chunk_gains: list[float] = []
@@ -116,7 +88,6 @@ def evaluate_ranked_chunks(
         rel_in_chunk = contained_ids & set(relevant.keys())
         new_rel = rel_in_chunk - seen_rel_for_dcg
 
-        # Graded gain (2^g - 1) for best newly-covered relevant item in this chunk
         if new_rel:
             best_grade = max(relevant[iid] for iid in new_rel)
             gain = float((2**best_grade) - 1)
@@ -124,8 +95,6 @@ def evaluate_ranked_chunks(
         else:
             gain = 0.0
 
-        # Focus penalty: if a chunk bundles `m` resume items together, discount
-        # by 1/sqrt(m) so stuffing 15 bullets into one chunk cannot game nDCG.
         num_items_bundled = max(1, len(contained))
         focus_discount = 1.0 / math.sqrt(num_items_bundled)
 
@@ -147,14 +116,12 @@ def evaluate_ranked_chunks(
             covered.update(s)
         return len(covered) / total_rel_items
 
-    # MRR@10: reciprocal rank of first chunk containing any relevant item
     mrr_10 = 0.0
     for idx, s in enumerate(chunk_hits_by_rank[:10], start=1):
         if s:
             mrr_10 = 1.0 / idx
             break
 
-    # Ideal DCG@5 based on sorted relevance grades
     ideal_grades = sorted(relevant.values(), reverse=True)[:5]
     idcg_5 = sum(
         ((2**g) - 1) / math.log2(rank + 1)
@@ -171,7 +138,6 @@ def evaluate_ranked_chunks(
     ndcg_5 = (dcg_5 / idcg_5) if idcg_5 > 0 else 0.0
     f_ndcg_5 = (f_dcg_5 / idcg_5) if idcg_5 > 0 else 0.0
 
-    # MAP@10
     ap_sum = 0.0
     rel_chunks_so_far = 0
     covered_ap: set[str] = set()
@@ -183,31 +149,25 @@ def evaluate_ranked_chunks(
             ap_sum += rel_chunks_so_far / rank
     map_10 = ap_sum / min(total_rel_items, 10)
 
-    # Token-budget Recall@B (how many relevant items are retrieved before
-    # cumulative raw chunk tokens exceed budget B)
     def _recall_at_token_budget(budget: int) -> float:
         used_tokens = 0
         covered: set[str] = set()
         for hits, c_toks in zip(chunk_hits_by_rank, chunk_tot_tokens):
             if used_tokens + c_toks > budget and used_tokens > 0:
-                # Partial credit if first chunk itself exceeds budget
                 break
             used_tokens += c_toks
             covered.update(hits)
             if used_tokens >= budget:
                 break
-        # If even the first chunk exceeded `budget`, prorate by budget / chunk_tokens
         if not covered and chunk_hits_by_rank and chunk_tot_tokens[0] > budget:
             prorate = min(1.0, budget / chunk_tot_tokens[0])
             return (len(chunk_hits_by_rank[0]) / total_rel_items) * prorate
         return len(covered) / total_rel_items
 
-    # SNR@3
     tot_top3 = sum(chunk_tot_tokens[:3])
     rel_top3 = sum(chunk_rel_tokens[:3])
     snr_3 = min(1.0, rel_top3 / tot_top3) if tot_top3 > 0 else 0.0
 
-    # Distractor Trap Rate@3
     trap_3: float | None = None
     if distractor_set:
         trap_3 = 1.0 if any(chunk_has_trap[:3]) else 0.0
@@ -232,9 +192,7 @@ def evaluate_ranked_chunks(
         latency_ms=latency_ms,
     )
 
-
 def compute_gap_auroc(results: list[QueryEvalResult]) -> float:
-    """Compute AUROC of `top1_score` for separating supported queries from gaps."""
     pos = [r.top1_score for r in results if not r.is_gap]
     neg = [r.top1_score for r in results if r.is_gap]
     if not pos or not neg:
@@ -249,14 +207,12 @@ def compute_gap_auroc(results: list[QueryEvalResult]) -> float:
                 wins += 0.5
     return wins / total
 
-
 def bootstrap_ci(
     values: list[float],
     *,
     n_boot: int = 1000,
     seed: int = 42,
 ) -> tuple[float, float, float]:
-    """Return `(mean, ci_low_95, ci_high_95)` via non-parametric bootstrap."""
     if not values:
         return (0.0, 0.0, 0.0)
     arr = np.asarray(values, dtype=np.float64)
@@ -269,7 +225,6 @@ def bootstrap_ci(
     lo, hi = np.percentile(means, [2.5, 97.5])
     return (mean_val, float(lo), float(hi))
 
-
 def paired_permutation_pvalue(
     scores_a: list[float],
     scores_b: list[float],
@@ -277,7 +232,6 @@ def paired_permutation_pvalue(
     n_perm: int = 2000,
     seed: int = 42,
 ) -> float:
-    r"""Two-sided paired permutation test p-value for $H_0: \mu_A = \mu_B$."""
     a = np.asarray(scores_a, dtype=np.float64)
     b = np.asarray(scores_b, dtype=np.float64)
     diffs = a - b
@@ -289,9 +243,7 @@ def paired_permutation_pvalue(
     perm_means = np.abs(np.mean(signs * diffs, axis=1))
     return float((np.sum(perm_means >= obs) + 1) / (n_perm + 1))
 
-
 def aggregate_query_results(results: list[QueryEvalResult]) -> dict:
-    """Aggregate per-query metrics with 95% bootstrap CIs and match_type slices."""
     non_gap = [r for r in results if not r.is_gap]
     traps = [r.trap_at_3 for r in non_gap if r.trap_at_3 is not None]
     latencies = [r.latency_ms for r in results]

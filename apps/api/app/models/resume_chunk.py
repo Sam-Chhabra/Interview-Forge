@@ -1,7 +1,3 @@
-"""
-ResumeChunk — a slice of resume text plus its 1536-d embedding for RAG.
-"""
-
 import uuid
 from typing import TYPE_CHECKING
 
@@ -14,7 +10,6 @@ from app.db.base import Base
 
 if TYPE_CHECKING:
     from app.models.resume import Resume
-
 
 class ResumeChunk(Base):
     __tablename__ = "resume_chunks"

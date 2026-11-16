@@ -1,10 +1,3 @@
-"""
-JobDescription model.
-
-The target role a user is preparing for. Drives question generation and
-resume-job matching.
-"""
-
 import uuid
 from typing import TYPE_CHECKING
 
@@ -19,7 +12,6 @@ from app.models.resume import ParseStatus
 if TYPE_CHECKING:
     from app.models.interview_session import InterviewSession
     from app.models.user import User
-
 
 class JobDescription(Base):
     __tablename__ = "job_descriptions"
@@ -38,8 +30,6 @@ class JobDescription(Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     company: Mapped[str | None] = mapped_column(String(255), nullable=True)
     raw_text: Mapped[str] = mapped_column(Text, nullable=False)
-    # The Postgres ENUM type "parse_status" is owned by resumes.parse_status;
-    # create_type=False prevents Alembic from emitting a duplicate CREATE TYPE.
     parse_status: Mapped[ParseStatus] = mapped_column(
         sa.Enum(ParseStatus, name="parse_status", create_type=False),
         default=ParseStatus.pending,

@@ -1,15 +1,6 @@
-/**
- * Typed API client for the FastAPI backend.
- *
- * Token is held in a module-level variable + mirrored to localStorage so the
- * session survives a page reload. AuthContext is the canonical writer (via
- * setAccessToken); everything else just reads via the api.* methods.
- */
-
 function resolveApiUrl(path: string): string {
   const normalizedPath = path.startsWith('/') ? path : `/${path}`;
 
-  // Server-side (SSR / Route Handlers): use the Vercel service binding `API_URL`
   if (typeof window === 'undefined') {
     const base =
       process.env.API_URL ||
@@ -18,8 +9,6 @@ function resolveApiUrl(path: string): string {
     return new URL(normalizedPath, base.endsWith('/') ? base : `${base}/`).toString();
   }
 
-  // Client-side (Browser): use explicit NEXT_PUBLIC_API_URL if configured,
-  // otherwise route through same-origin `/api/*` rewrite defined in vercel.json.
   if (process.env.NEXT_PUBLIC_API_URL) {
     return `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '')}${normalizedPath}`;
   }
@@ -84,7 +73,6 @@ async function uploadFile<T>(path: string, file: File): Promise<T> {
   const res = await fetch(resolveApiUrl(path), {
     method: 'POST',
     headers: {
-      // No Content-Type — browser sets it with boundary
       ...(token ? { Authorization: `Bearer ${token}` } : {}),
     },
     body: formData,

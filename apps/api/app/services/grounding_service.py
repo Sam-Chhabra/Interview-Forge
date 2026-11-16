@@ -1,18 +1,3 @@
-"""
-Citation grounding verification, hallucination repair, and JD requirement
-fit-gap analysis.
-
-Provides deterministic + neural verification of two core RAG quality dimensions:
-1. **Faithfulness / Grounding (`verify_question_grounding`)** — checks whether
-   each generated question's `anchor` is actually a verbatim or near-verbatim
-   span from the candidate's resume and whether the question rationale is
-   semantically supported by the retrieved context chunks.
-2. **Requirement Decomposition & Fit-Gap Matrix (`analyze_resume_jd_fit`)** —
-   decomposes a raw Job Description into atomic requirements (`must` vs `nice`)
-   and runs per-requirement hybrid + cross-encoder retrieval to classify each
-   requirement as `strong_match`, `partial_match`, or `gap`.
-"""
-
 from __future__ import annotations
 
 import re
@@ -36,11 +21,9 @@ FitLevel = Literal["strong_match", "partial_match", "gap"]
 _WS_RE = re.compile(r"\s+")
 _PUNCT_STRIP_RE = re.compile(r"[^\w\s+#./\-]")
 
-
 def _normalize_for_match(text: str) -> str:
     cleaned = _PUNCT_STRIP_RE.sub(" ", text.lower())
     return _WS_RE.sub(" ", cleaned).strip()
-
 
 @dataclass
 class GroundingResult:
@@ -71,13 +54,10 @@ class GroundingResult:
             "repaired_anchor": self.repaired_anchor,
         }
 
-
 def _find_best_span_in_text(anchor: str, resume_text: str) -> tuple[int, int, str, float]:
-    """Locate the character span in `resume_text` that best matches `anchor`."""
     if not anchor.strip() or not resume_text.strip():
         return (0, 0, "", 0.0)
 
-    # 1. Case-insensitive direct substring search
     lower_resume = resume_text.lower()
     lower_anchor = anchor.strip().lower()
     pos = lower_resume.find(lower_anchor)
@@ -85,7 +65,6 @@ def _find_best_span_in_text(anchor: str, resume_text: str) -> tuple[int, int, st
         end = pos + len(lower_anchor)
         return (pos, end, resume_text[pos:end], 1.0)
 
-    # 2. Line-by-line fuzzy partial ratio search
     best_score = 0.0
     best_span = (0, 0)
     best_excerpt = ""
@@ -104,9 +83,7 @@ def _find_best_span_in_text(anchor: str, resume_text: str) -> tuple[int, int, st
             best_excerpt = stripped
     return (best_span[0], best_span[1], best_excerpt, best_score)
 
-
 def _extract_verbatim_repair_phrase(raw_chunk_text: str, query_hint: str) -> str:
-    """Extract a concise 5-12 word verbatim phrase from `raw_chunk_text`."""
     words = raw_chunk_text.strip().split()
     if len(words) <= 10:
         return raw_chunk_text.strip()
@@ -123,7 +100,6 @@ def _extract_verbatim_repair_phrase(raw_chunk_text: str, query_hint: str) -> str
             best_window = window_str
     return best_window.strip(" ,;.")
 
-
 def verify_question_grounding(
     *,
     anchor: str,
@@ -132,12 +108,6 @@ def verify_question_grounding(
     resume_text: str,
     chunks: list[dict] | None = None,
 ) -> GroundingResult:
-    """Verify that an interview question's `anchor` and `rationale` are grounded.
-
-    Combines deterministic string verification (normalized exact match +
-    RapidFuzz partial ratio + tech-token recall) with bi-encoder semantic
-    similarity between the question rationale and the retrieved resume chunks.
-    """
     norm_anchor = _normalize_for_match(anchor)
     norm_resume = _normalize_for_match(resume_text)
     exact_match = bool(norm_anchor and len(norm_anchor) >= 4 and norm_anchor in norm_resume)
@@ -156,8 +126,6 @@ def verify_question_grounding(
         else 0.0
     )
 
-    # Match against retrieved chunks to identify `matched_chunk_index` and
-    # compute semantic support for `(anchor + question + rationale)`.
     candidate_texts: list[str] = []
     candidate_indices: list[int] = []
     if chunks:
@@ -181,7 +149,6 @@ def verify_question_grounding(
         chunk_vecs = vecs[1:]
         sims = np.dot(chunk_vecs, claim_vec)
 
-        # Also check which chunk has highest lexical/fuzzy overlap with `anchor`
         fuzz_per_chunk = np.array(
             [
                 fuzz.partial_ratio(anchor.lower(), ct.lower()) / 100.0
@@ -231,14 +198,12 @@ def verify_question_grounding(
         repaired_anchor=repaired,
     )
 
-
 @dataclass
 class ExtractedRequirement:
     req_id: str
     text: str
     priority: Literal["must", "nice"]
     category: Literal["technical", "architecture", "domain", "leadership"]
-
 
 _NICE_HEADER_RE = re.compile(
     r"\b(nice to have|preferred|bonus|plus|desirable|optional)\b", re.I
@@ -260,9 +225,7 @@ _ARCH_RE = re.compile(
     re.I,
 )
 
-
 def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[ExtractedRequirement]:
-    """Deterministically decompose a raw Job Description into atomic requirements."""
     if not jd_text.strip():
         return []
 
@@ -272,7 +235,6 @@ def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[Ex
 
     for ln in lines:
         lower = ln.lower()
-        # Check section transitions
         if len(ln) < 65 and _NICE_HEADER_RE.search(lower):
             mode = "nice"
             continue
@@ -288,7 +250,6 @@ def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[Ex
         if len(cleaned) < 18 or len(cleaned) > 260:
             continue
 
-        # Score how "requirement-like" this line is
         priority: Literal["must", "nice"] = "nice" if mode == "nice" or _NICE_HEADER_RE.search(cleaned) else "must"
         if mode in ("must", "nice") and is_bullet:
             candidates.append((cleaned, priority, 3))
@@ -297,7 +258,6 @@ def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[Ex
         elif is_bullet or re.search(r"\b(\d+\+?\s*years|experience with|proficiency in|strong|expertise)\b", cleaned, re.I):
             candidates.append((cleaned, priority, 1))
 
-    # Fallback: split sentences if JD was pasted as a single paragraph
     if not candidates:
         for sent in re.split(r"(?<=[.!?])\s+", jd_text.strip()):
             s = sent.strip()
@@ -305,7 +265,6 @@ def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[Ex
                 prio: Literal["must", "nice"] = "nice" if _NICE_HEADER_RE.search(s) else "must"
                 candidates.append((s, prio, 1))
 
-    # Prioritize explicit requirement bullets before responsibility bullets
     candidates.sort(key=lambda item: -item[2])
     selected = candidates[:max_requirements]
 
@@ -329,7 +288,6 @@ def extract_jd_requirements(jd_text: str, max_requirements: int = 10) -> list[Ex
         )
     return out
 
-
 def analyze_resume_jd_fit(
     resume_text: str,
     jd_text: str,
@@ -344,7 +302,6 @@ def analyze_resume_jd_fit(
     ] = "bullet_contextual",
     top_k_per_req: int = 2,
 ) -> dict:
-    """Decompose JD into requirements and compute a per-requirement evidence matrix."""
     chunks: list[ChunkRecord] = chunk_resume_structured(
         resume_text, strategy=chunk_strategy
     )
@@ -369,14 +326,12 @@ def analyze_resume_jd_fit(
         hits = retriever.search(req.text, strategy=strategy, top_k=top_k_per_req)
         top_hit = hits[0] if hits else None
 
-        # Determine calibrated confidence in [0, 1] that the resume satisfies `req`
         if top_hit is None:
             confidence = 0.0
         else:
             dense_sim = max(0.0, float(top_hit.dense_score or 0.0))
             lex_has_match = 1.0 if (top_hit.lexical_score or 0.0) > 0.5 else 0.0
             if top_hit.rerank_prob is not None:
-                # Combine cross-encoder sigmoid probability with dense cosine & lexical hit
                 confidence = float(
                     0.50 * top_hit.rerank_prob
                     + 0.35 * min(1.0, max(0.0, (dense_sim - 0.35) / 0.45))

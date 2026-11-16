@@ -52,11 +52,9 @@ export function InterviewSessionView({ id }: { id: string }) {
       setSession(updatedSession);
       setAnswers(updatedAnswers);
     } catch {
-      // silent — the card already updated its own state
     }
   }
 
-  // Latest answer per question_id (newest created_at wins).
   const latestByQuestion = new Map<string, InterviewAnswer>();
   [...answers]
     .sort((a, b) => b.created_at.localeCompare(a.created_at))

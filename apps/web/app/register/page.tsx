@@ -46,7 +46,6 @@ export default function RegisterPage() {
   async function onSubmit(values: RegisterValues) {
     try {
       await registerUser(values.email, values.password, values.full_name || undefined);
-      // AuthContext.register auto-logs in on success.
       router.push('/dashboard');
     } catch (err) {
       const detail =

@@ -1,14 +1,3 @@
-"""
-AI evaluator for interview answers.
-
-Scores a candidate's typed answer against a 4-dimension rubric (clarity,
-structure, depth, relevance) plus a computed overall score and qualitative
-feedback, returned as a plain dict ready to drop into
-InterviewAnswer.evaluation_json. The service is intentionally ORM-free:
-callers pass primitives (question text, type, difficulty, rationale,
-anchor, answer text) and receive a dict.
-"""
-
 import asyncio
 import json
 import logging
@@ -31,7 +20,6 @@ from app.services.embedding_service import has_valid_openai_key
 _client = AsyncOpenAI(api_key=settings.openai_api_key)
 _MODEL = "gpt-4o"
 logger = logging.getLogger(__name__)
-
 
 _EVALUATION_SCHEMA = {
     "name": "answer_evaluation",
@@ -61,7 +49,6 @@ _EVALUATION_SCHEMA = {
         "additionalProperties": False,
     },
 }
-
 
 _SYSTEM_PROMPT = """You are a senior engineering interviewer at a top tech company evaluating a candidate's answer. Provide structured, actionable feedback. Be honest — don't grade-inflate.
 
@@ -206,9 +193,6 @@ Even for poor answers, you must still produce 1-3 strengths — the field is req
 This isn't grade inflation — these are real (if minor) positives even for weak answers. They give the candidate one true thing to build from.
 """
 
-
-# Per-dimension weights for the final score. Depth is weighted highest
-# because it best separates strong candidates; clarity lowest.
 _SCORE_WEIGHTS = {
     "clarity": 0.20,
     "structure": 0.25,
@@ -216,22 +200,12 @@ _SCORE_WEIGHTS = {
     "relevance": 0.25,
 }
 
-
 def compute_overall_score(
     clarity: int,
     structure: int,
     depth: int,
     relevance: int,
 ) -> float:
-    """Compute the final overall score (0-5) from the four rubric dimensions.
-
-    final = clarity*0.20 + structure*0.25 + depth*0.30 + relevance*0.25,
-    rounded to one decimal place.
-
-    Doing this arithmetic in Python — rather than trusting the LLM to
-    compute the weighted average — guarantees the final score is always
-    consistent with the four dimension scores the model returned.
-    """
     total = (
         clarity * _SCORE_WEIGHTS["clarity"]
         + structure * _SCORE_WEIGHTS["structure"]
@@ -239,7 +213,6 @@ def compute_overall_score(
         + relevance * _SCORE_WEIGHTS["relevance"]
     )
     return round(total, 1)
-
 
 @retry(
     stop=stop_after_attempt(3),
@@ -256,12 +229,6 @@ async def evaluate_answer(
     anchor: str,
     answer_text: str,
 ) -> dict:
-    """Score a candidate's answer against the 4-dimension rubric.
-
-    Returns the raw structured-output dict so callers can persist it
-    directly into InterviewAnswer.evaluation_json. Retries only on
-    transient OpenAI failures; everything else propagates.
-    """
     user_message = f"""QUESTION (type: {question_type}, difficulty: {difficulty})
 {question_text}
 
@@ -339,16 +306,10 @@ Evaluate this answer per the rubric. Return the structured JSON."""
             {"role": "user", "content": user_message},
         ],
         response_format=resp_fmt,
-        temperature=0.3,  # lower than question gen — we want consistent scoring
+        temperature=0.3,
     )
 
     data = json.loads(response.choices[0].message.content or "{}")
-    # v5: trust the model's holistic overall_score. The prompt now asks for
-    # a holistic judgment rather than a strict weighted average, so we no
-    # longer overwrite it with compute_overall_score(). The helper is kept
-    # below as dead code for unit tests / sanity checks.
-    # Enforces the min_length / max_length constraints from EvaluationRubric.
-    # On failure, ValidationError propagates → tenacity retries (up to 3x).
     EvaluationRubric.model_validate(data)
     logger.info(
         "Evaluated answer: clarity=%d structure=%d depth=%d relevance=%d overall=%.1f",

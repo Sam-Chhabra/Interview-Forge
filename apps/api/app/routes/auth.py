@@ -1,10 +1,3 @@
-"""
-Auth routes: register, login, refresh.
-
-Returns JWT access + refresh tokens. The frontend stores them in httpOnly
-cookies (preferred) or memory. Don't put them in localStorage.
-"""
-
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -24,7 +17,6 @@ from app.schemas.user import TokenPair, UserCreate, UserLogin, UserRead
 
 router = APIRouter()
 
-
 @router.post("/register", response_model=UserRead, status_code=status.HTTP_201_CREATED)
 async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> User:
     existing = await db.scalar(select(User).where(User.email == payload.email))
@@ -41,7 +33,6 @@ async def register(payload: UserCreate, db: AsyncSession = Depends(get_db)) -> U
     await db.refresh(user)
     return user
 
-
 @router.post("/login", response_model=TokenPair)
 async def login(payload: UserLogin, db: AsyncSession = Depends(get_db)) -> TokenPair:
     user = await db.scalar(select(User).where(User.email == payload.email))
@@ -54,7 +45,6 @@ async def login(payload: UserLogin, db: AsyncSession = Depends(get_db)) -> Token
         access_token=create_access_token(str(user.id)),
         refresh_token=create_refresh_token(str(user.id)),
     )
-
 
 @router.post("/refresh", response_model=TokenPair)
 async def refresh(refresh_token: str, db: AsyncSession = Depends(get_db)) -> TokenPair:
@@ -74,7 +64,6 @@ async def refresh(refresh_token: str, db: AsyncSession = Depends(get_db)) -> Tok
         access_token=create_access_token(user_id),
         refresh_token=create_refresh_token(user_id),
     )
-
 
 @router.get("/me", response_model=UserRead)
 async def me(current_user: User = Depends(get_current_user)) -> User:

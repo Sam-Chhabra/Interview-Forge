@@ -1,21 +1,3 @@
-"""
-Load + validate the ResumeJD-Bench evaluation dataset.
-
-Layout (one JSON file per document, so diffs stay reviewable):
-
-    evals/datasets/<version>/resumes/rNN.json
-    evals/datasets/<version>/jds/jNN.json
-
-Resumes are authored as structure (sections -> entries -> items) and rendered
-to plain text deterministically, mirroring what pypdf extracts from a real
-resume. Every item has a stable id; relevance judgments ("qrels") point at
-item ids, NOT at chunks. That makes judgments independent of the chunking
-strategy: a chunk is relevant iff it contains a judged item, so different
-chunkers can be compared on the same labels.
-
-Run as a script to validate:  python -m evals.datasets.loader [version]
-"""
-
 from __future__ import annotations
 
 import json
@@ -28,16 +10,14 @@ MATCH_TYPES = {"lexical", "abbreviation", "paraphrase", "implicit", "gap"}
 PRIORITIES = {"must", "nice"}
 BULLET = "• "
 
-
 @dataclass(frozen=True)
 class Item:
     id: str
     text: str
     section: str
     heading: str | None
-    start: int  # char offset of item text inside the rendered resume
+    start: int
     end: int
-
 
 @dataclass
 class Resume:
@@ -54,21 +34,18 @@ class Resume:
     def __post_init__(self) -> None:
         self._index = {it.id: it for it in self.items}
 
-
 @dataclass
 class Judgment:
-    relevant: dict[str, int]  # item_id -> grade (1 partial, 2 strong)
+    relevant: dict[str, int]
     match_type: str
     distractors: list[str] = field(default_factory=list)
-
 
 @dataclass
 class Requirement:
     req_id: str
     text: str
     priority: str
-    judgments: dict[str, Judgment]  # resume_id -> judgment
-
+    judgments: dict[str, Judgment]
 
 @dataclass
 class JobDescription:
@@ -79,10 +56,8 @@ class JobDescription:
     pairs_with: list[str]
     requirements: list[Requirement]
 
-
 @dataclass
 class Query:
-    """One (requirement, resume) retrieval query with its qrels."""
 
     qid: str
     jd_id: str
@@ -96,7 +71,6 @@ class Query:
     @property
     def is_gap(self) -> bool:
         return not self.relevant
-
 
 @dataclass
 class Dataset:
@@ -129,9 +103,7 @@ class Dataset:
                     )
         return out
 
-
 def render_resume(raw: dict) -> tuple[str, list[Item]]:
-    """Render structured resume JSON to PDF-extraction-like plain text."""
     lines: list[str] = []
     items: list[Item] = []
     offset = 0
@@ -167,11 +139,9 @@ def render_resume(raw: dict) -> tuple[str, list[Item]]:
                 )
     return "\n".join(lines), items
 
-
 def _load_json(path: Path) -> dict:
     with path.open(encoding="utf-8") as f:
         return json.load(f)
-
 
 def load_dataset(version: str = "v1") -> Dataset:
     root = DATASETS_DIR / version
@@ -217,9 +187,7 @@ def load_dataset(version: str = "v1") -> Dataset:
         )
     return Dataset(version=version, resumes=resumes, jds=jds)
 
-
 def validate(ds: Dataset) -> list[str]:
-    """Return a list of human-readable problems (empty list == valid)."""
     errors: list[str] = []
     seen_items: set[str] = set()
     for r in ds.resumes.values():
@@ -272,7 +240,6 @@ def validate(ds: Dataset) -> list[str]:
                         errors.append(f"{req.req_id}/{rid}: {d} both relevant and distractor")
     return errors
 
-
 def summarize(ds: Dataset) -> str:
     qs = ds.queries()
     by_type: dict[str, int] = {}
@@ -284,7 +251,6 @@ def summarize(ds: Dataset) -> str:
         f"{len(ds.jds)} JDs, {len(ds.pairs())} pairs, {len(qs)} queries; "
         f"match types: {dict(sorted(by_type.items()))}"
     )
-
 
 if __name__ == "__main__":
     version = sys.argv[1] if len(sys.argv) > 1 else "v1"

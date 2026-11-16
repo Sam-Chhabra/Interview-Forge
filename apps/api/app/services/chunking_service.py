@@ -1,16 +1,3 @@
-"""
-Token-aware and structure-aware text chunking for RAG indexing and evaluation.
-
-Supports both:
-1. Legacy fixed-token window chunking (`chunk_text`) with exact cl100k_base
-   token counts and configurable overlap.
-2. Multi-strategy structured resume chunking (`chunk_resume_structured`) with
-   character span tracking (`start_char`, `end_char`) and Anthropic-style
-   contextual headers (`[Section: EXPERIENCE | Role: ...]`) so atomic resume
-   bullets retain their parent section and role context during dense and
-   lexical retrieval.
-"""
-
 from __future__ import annotations
 
 import re
@@ -19,13 +6,10 @@ from typing import Literal
 
 import tiktoken
 
-# cl100k_base is the tokenizer for text-embedding-3-small.
 _encoder = tiktoken.get_encoding("cl100k_base")
 
-# Heuristic sentence boundary: sentence punctuation followed by whitespace.
 _SENTENCE_BOUNDARY = re.compile(r"(?<=[.!?])\s+")
 
-# Common resume section headers (case-insensitive when whole line is uppercase)
 _SECTION_KEYWORDS = {
     "SUMMARY",
     "PROFESSIONAL SUMMARY",
@@ -58,14 +42,12 @@ ChunkStrategy = Literal[
     "bullet_contextual",
 ]
 
-
 @dataclass(frozen=True)
 class ChunkRecord:
-    """A single indexed chunk with character span metadata and context header."""
 
     chunk_index: int
-    content: str  # Text indexed for retrieval (includes context header if contextual)
-    raw_content: str  # Original verbatim text span from the document
+    content: str
+    raw_content: str
     section_title: str | None
     context_header: str | None
     start_char: int
@@ -73,30 +55,23 @@ class ChunkRecord:
     token_count: int
     strategy: str
 
-
 def count_tokens(text: str) -> int:
     return len(_encoder.encode(text))
-
 
 def _count_tokens(text: str) -> int:
     return len(_encoder.encode(text))
 
-
 def _split_sentences(text: str) -> list[str]:
     return [s.strip() for s in _SENTENCE_BOUNDARY.split(text) if s.strip()]
 
-
 def _split_by_token_window(text: str, window: int) -> list[str]:
-    """Last-resort split: slice raw tokens into fixed-size windows."""
     tokens = _encoder.encode(text)
     return [
         _encoder.decode(tokens[start : start + window])
         for start in range(0, len(tokens), window)
     ]
 
-
 def _tail_tokens(text: str, n: int) -> str:
-    """Return the trailing n tokens of text, decoded back to a string."""
     if n <= 0:
         return ""
     tokens = _encoder.encode(text)
@@ -104,12 +79,7 @@ def _tail_tokens(text: str, n: int) -> str:
         return text
     return _encoder.decode(tokens[-n:])
 
-
 def _segment(text: str, target_tokens: int) -> list[str]:
-    """Break text into segments that each fit within target_tokens.
-
-    paragraph -> (if too big) sentences -> (if still too big) token windows.
-    """
     segments: list[str] = []
     paragraphs = [p.strip() for p in text.split("\n\n") if p.strip()]
     for para in paragraphs:
@@ -123,19 +93,11 @@ def _segment(text: str, target_tokens: int) -> list[str]:
                 segments.extend(_split_by_token_window(sentence, target_tokens))
     return segments
 
-
 def chunk_text(
     text: str,
     target_tokens: int = 500,
     overlap_tokens: int = 50,
 ) -> list[str]:
-    """Chunk text into ~target_tokens pieces with overlap_tokens of overlap.
-
-    Paragraphs are greedily packed into chunks. Oversized paragraphs are split
-    by sentence, and oversized sentences by raw token window. Each chunk after
-    the first is seeded with the tail of the previous chunk so context carries
-    across boundaries.
-    """
     segments = _segment(text, target_tokens)
     if not segments:
         return []
@@ -143,7 +105,7 @@ def chunk_text(
     chunks: list[str] = []
     current: list[str] = []
     current_tokens = 0
-    has_real_segment = False  # current holds >= 1 non-overlap segment
+    has_real_segment = False
 
     for seg in segments:
         seg_tokens = _count_tokens(seg)
@@ -163,14 +125,12 @@ def chunk_text(
 
     return chunks
 
-
 def _is_section_header(line: str) -> bool:
     stripped = line.strip().rstrip(":")
     if not stripped or len(stripped) > 48:
         return False
     if stripped.upper() in _SECTION_KEYWORDS:
         return True
-    # Uppercase short heading without bullet prefix or pipe separator
     if (
         stripped.isupper()
         and not _BULLET_PREFIX.match(line)
@@ -180,18 +140,15 @@ def _is_section_header(line: str) -> bool:
         return True
     return False
 
-
 def _is_entry_heading(line: str) -> bool:
     stripped = line.strip()
     if not stripped or _BULLET_PREFIX.match(line) or _is_section_header(line):
         return False
-    # Typical role/education heading: contains "|" or " – " / " - " with a year
     if "|" in stripped and len(stripped) <= 140:
         return True
     if re.search(r"\b(19|20)\d{2}\b", stripped) and len(stripped) <= 120:
         return True
     return False
-
 
 def _chunk_fixed_with_spans(
     text: str,
@@ -199,11 +156,9 @@ def _chunk_fixed_with_spans(
     overlap_tokens: int,
     strategy_name: str,
 ) -> list[ChunkRecord]:
-    """Fixed token-window chunking over raw document lines with char spans."""
     if not text.strip():
         return []
 
-    # Collect non-empty lines with their exact character offsets in `text`.
     line_spans: list[tuple[str, int, int]] = []
     cursor = 0
     for raw_line in text.split("\n"):
@@ -254,7 +209,6 @@ def _chunk_fixed_with_spans(
         if j >= n:
             break
 
-        # Step backwards from `j` to retain up to `overlap_tokens` of context
         back_tokens = 0
         back_j = j
         while back_j > i + 1:
@@ -267,13 +221,10 @@ def _chunk_fixed_with_spans(
 
     return records
 
-
 def _chunk_sentence_window(text: str, window_radius: int = 1) -> list[ChunkRecord]:
-    """Sentence-level chunks expanded by +/- window_radius neighboring sentences."""
     if not text.strip():
         return []
 
-    # Extract bullet/paragraph sentences with exact character spans
     sentences: list[tuple[str, int, int]] = []
     cursor = 0
     for raw_line in text.split("\n"):
@@ -283,7 +234,6 @@ def _chunk_sentence_window(text: str, window_radius: int = 1) -> list[ChunkRecor
         stripped = raw_line.strip()
         if not stripped or _is_section_header(stripped):
             continue
-        # Find sentences inside the line
         pos = 0
         for part in _SENTENCE_BOUNDARY.split(raw_line):
             part_str = part.strip()
@@ -319,16 +269,7 @@ def _chunk_sentence_window(text: str, window_radius: int = 1) -> list[ChunkRecor
         )
     return records
 
-
 def _chunk_bullet_contextual(text: str) -> list[ChunkRecord]:
-    """Structure-aware bullet chunking with Anthropic-style contextual headers.
-
-    Each bullet or standalone item becomes an atomic chunk so retrieval can
-    pinpoint exact resume claims without pulling in 400 tokens of unrelated
-    bullets. To prevent context loss (e.g., knowing *which* company or role a
-    bullet belongs to), each bullet is prefixed with:
-        [Section: <SECTION> | Role: <ENTRY_HEADING>]
-    """
     if not text.strip():
         return []
 
@@ -347,7 +288,6 @@ def _chunk_bullet_contextual(text: str) -> list[ChunkRecord]:
             continue
         line_num += 1
 
-        # Skip candidate name / contact header on lines 1-2 before any section
         if current_section is None and line_num <= 2 and not _is_section_header(stripped):
             continue
 
@@ -360,7 +300,6 @@ def _chunk_bullet_contextual(text: str) -> list[ChunkRecord]:
             current_heading = stripped
             continue
 
-        # Strip leading bullet marker for raw_content span alignment
         bullet_match = _BULLET_PREFIX.match(raw_line)
         if bullet_match:
             prefix_len = bullet_match.end()
@@ -400,18 +339,15 @@ def _chunk_bullet_contextual(text: str) -> list[ChunkRecord]:
             )
         )
 
-    # Fallback if a plain-text resume had no recognizable sections/bullets
     if not records:
         return _chunk_fixed_with_spans(text, 120, 20, "bullet_contextual")
 
     return records
 
-
 def chunk_resume_structured(
     text: str,
     strategy: ChunkStrategy = "bullet_contextual",
 ) -> list[ChunkRecord]:
-    """Chunk a resume using the specified strategy and return structured records."""
     if strategy == "fixed_500_50":
         return _chunk_fixed_with_spans(text, 500, 50, "fixed_500_50")
     if strategy == "fixed_200_30":

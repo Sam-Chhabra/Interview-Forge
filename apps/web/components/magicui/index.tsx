@@ -4,9 +4,6 @@ import React, { useEffect, useId, useRef, useState } from 'react';
 import { motion, useInView, useMotionTemplate, useMotionValue, useSpring } from 'motion/react';
 import { cn } from '@/lib/utils';
 
-/**
- * 1. DotPattern — Precision engineering SVG dot matrix with radial mask
- */
 export function DotPattern({
   width = 20,
   height = 20,
@@ -47,9 +44,6 @@ export function DotPattern({
   );
 }
 
-/**
- * 2. GridPattern — Subtle architectural coordinate grid (Palantir / Linear style)
- */
 export function GridPattern({
   width = 40,
   height = 40,
@@ -83,9 +77,6 @@ export function GridPattern({
   );
 }
 
-/**
- * 3. BorderBeam — Animated beam of light traveling along a card's perimeter
- */
 export function BorderBeam({
   className,
   size = 120,
@@ -122,9 +113,6 @@ export function BorderBeam({
   );
 }
 
-/**
- * 4. MagicCard — Mouse-tracking spotlight surface card
- */
 export function MagicCard({
   children,
   className,
@@ -170,9 +158,6 @@ export function MagicCard({
   );
 }
 
-/**
- * 5. NumberTicker — Spring-animated numeric counter
- */
 export function NumberTicker({
   value,
   decimals = 0,
@@ -214,9 +199,6 @@ export function NumberTicker({
   );
 }
 
-/**
- * 6. BlurFade — Smooth Apple-style staggered blur + vertical reveal
- */
 export function BlurFade({
   children,
   className,
@@ -240,9 +222,6 @@ export function BlurFade({
   );
 }
 
-/**
- * 7. AnimatedShinyBadge — Pill eyebrow badge with subtle metallic highlight
- */
 export function AnimatedShinyBadge({
   children,
   className,
@@ -263,9 +242,6 @@ export function AnimatedShinyBadge({
   );
 }
 
-/**
- * 8. MetricBar — Precision visual telemetry bar for IR metrics in [0, 1]
- */
 export function MetricBar({
   value,
   max = 1,

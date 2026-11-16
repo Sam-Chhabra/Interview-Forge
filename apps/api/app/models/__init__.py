@@ -1,8 +1,3 @@
-"""
-Importing this package registers every model class on Base.metadata,
-which is what Alembic autogenerate walks.
-"""
-
 from app.models.interview_answer import AnswerEvaluationStatus, InterviewAnswer
 from app.models.interview_question import InterviewQuestion
 from app.models.interview_session import (

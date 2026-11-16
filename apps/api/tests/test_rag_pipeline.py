@@ -1,9 +1,3 @@
-"""
-Unit and integration tests for Interview Forge's upgraded RAG, Chunking,
-Cross-Encoder Reranking, Citation Grounding, Fit-Gap Analysis, and Evaluation
-Benchmark pipelines.
-"""
-
 from __future__ import annotations
 
 import pytest
@@ -53,7 +47,6 @@ Nice to have:
 - Experience with Rust or WebAssembly edge inference on mobile devices
 """
 
-
 def test_chunking_strategies_preserve_spans_and_headers() -> None:
     for strat in (
         "fixed_500_50",
@@ -70,14 +63,11 @@ def test_chunking_strategies_preserve_spans_and_headers() -> None:
 
     bullets = chunk_resume_structured(SAMPLE_RESUME, strategy="bullet_contextual")
     assert len(bullets) == 7
-    # Experience bullets carry [Section: EXPERIENCE | Role: ...] context header
     exp_bullets = [b for b in bullets if b.section_title == "EXPERIENCE"]
     assert len(exp_bullets) == 5
     assert exp_bullets[0].context_header is not None
     assert "Lumen Commerce" in exp_bullets[0].context_header
-    # Verify legacy chunk_text still works
     assert len(chunk_text(SAMPLE_RESUME, target_tokens=100, overlap_tokens=20)) >= 1
-
 
 def test_multi_strategy_retrieval_and_mmr() -> None:
     chunks = chunk_resume_structured(SAMPLE_RESUME, strategy="bullet_contextual")
@@ -107,9 +97,7 @@ def test_multi_strategy_retrieval_and_mmr() -> None:
     )
     assert len(mmr_hits) == 3
 
-
 def test_citation_grounding_and_hallucination_repair() -> None:
-    # 1. Verbatim anchor -> verified
     g1 = verify_question_grounding(
         anchor="two-stage candidate generation and ranking pipeline in PyTorch",
         question="How did you keep p99 latency at 14ms in your PyTorch ranking pipeline?",
@@ -120,7 +108,6 @@ def test_citation_grounding_and_hallucination_repair() -> None:
     assert g1.exact_match is True
     assert g1.grounding_score >= 0.80
 
-    # 2. Hallucinated anchor -> flagged as hallucinated + repaired to real span
     g2 = verify_question_grounding(
         anchor="Built a quantum compiler in Haskell for satellite telemetry",
         question="How did you design your online Redis and Feast feature store for Kafka events?",
@@ -130,7 +117,6 @@ def test_citation_grounding_and_hallucination_repair() -> None:
     assert g2.status == "hallucinated"
     assert g2.repaired_anchor is not None
     assert g2.repaired_anchor in SAMPLE_RESUME
-
 
 def test_requirement_decomposition_and_fit_gap_matrix() -> None:
     reqs = extract_jd_requirements(SAMPLE_JD)
@@ -148,7 +134,6 @@ def test_requirement_decomposition_and_fit_gap_matrix() -> None:
     assert fit["counts"]["strong_match"] >= 2
     assert len(fit["requirements"]) == 5
 
-
 def test_benchmark_dataset_and_statistical_metrics() -> None:
     ds = load_dataset("v1")
     problems = validate(ds)
@@ -161,7 +146,6 @@ def test_benchmark_dataset_and_statistical_metrics() -> None:
     assert lo <= mean <= hi
     pval = paired_permutation_pvalue([0.9, 0.9, 0.9, 0.9], [0.1, 0.1, 0.1, 0.1])
     assert pval < 0.20
-
 
 @pytest.mark.asyncio
 async def test_rag_api_endpoints() -> None:

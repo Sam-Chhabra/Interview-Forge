@@ -1,7 +1,3 @@
-"""
-InterviewQuestion — one question inside an InterviewSession.
-"""
-
 import uuid
 from typing import TYPE_CHECKING
 
@@ -16,7 +12,6 @@ from app.models.interview_session import QuestionDifficulty, QuestionType
 if TYPE_CHECKING:
     from app.models.interview_answer import InterviewAnswer
     from app.models.interview_session import InterviewSession
-
 
 class InterviewQuestion(Base):
     __tablename__ = "interview_questions"

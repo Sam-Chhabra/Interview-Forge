@@ -1,9 +1,3 @@
-"""
-User model — minimal schema for v1.
-
-Day 2/3 will add relationships to Resume, JobDescription, and InterviewSession.
-"""
-
 import uuid
 from typing import TYPE_CHECKING
 
@@ -17,7 +11,6 @@ if TYPE_CHECKING:
     from app.models.interview_session import InterviewSession
     from app.models.job_description import JobDescription
     from app.models.resume import Resume
-
 
 class User(Base):
     __tablename__ = "users"

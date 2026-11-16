@@ -1,12 +1,3 @@
-"""
-InterviewAnswer model.
-
-Stores the candidate's typed answer to a specific InterviewQuestion plus
-the AI-graded evaluation. evaluation_json is populated asynchronously after
-the grading pipeline completes; until then evaluation_status tracks where
-it sits in the queue.
-"""
-
 import enum
 import uuid
 from typing import TYPE_CHECKING
@@ -22,13 +13,11 @@ if TYPE_CHECKING:
     from app.models.interview_question import InterviewQuestion
     from app.models.interview_session import InterviewSession
 
-
 class AnswerEvaluationStatus(str, enum.Enum):
     pending = "pending"
     evaluating = "evaluating"
     completed = "completed"
     failed = "failed"
-
 
 class InterviewAnswer(Base):
     __tablename__ = "interview_answers"

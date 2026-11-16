@@ -1,21 +1,3 @@
-"""
-Multi-backend embedding and cross-encoder reranking service.
-
-Supports:
-- Local dense bi-encoders via SentenceTransformers (`BAAI/bge-small-en-v1.5`
-  384-d, `BAAI/bge-base-en-v1.5` 768-d), padded or projected to 1536-d when
-  stored in `ResumeChunk.embedding` (Vector(1536)) or returned at native
-  dimensionality for in-memory evaluation sweeps.
-- OpenAI `text-embedding-3-small` (1536-d) when a valid `OPENAI_API_KEY` is
-  configured, with automatic seamless fallback to local `BAAI/bge-small-en-v1.5`
-  embeddings when running offline or without an OpenAI key.
-- Local neural Cross-Encoder reranking (`cross-encoder/ms-marco-MiniLM-L-6-v2`
-  and `BAAI/bge-reranker-base`) with sigmoid calibration.
-- Lightweight serverless fallback (numpy subword/token projection + RapidFuzz
-  cross-scoring) when deployed to environments with strict bundle-size limits
-  (e.g., Vercel Python Serverless Functions without PyTorch wheels).
-"""
-
 from __future__ import annotations
 
 import asyncio
@@ -37,8 +19,6 @@ logger = logging.getLogger(__name__)
 try:
     import torch
 
-    # Patch torch.nn.functional.linear on macOS ARM64 CPU to avoid the Apple
-    # Accelerate cblas_sgemm NaN bug when multiplying by non-contiguous weight.T.
     def _safe_linear(
         input: torch.Tensor,
         weight: torch.Tensor,
@@ -66,14 +46,11 @@ _ce_pair_cache: dict[tuple[str, str, str], tuple[float, float]] = {}
 
 _TOKEN_RE = re.compile(r"[a-z0-9][a-z0-9+#.\-_]*")
 
-
 def has_valid_openai_key() -> bool:
     key = (settings.openai_api_key or "").strip()
     return bool(key and key != "sk-..." and key.startswith("sk-") and len(key) > 20)
 
-
 def _hash_embed_text(text: str, dim: int = 384) -> np.ndarray:
-    """Deterministic subword + token feature hashing fallback for serverless runtimes."""
     vec = np.zeros(dim, dtype=np.float32)
     tokens = _TOKEN_RE.findall(text.lower())
     for tok in tokens:
@@ -95,9 +72,7 @@ def _hash_embed_text(text: str, dim: int = 384) -> np.ndarray:
         vec /= norm
     return vec
 
-
 def get_bi_encoder(model_name: str = "BAAI/bge-small-en-v1.5") -> Any:
-    """Lazy-load and cache a local SentenceTransformer bi-encoder on CPU."""
     if not _HAS_TORCH:
         return None
     if model_name not in _bi_encoder_cache:
@@ -111,9 +86,7 @@ def get_bi_encoder(model_name: str = "BAAI/bge-small-en-v1.5") -> Any:
             _bi_encoder_cache[model_name] = None
     return _bi_encoder_cache[model_name]
 
-
 def get_cross_encoder(model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2") -> Any:
-    """Lazy-load and cache a local CrossEncoder reranker on CPU."""
     if not _HAS_TORCH:
         return None
     if model_name not in _cross_encoder_cache:
@@ -127,14 +100,12 @@ def get_cross_encoder(model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2") 
             _cross_encoder_cache[model_name] = None
     return _cross_encoder_cache[model_name]
 
-
 def embed_texts_local_sync(
     texts: list[str],
     model_name: str = "BAAI/bge-small-en-v1.5",
     is_query: bool = False,
     pad_to_dim: int | None = None,
 ) -> np.ndarray:
-    """Synchronously embed texts using a local BGE bi-encoder (L2-normalized)."""
     base_dim = 768 if "base" in model_name.lower() else 384
     if not texts:
         return np.zeros((0, pad_to_dim or base_dim), dtype=np.float32)
@@ -179,13 +150,11 @@ def embed_texts_local_sync(
         return padded
     return vecs
 
-
 def score_cross_encoder_sync(
     query: str,
     passages: list[str],
     model_name: str = "cross-encoder/ms-marco-MiniLM-L-6-v2",
 ) -> list[tuple[float, float]]:
-    """Return `(raw_logit, calibrated_prob)` for each `(query, passage)` pair."""
     if not passages:
         return []
     ce = get_cross_encoder(model_name)
@@ -220,7 +189,6 @@ def score_cross_encoder_sync(
 
     return [_ce_pair_cache[(model_name, query, p)] for p in passages]
 
-
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=1, max=10))
 async def _embed_texts_openai(texts: list[str]) -> list[list[float]]:
     client = AsyncOpenAI(api_key=settings.openai_api_key)
@@ -232,7 +200,6 @@ async def _embed_texts_openai(texts: list[str]) -> list[list[float]]:
         embeddings.extend(item.embedding for item in ordered)
     return embeddings
 
-
 async def embed_texts(
     texts: list[str],
     *,
@@ -240,13 +207,6 @@ async def embed_texts(
     provider: Literal["auto", "openai", "local"] = "auto",
     local_model: str = "BAAI/bge-small-en-v1.5",
 ) -> list[list[float]]:
-    """Embed a list of texts into 1536-float vectors for `ResumeChunk.embedding`.
-
-    When `provider='auto'` (the default), uses OpenAI `text-embedding-3-small`
-    if a valid `OPENAI_API_KEY` is configured and falls back transparently to
-    local `BAAI/bge-small-en-v1.5` (zero-padded to 1536-d so cosine similarity
-    in pgvector is mathematically identical to 384-d cosine similarity).
-    """
     if not texts:
         return []
 

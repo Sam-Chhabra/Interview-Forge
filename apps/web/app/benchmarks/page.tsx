@@ -61,7 +61,6 @@ export default function BenchmarksLabPage() {
   const [loading, setLoading] = useState(true);
   const [rerunning, setRerunning] = useState(false);
 
-  // Live Arena state
   const [arenaResumeId, setArenaResumeId] = useState('r01');
   const [arenaChunkStrategy, setArenaChunkStrategy] =
     useState('bullet_contextual');
@@ -71,14 +70,12 @@ export default function BenchmarksLabPage() {
   const [arenaResult, setArenaResult] = useState<any>(null);
   const [arenaLoading, setArenaLoading] = useState(false);
 
-  // Fit-Gap Analyzer state
   const [fitResumeId, setFitResumeId] = useState('r01');
   const [fitJdId, setFitJdId] = useState('j01');
   const [fitStrategy] = useState('hybrid_rerank_bge');
   const [fitResult, setFitResult] = useState<any>(null);
   const [fitLoading, setFitLoading] = useState(false);
 
-  // Grounding Verifier state
   const [groundResumeId, setGroundResumeId] = useState('r01');
   const [groundAnchor, setGroundAnchor] = useState(
     'Architected a two-stage candidate generation and ranking pipeline in PyTorch',
@@ -189,7 +186,6 @@ export default function BenchmarksLabPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
-      {/* Top Bar with Clear Separation Back to the Main App */}
       <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-6">
           <div className="flex items-center gap-3">
@@ -236,8 +232,6 @@ export default function BenchmarksLabPage() {
           </div>
         </div>
       </header>
-
-      {/* Compact, Clean Header */}
       <section className="relative overflow-hidden border-b border-border/60 bg-muted/15">
         <GridPattern
           width={36}
@@ -257,8 +251,6 @@ export default function BenchmarksLabPage() {
               hallucination checks on our evaluation dataset.
             </p>
           </BlurFade>
-
-          {/* 4 Clean KPI Cards (No BorderBeam, Minimal Text) */}
           {report && (
             <BlurFade delay={0.1} className="mt-7">
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -359,7 +351,6 @@ export default function BenchmarksLabPage() {
       </section>
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-8 space-y-8">
-        {/* Simple 4-Tab Switcher */}
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/60 pb-4">
           <div className="flex flex-wrap gap-2">
             {(
@@ -415,13 +406,8 @@ export default function BenchmarksLabPage() {
             ))}
           </div>
         )}
-
-        {/* ================================================================= */}
-        {/* TAB 1: CLEAN BENCHMARK TABLES & 2 EXAMPLES                        */}
-        {/* ================================================================= */}
         {!loading && activeTab === 'benchmarks' && report && (
           <div className="space-y-10">
-            {/* TABLE 1: RETRIEVAL COMPARISON */}
             <section className="space-y-3">
               <div>
                 <h2 className="text-xl font-bold tracking-tight">
@@ -507,8 +493,6 @@ export default function BenchmarksLabPage() {
                 </table>
               </div>
             </section>
-
-            {/* TABLE 2: CHUNKING COMPARISON */}
             <section className="space-y-3">
               <div>
                 <h2 className="text-xl font-bold tracking-tight">
@@ -588,8 +572,6 @@ export default function BenchmarksLabPage() {
                 </table>
               </div>
             </section>
-
-            {/* 2 CONCISE EXAMPLES */}
             {report.case_studies?.length > 0 && (
               <section className="space-y-3">
                 <div>
@@ -638,10 +620,6 @@ export default function BenchmarksLabPage() {
             )}
           </div>
         )}
-
-        {/* ================================================================= */}
-        {/* TAB 2: COMPARE SEARCH LIVE                                        */}
-        {/* ================================================================= */}
         {activeTab === 'arena' && (
           <div className="space-y-6">
             <MagicCard className="p-6">
@@ -798,10 +776,6 @@ export default function BenchmarksLabPage() {
             )}
           </div>
         )}
-
-        {/* ================================================================= */}
-        {/* TAB 3: RESUME VS JOB MATCH                                        */}
-        {/* ================================================================= */}
         {activeTab === 'fitgap' && (
           <div className="space-y-6">
             <MagicCard className="p-6">
@@ -943,10 +917,6 @@ export default function BenchmarksLabPage() {
             )}
           </div>
         )}
-
-        {/* ================================================================= */}
-        {/* TAB 4: QUOTE FACT-CHECKER                                         */}
-        {/* ================================================================= */}
         {activeTab === 'grounding' && (
           <div className="space-y-6">
             <MagicCard className="p-6 space-y-4">

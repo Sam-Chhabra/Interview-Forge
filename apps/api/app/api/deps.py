@@ -1,10 +1,3 @@
-"""
-Shared FastAPI dependencies.
-
-get_current_user is the auth gate for protected routes — it validates the
-bearer token and loads the corresponding active User.
-"""
-
 import uuid
 
 from fastapi import Depends, HTTPException, status
@@ -16,7 +9,6 @@ from app.db.session import get_db
 from app.models.user import User
 
 bearer_scheme = HTTPBearer(auto_error=False)
-
 
 async def get_current_user(
     creds: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),

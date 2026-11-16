@@ -1,8 +1,3 @@
-"""
-RAG Diagnostics, Multi-Strategy Retrieval Comparison, Fit-Gap Analysis,
-Citation Grounding Verification, and Benchmark Suite endpoints.
-"""
-
 from __future__ import annotations
 
 import asyncio
@@ -23,7 +18,6 @@ from evals.run_benchmarks import RESULTS_DIR, run_all_benchmarks
 
 router = APIRouter()
 
-
 class SearchCompareRequest(BaseModel):
     query: str = Field(..., min_length=2, max_length=600)
     resume_id: str | None = Field(
@@ -34,7 +28,6 @@ class SearchCompareRequest(BaseModel):
     chunk_strategy: ChunkStrategy = "bullet_contextual"
     top_k: int = Field(default=5, ge=1, le=10)
 
-
 class AnalyzeFitRequest(BaseModel):
     resume_id: str | None = "r01"
     jd_id: str | None = "j01"
@@ -43,14 +36,12 @@ class AnalyzeFitRequest(BaseModel):
     strategy: RetrievalStrategy = "hybrid_rerank_bge"
     chunk_strategy: ChunkStrategy = "bullet_contextual"
 
-
 class VerifyGroundingRequest(BaseModel):
     resume_id: str | None = "r01"
     resume_text: str | None = None
     anchor: str = Field(..., min_length=2, max_length=400)
     question: str = Field(..., min_length=5, max_length=600)
     rationale: str = Field(default="", max_length=600)
-
 
 def _resolve_resume_text(resume_id: str | None, resume_text: str | None) -> str:
     if resume_text and resume_text.strip():
@@ -61,7 +52,6 @@ def _resolve_resume_text(resume_id: str | None, resume_text: str | None) -> str:
         raise HTTPException(status_code=404, detail=f"Unknown benchmark resume '{rid}'")
     return ds.resumes[rid].text
 
-
 def _resolve_jd_text(jd_id: str | None, jd_text: str | None) -> str:
     if jd_text and jd_text.strip():
         return jd_text.strip()
@@ -71,10 +61,8 @@ def _resolve_jd_text(jd_id: str | None, jd_text: str | None) -> str:
         raise HTTPException(status_code=404, detail=f"Unknown benchmark JD '{jid}'")
     return ds.jds[jid].text
 
-
 @router.get("/benchmarks")
 async def get_benchmarks() -> dict:
-    """Return the latest benchmark evaluation report plus dataset samples."""
     report_path = RESULTS_DIR / "latest_benchmark.json"
     if report_path.exists():
         report = json.loads(report_path.read_text(encoding="utf-8"))
@@ -113,17 +101,13 @@ async def get_benchmarks() -> dict:
         },
     }
 
-
 @router.post("/benchmarks/run")
 async def trigger_benchmark_run() -> dict:
-    """Re-execute the full RAG + Grounding + Grader benchmark suite."""
     report = await asyncio.to_thread(run_all_benchmarks, "v1")
     return {"report": report}
 
-
 @router.post("/search-compare")
 async def search_compare(req: SearchCompareRequest) -> dict:
-    """Compare Dense, Lexical (FTS & BM25), Hybrid RRF, and Cross-Encoder Reranking side-by-side."""
     text = _resolve_resume_text(req.resume_id, req.resume_text)
 
     def _execute() -> dict:
@@ -157,10 +141,8 @@ async def search_compare(req: SearchCompareRequest) -> dict:
 
     return await asyncio.to_thread(_execute)
 
-
 @router.post("/analyze-fit")
 async def analyze_fit_endpoint(req: AnalyzeFitRequest) -> dict:
-    """Decompose JD into requirements and compute per-requirement evidence & gaps."""
     r_text = _resolve_resume_text(req.resume_id, req.resume_text)
     j_text = _resolve_jd_text(req.jd_id, req.jd_text)
     return await asyncio.to_thread(
@@ -171,10 +153,8 @@ async def analyze_fit_endpoint(req: AnalyzeFitRequest) -> dict:
         chunk_strategy=req.chunk_strategy,
     )
 
-
 @router.post("/verify-grounding")
 async def verify_grounding_endpoint(req: VerifyGroundingRequest) -> dict:
-    """Verify whether an interview question's resume anchor is grounded or hallucinated."""
     r_text = _resolve_resume_text(req.resume_id, req.resume_text)
     res = await asyncio.to_thread(
         verify_question_grounding,

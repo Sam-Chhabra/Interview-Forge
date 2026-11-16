@@ -1,10 +1,3 @@
-"""
-InterviewSession model.
-
-A session captures one generated set of questions for a specific (resume, JD)
-pair. The questions themselves live in InterviewQuestion rows.
-"""
-
 import enum
 import uuid
 from typing import TYPE_CHECKING
@@ -23,25 +16,21 @@ if TYPE_CHECKING:
     from app.models.resume import Resume
     from app.models.user import User
 
-
 class InterviewSessionStatus(str, enum.Enum):
     not_started = "not_started"
     in_progress = "in_progress"
     completed = "completed"
     abandoned = "abandoned"
 
-
 class QuestionType(str, enum.Enum):
     behavioral = "behavioral"
     technical_concept = "technical_concept"
     technical_project = "technical_project"
 
-
 class QuestionDifficulty(str, enum.Enum):
     easy = "easy"
     medium = "medium"
     hard = "hard"
-
 
 class InterviewSession(Base):
     __tablename__ = "interview_sessions"

@@ -1,16 +1,3 @@
-"""
-Interview generation endpoints.
-
-POST /interviews/preview          — generate questions only (no persistence).
-POST /interviews                  — generate AND persist as an InterviewSession.
-GET  /interviews                  — list saved sessions for the current user.
-GET  /interviews/{id}             — fetch one saved session with all its questions.
-POST /interviews/{id}/answers     — submit an answer, evaluate synchronously.
-GET  /interviews/{id}/answers     — list answers for a session.
-
-All routes require auth via get_current_user.
-"""
-
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -43,7 +30,6 @@ from app.services.question_generation_service import generate_questions
 
 router = APIRouter()
 
-
 @router.post(
     "/preview",
     response_model=InterviewPreviewResponse,
@@ -62,7 +48,6 @@ async def preview_interview(
         num_questions=payload.num_questions,
     )
 
-
 @router.post(
     "/",
     response_model=InterviewSessionRead,
@@ -75,7 +60,6 @@ async def create_interview(
 ) -> InterviewSession:
     return await create_session(db, current_user.id, payload)
 
-
 @router.get("/", response_model=list[InterviewSessionListItem])
 async def list_interviews(
     current_user: User = Depends(get_current_user),
@@ -83,14 +67,12 @@ async def list_interviews(
 ) -> list[InterviewSession]:
     return await list_sessions(db, current_user.id)
 
-
 @router.get("/stats", response_model=UserStats)
 async def get_stats(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
     return await get_user_stats(db, current_user.id)
-
 
 @router.get("/{session_id}", response_model=InterviewSessionRead)
 async def get_interview(
@@ -102,7 +84,6 @@ async def get_interview(
     if session is None:
         raise HTTPException(status_code=404, detail="Interview session not found")
     return session
-
 
 @router.post(
     "/{session_id}/answers",
@@ -116,7 +97,6 @@ async def submit_interview_answer(
     db: AsyncSession = Depends(get_db),
 ) -> InterviewAnswer:
     return await submit_answer(db, current_user.id, session_id, payload)
-
 
 @router.get(
     "/{session_id}/answers",

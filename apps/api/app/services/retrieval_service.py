@@ -1,15 +1,3 @@
-"""
-Multi-strategy RAG retrieval engine: Dense, Lexical (BM25 & Postgres FTS),
-Hybrid (Linear & Reciprocal Rank Fusion), Cross-Encoder Reranking, and MMR.
-
-Provides both:
-1. `InMemoryRetriever` — indexes a list of `ChunkRecord`s for fast, reproducible
-   evaluation sweeps and side-by-side strategy comparisons.
-2. `retrieve_from_db` — executes dense (`pgvector` cosine distance), lexical
-   (PostgreSQL `to_tsvector` / `websearch_to_tsquery` + `ts_rank_cd` and BM25),
-   hybrid RRF, and cross-encoder reranking against `resume_chunks` in Postgres.
-"""
-
 from __future__ import annotations
 
 import asyncio
@@ -53,7 +41,6 @@ VALID_STRATEGIES: set[str] = {
     "hybrid_rerank_bge",
 }
 
-# Tech-aware token pattern: keeps c++, c#, .net, node.js, ci/cd, gpt-4, k8s
 _TOKEN_RE = re.compile(r"[a-z0-9]+(?:[+#./\-][a-z0-9]+)*|[a-z0-9]+")
 
 _STOPWORDS = {
@@ -66,8 +53,6 @@ _STOPWORDS = {
     "working", "year", "years", "you", "your",
 }
 
-# Lightweight stem/suffix rules approximating PostgreSQL's English snowball
-# dictionary for offline parity in the `fts` strategy.
 _STEM_SUFFIXES = (
     ("izations", "ize"),
     ("ization", "ize"),
@@ -86,7 +71,6 @@ _STEM_SUFFIXES = (
     ("s", ""),
 )
 
-
 def _porter_lite(token: str) -> str:
     if len(token) <= 3 or any(ch in token for ch in "+#./-"):
         return token
@@ -95,9 +79,7 @@ def _porter_lite(token: str) -> str:
             return token[: -len(suf)] + repl
     return token
 
-
 def tokenize_tech(text: str, *, stem: bool = False) -> list[str]:
-    """Tokenize technical resume/JD text while preserving compound tech terms."""
     lowered = text.lower()
     raw_tokens = _TOKEN_RE.findall(lowered)
     out: list[str] = []
@@ -105,13 +87,11 @@ def tokenize_tech(text: str, *, stem: bool = False) -> list[str]:
         if tok in _STOPWORDS or len(tok) <= 1 and tok not in {"c", "r"}:
             continue
         out.append(_porter_lite(tok) if stem else tok)
-        # Also index sub-parts of slash/hyphen tokens (e.g. "ci/cd" -> "ci", "cd")
         if "/" in tok or "-" in tok:
             for sub in re.split(r"[/\-]", tok):
                 if len(sub) > 1 and sub not in _STOPWORDS:
                     out.append(_porter_lite(sub) if stem else sub)
     return out
-
 
 def _min_max_normalize(scores: np.ndarray) -> np.ndarray:
     if scores.size == 0:
@@ -121,7 +101,6 @@ def _min_max_normalize(scores: np.ndarray) -> np.ndarray:
     if s_max - s_min < 1e-9:
         return np.zeros_like(scores, dtype=np.float64)
     return (scores - s_min) / (s_max - s_min)
-
 
 @dataclass
 class RetrievedChunk:
@@ -179,9 +158,7 @@ class RetrievedChunk:
             "matched_terms": self.matched_terms,
         }
 
-
 class InMemoryRetriever:
-    """Pre-indexes a resume's chunks across dense and lexical representations."""
 
     def __init__(
         self,
@@ -194,17 +171,14 @@ class InMemoryRetriever:
         self.dense_model = dense_model
         texts = [c.content for c in chunks]
 
-        # 1. BM25 (exact tech tokens)
         self.bm25_tokens = [tokenize_tech(t, stem=False) for t in texts]
         self.bm25 = BM25Okapi(self.bm25_tokens) if texts else None
 
-        # 2. PostgreSQL FTS-style stemmed tokens + cover-density / TF-IDF scoring
         self.fts_tokens = [tokenize_tech(t, stem=True) for t in texts]
         self.fts_bm25 = (
             BM25Okapi(self.fts_tokens, k1=1.2, b=0.5) if texts else None
         )
 
-        # 3. Dense embeddings (BGE-small 384-d)
         self.dense_vecs = embed_texts_local_sync(
             texts, model_name=dense_model, is_query=False
         )
@@ -215,7 +189,6 @@ class InMemoryRetriever:
             )
 
     def _fts_cover_density_scores(self, query: str) -> np.ndarray:
-        """Compute PostgreSQL `ts_rank_cd`-style cover density + stemmed BM25."""
         n = len(self.chunks)
         if n == 0 or self.fts_bm25 is None:
             return np.zeros(0, dtype=np.float64)
@@ -225,8 +198,6 @@ class InMemoryRetriever:
 
         base = np.asarray(self.fts_bm25.get_scores(q_toks), dtype=np.float64)
         q_set = set(q_toks)
-        # Cover density bonus: reward chunks where multiple distinct query stems
-        # appear in close proximity (mirroring Postgres ts_rank_cd).
         cd_bonus = np.zeros(n, dtype=np.float64)
         for idx, doc_toks in enumerate(self.fts_tokens):
             hit_positions = [pos for pos, t in enumerate(doc_toks) if t in q_set]
@@ -259,7 +230,6 @@ class InMemoryRetriever:
         q_toks_exact = set(tokenize_tech(query, stem=False))
         q_toks_stem = set(tokenize_tech(query, stem=True))
 
-        # --- Lexical scores ---
         bm25_scores = (
             np.asarray(self.bm25.get_scores(list(q_toks_exact)), dtype=np.float64)
             if self.bm25 is not None and q_toks_exact
@@ -267,7 +237,6 @@ class InMemoryRetriever:
         )
         fts_scores = self._fts_cover_density_scores(query)
 
-        # --- Dense scores ---
         if strategy in ("dense_bge_base", "hybrid_rerank_bge"):
             if self.bge_base_vecs is None:
                 self.bge_base_vecs = embed_texts_local_sync(
@@ -285,7 +254,6 @@ class InMemoryRetriever:
             )[0]
             dense_scores = np.dot(self.dense_vecs, q_vec).astype(np.float64)
 
-        # Compute 1-based ranks for dense and lexical (BM25 + FTS combined)
         lex_combined = 0.6 * bm25_scores + 0.4 * fts_scores
         dense_order = np.argsort(-dense_scores)
         lex_order = np.argsort(-lex_combined)
@@ -297,7 +265,6 @@ class InMemoryRetriever:
         for r, doc_idx in enumerate(lex_order, start=1):
             lex_ranks[doc_idx] = r
 
-        # --- Strategy score computation ---
         rerank_logits: dict[int, float] = {}
         rerank_probs: dict[int, float] = {}
 
@@ -317,7 +284,6 @@ class InMemoryRetriever:
                 score = dense_weight / (rrf_k + dense_ranks[idx])
                 if lex_combined[idx] > 0:
                     score += lexical_weight / (rrf_k + lex_ranks[idx])
-                # Calibrated tie-breaking prior preserves cross-query Gap AUROC
                 rrf_scores[idx] = (
                     score + 0.015 * dense_scores[idx] + 0.005 * lex_cal[idx]
                 )
@@ -325,8 +291,6 @@ class InMemoryRetriever:
             if strategy == "hybrid_rrf":
                 final_scores = rrf_scores
             else:
-                # Two-stage retrieval: take top `candidate_pool` by RRF, then
-                # score with neural Cross-Encoder
                 pool_k = min(n, max(top_k, candidate_pool))
                 pool_indices = np.argsort(-rrf_scores)[:pool_k].tolist()
                 ce_model = (
@@ -345,9 +309,6 @@ class InMemoryRetriever:
                 pool_rrf_norm = _min_max_normalize(rrf_scores[pool_indices])
                 pool_dense_norm = _min_max_normalize(dense_scores[pool_indices])
 
-                # Query-level calibration shift: adding a query-constant offset
-                # preserves exact within-query ordering while calibrating top-1
-                # scores across queries for Gap Detection AUROC.
                 query_conf = (
                     0.65 * float(np.max(dense_scores[pool_indices]))
                     + 0.35 * float(np.max(pool_probs))
@@ -367,7 +328,6 @@ class InMemoryRetriever:
         else:
             raise ValueError(f"Unknown retrieval strategy: {strategy}")
 
-        # Optional MMR diversification over the top candidates
         ranked_indices = np.argsort(-final_scores).tolist()
         if use_mmr and len(ranked_indices) > 1:
             pool = ranked_indices[: min(len(ranked_indices), max(top_k * 3, 15))]
@@ -422,7 +382,6 @@ class InMemoryRetriever:
             )
         return results
 
-
 async def retrieve_chunks_for_resume(
     db: AsyncSession,
     resume_id: uuid.UUID,
@@ -432,13 +391,6 @@ async def retrieve_chunks_for_resume(
     top_k: int = 5,
     use_mmr: bool = False,
 ) -> tuple[list[dict], dict]:
-    """Execute multi-strategy retrieval against `resume_chunks` in PostgreSQL.
-
-    Combines PostgreSQL `pgvector` cosine similarity and PostgreSQL Full-Text
-    Search (`ts_rank_cd(to_tsvector('english', content), websearch_to_tsquery('english', :q))`)
-    with BM25, Reciprocal Rank Fusion, and Cross-Encoder reranking.
-    Returns `(results_list, telemetry_dict)`.
-    """
     t0 = time.perf_counter()
     query_embedding = (await embed_texts([query_text], is_query=True))[0]
     query_vec = "[" + ",".join(str(x) for x in query_embedding) + "]"
@@ -471,11 +423,9 @@ async def retrieve_chunks_for_resume(
     if not rows:
         return [], {"latency_ms": 0.0, "num_candidates": 0, "strategy": strategy}
 
-    # Build ChunkRecords from DB rows
     chunk_records: list[ChunkRecord] = []
     for r in rows:
         text_val = r["content"]
-        # Parse optional [Section: ... | Role: ...] header if present
         ctx_header = None
         raw_val = text_val
         sec_title = None
@@ -503,19 +453,16 @@ async def retrieve_chunks_for_resume(
 
     def _run_sync() -> list[RetrievedChunk]:
         retriever = InMemoryRetriever(chunk_records)
-        # Incorporate actual PostgreSQL ts_rank_cd into FTS scores when available
         pg_fts = np.array([float(r["pg_fts_rank"] or 0.0) for r in rows], dtype=np.float64)
         pg_dense = np.array([float(r["dense_sim"] or 0.0) for r in rows], dtype=np.float64)
-        # If DB vectors match query embedding, use pgvector's exact cosine similarity
         if pg_dense.size == len(chunk_records) and not np.isnan(pg_dense).any():
-            retriever.dense_vecs = retriever.dense_vecs  # keep for MMR
+            retriever.dense_vecs = retriever.dense_vecs
         res = retriever.search(
             query_text,
             strategy=strategy,
             top_k=top_k,
             use_mmr=use_mmr,
         )
-        # Attach Postgres ts_rank_cd boost when strategy == "fts"
         if strategy == "fts" and float(pg_fts.max()) > 0:
             for item in res:
                 idx = item.chunk_index

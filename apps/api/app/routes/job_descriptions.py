@@ -1,10 +1,3 @@
-"""
-Job description endpoints: create, list, retrieve.
-
-All routes require a valid access token. Handlers stay thin — persistence
-and queries live in app.services.job_description_service.
-"""
-
 import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -27,7 +20,6 @@ from app.services.job_description_service import (
 
 router = APIRouter()
 
-
 @router.post(
     "/",
     response_model=JobDescriptionRead,
@@ -40,14 +32,12 @@ async def create_jd(
 ) -> JobDescription:
     return await create_job_description(db, current_user.id, payload)
 
-
 @router.get("/", response_model=list[JobDescriptionListItem])
 async def list_jds(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[JobDescription]:
     return await list_job_descriptions(db, current_user.id)
-
 
 @router.get("/{jd_id}", response_model=JobDescriptionRead)
 async def get_jd(

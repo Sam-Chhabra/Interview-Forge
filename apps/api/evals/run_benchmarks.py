@@ -1,26 +1,3 @@
-"""
-End-to-end reproducible benchmark suite for Interview Forge's RAG & Evaluation
-pipelines.
-
-Runs 4 experiments on `ResumeJD-Bench v1` and `answer_tiers.json`:
-1. Retrieval Strategy Comparison (8 methods: Postgres FTS, BM25, Dense BGE-small,
-   Dense BGE-base, Hybrid Linear, Hybrid RRF, Hybrid RRF + MiniLM Cross-Encoder,
-   Hybrid RRF + BGE-Reranker-Base) with 1,000-sample bootstrap 95% CIs and
-   paired permutation p-values.
-2. Chunking Granularity & Contextual Header Ablation (5 strategies:
-   `fixed_500_50`, `fixed_200_30`, `fixed_100_20`, `sentence_window`,
-   `bullet_contextual`), reporting `Recall@150tok`, `Recall@300tok`,
-   `Focus-nDCG@5`, and `SNR@3`.
-3. Citation Grounding & Hallucination Verification Benchmark (verbatim vs
-   fuzzy vs hallucinated resume anchors + automatic span repair).
-4. Answer Grader Rubric Calibration & Length-Bias Audit on `answer_tiers.json`
-   (Spearman rho, Kendall tau, pairwise accuracy, quadratic Cohen's kappa, and
-   length-confound accuracy).
-
-Usage:
-    cd apps/api && venv/bin/python -m evals.run_benchmarks
-"""
-
 from __future__ import annotations
 
 import json
@@ -29,41 +6,6 @@ import time
 from pathlib import Path
 
 import numpy as np
-
-try:
-    from scipy.stats import kendalltau, spearmanr
-except ImportError:
-
-    def _rankdata(a: list[float] | list[int]) -> np.ndarray:
-        arr = np.asarray(a, dtype=np.float64)
-        sorter = np.argsort(arr)
-        inv = np.empty(sorter.size, dtype=np.intp)
-        inv[sorter] = np.arange(sorter.size, dtype=np.intp)
-        arr_sorted = arr[sorter]
-        obs = np.r_[True, arr_sorted[1:] != arr_sorted[:-1]]
-        dense = obs.cumsum()[inv]
-        count = np.r_[np.nonzero(obs)[0], len(obs)]
-        return 0.5 * (count[dense] + count[dense - 1] + 1)
-
-    def spearmanr(a: list[int], b: list[float]) -> tuple[float, float]:
-        ra, rb = _rankdata(a), _rankdata(b)
-        corr = float(np.corrcoef(ra, rb)[0, 1])
-        return corr, 0.0
-
-    def kendalltau(a: list[int], b: list[float]) -> tuple[float, float]:
-        n = len(a)
-        concordant = 0
-        discordant = 0
-        for i in range(n):
-            for j in range(i + 1, n):
-                da = a[i] - a[j]
-                db = b[i] - b[j]
-                if da * db > 0:
-                    concordant += 1
-                elif da * db < 0:
-                    discordant += 1
-        denom = max(1, concordant + discordant)
-        return float(concordant - discordant) / denom, 0.0
 
 from app.services.chunking_service import (
     ChunkRecord,
@@ -110,10 +52,45 @@ CHUNKING_STRATEGIES: list[tuple[ChunkStrategy, str]] = [
     ("bullet_contextual", "Contextual Bullet Chunking ([Section | Role] header)"),
 ]
 
+def _rankdata(a: list[float] | list[int]) -> np.ndarray:
+    arr = np.asarray(a, dtype=np.float64)
+    sorter = np.argsort(arr)
+    inv = np.empty(sorter.size, dtype=np.intp)
+    inv[sorter] = np.arange(sorter.size, dtype=np.intp)
+    arr_sorted = arr[sorter]
+    obs = np.r_[True, arr_sorted[1:] != arr_sorted[:-1]]
+    dense = obs.cumsum()[inv]
+    count = np.r_[np.nonzero(obs)[0], len(obs)]
+    return 0.5 * (count[dense] + count[dense - 1] + 1)
+
+def _spearman_rho(a: list[int], b: list[float]) -> float:
+    ra, rb = _rankdata(a), _rankdata(b)
+    return float(np.corrcoef(ra, rb)[0, 1])
+
+def _kendall_tau(a: list[int], b: list[float]) -> float:
+    n = len(a)
+    concordant = 0
+    discordant = 0
+    t_a = 0
+    t_b = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            da = a[i] - a[j]
+            db = b[i] - b[j]
+            if da == 0 and db == 0:
+                continue
+            elif da == 0:
+                t_a += 1
+            elif db == 0:
+                t_b += 1
+            elif da * db > 0:
+                concordant += 1
+            else:
+                discordant += 1
+    denom = float(np.sqrt((concordant + discordant + t_a) * (concordant + discordant + t_b)))
+    return float(concordant - discordant) / denom if denom > 0 else 0.0
 
 def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
-    """Evaluate all 8 retrieval strategies on `bullet_contextual` chunks."""
-    # Pre-chunk and index each resume once (including BGE-base vectors)
     retrievers: dict[str, InMemoryRetriever] = {}
     chunks_by_resume: dict[str, list[ChunkRecord]] = {}
     for rid, resume in ds.resumes.items():
@@ -122,7 +99,6 @@ def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
         retrievers[rid] = InMemoryRetriever(chunks, include_bge_base=True)
 
     queries = ds.queries()
-    # Pre-encode all unique query strings in one batch for both BGE-small and BGE-base
     unique_q_texts = sorted({q.text for q in queries})
     embed_texts_local_sync(unique_q_texts, model_name="BAAI/bge-small-en-v1.5", is_query=True)
     embed_texts_local_sync(unique_q_texts, model_name="BAAI/bge-base-en-v1.5", is_query=True)
@@ -163,7 +139,6 @@ def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
         agg["label"] = strat_label
         per_strategy_summary[strat_key] = agg
 
-    # Compute paired permutation p-values vs `dense` and vs `fts` on nDCG@5 and MRR@10
     dense_ndcg = [r.ndcg_at_5 for r in per_strategy_results["dense"] if not r.is_gap]
     fts_ndcg = [r.ndcg_at_5 for r in per_strategy_results["fts"] if not r.is_gap]
     for s_key, agg in per_strategy_summary.items():
@@ -175,7 +150,6 @@ def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
             paired_permutation_pvalue(cur_ndcg, fts_ndcg), 4
         )
 
-    # Extract concrete qualitative win/failure case studies for error analysis
     case_studies: list[dict] = []
     for i, q in enumerate(queries):
         if q.is_gap:
@@ -185,7 +159,6 @@ def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
         r_rerank = per_strategy_results["hybrid_rerank_bge"][i]
         resume = ds.resumes[q.resume_id]
 
-        # Case where hybrid+rerank fixes a dense or lexical failure
         if r_rerank.recall_at_1 > max(r_dense.recall_at_1, r_bm25.recall_at_1) or (
             r_rerank.ndcg_at_5 - r_dense.ndcg_at_5 >= 0.25
         ):
@@ -209,9 +182,7 @@ def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
             )
     return per_strategy_summary, case_studies[:10]
 
-
 def run_chunking_experiment(ds: Dataset) -> dict:
-    """Compare all 5 chunking strategies under `hybrid_rerank` and `dense`."""
     queries = ds.queries()
     out: dict[str, dict] = {}
 
@@ -259,9 +230,7 @@ def run_chunking_experiment(ds: Dataset) -> dict:
 
     return out
 
-
 def run_grounding_experiment(ds: Dataset) -> dict:
-    """Evaluate `verify_question_grounding` across verbatim, fuzzy, and hallucinated anchors."""
     samples: list[dict] = []
     resumes_list = list(ds.resumes.values())
 
@@ -272,7 +241,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
         item_a = exp_items[0]
         item_b = exp_items[min(1, len(exp_items) - 1)]
 
-        # 1. Verbatim anchor (should be grounded)
         words = item_a.text.split()
         verbatim_anchor = " ".join(words[: min(8, len(words))]).strip(" ,;.")
         samples.append(
@@ -286,7 +254,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
             }
         )
 
-        # 2. Slight surface variation / minor rewording (should be grounded)
         mid_words = item_b.text.split()
         slice_words = mid_words[1 : min(9, len(mid_words))]
         fuzzy_anchor = " ".join(slice_words).strip(" ,;.")
@@ -301,8 +268,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
             }
         )
 
-        # 3. Hallucinated anchor (taken from a completely different role's resume
-        # or fabricated tech stack not on this candidate's resume)
         other_resume = resumes_list[(idx + 5) % len(resumes_list)]
         other_item = other_resume.items[min(2, len(other_resume.items) - 1)]
         hallucinated_anchor = " ".join(other_item.text.split()[:8]).strip(" ,;.")
@@ -351,7 +316,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
             pre_grounded += 1
             post_repair_grounded += 1
         elif res.repaired_anchor:
-            # Verify repaired anchor against the resume
             re_check = verify_question_grounding(
                 anchor=res.repaired_anchor,
                 question=s["question"],
@@ -365,7 +329,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
     recall = tp / max(1, tp + fn)
     f1 = (2 * precision * recall) / max(1e-9, precision + recall)
 
-    # AUROC for grounding_score separating grounded vs hallucinated
     wins = 0.0
     for p in scores_pos:
         for n in scores_neg:
@@ -387,7 +350,6 @@ def run_grounding_experiment(ds: Dataset) -> dict:
         "post_repair_grounded_rate": round(post_repair_grounded / max(1, len(samples)), 4),
     }
 
-
 _METRIC_RE = re.compile(
     r"\b(\d+(?:\.\d+)?\s*(?:%|ms|s|x|k|m|gb|tb|qps|rps|bps|p99|p95|p50|days|hours|weeks|users|nodes|shards|regions))\b",
     re.I,
@@ -405,18 +367,10 @@ _DODGE_RE = re.compile(
     re.I,
 )
 
-
 def _score_answer_rubric_calibrated(
     question: dict,
     answer_text: str,
 ) -> dict[str, float]:
-    """Rubric-aligned neural + structural evaluator for offline grader benchmarking.
-
-    Combines Cross-Encoder relevance against `(question + rationale + anchor)`,
-    anchor grounding verification, technical/quantitative specificity density
-    (rather than raw word count, avoiding verbosity bias!), and structural
-    trade-off markers.
-    """
     words = answer_text.strip().split()
     n_words = len(words)
     if n_words < 12 or _DODGE_RE.search(answer_text):
@@ -427,14 +381,12 @@ def _score_answer_rubric_calibrated(
         q_prompt, [answer_text], model_name="BAAI/bge-reranker-base"
     )[0]
 
-    # Bi-encoder similarity to anchor + question
     vecs = embed_texts_local_sync(
         [question["anchor"], question["question"], answer_text], is_query=False
     )
     anchor_sim = float(np.clip(np.dot(vecs[0], vecs[2]), 0.0, 1.0))
     q_sim = float(np.clip(np.dot(vecs[1], vecs[2]), 0.0, 1.0))
 
-    # Specificity density (metrics, concrete mechanisms, trade-offs per 100 words)
     n_metrics = len(_METRIC_RE.findall(answer_text))
     n_tradeoffs = len(_TRADEOFF_RE.findall(answer_text))
     n_struct = len(_STRUCTURE_RE.findall(answer_text))
@@ -444,7 +396,6 @@ def _score_answer_rubric_calibrated(
 
     specificity_density = (2.2 * n_metrics + 1.5 * n_tradeoffs) / max(60.0, n_words) * 100.0
 
-    # Penalize high-verbosity low-specificity ("buzzword soup")
     buzzword_penalty = 0.0
     if n_words >= 110 and n_metrics == 0 and n_tradeoffs <= 1 and anchor_overlap < 0.35:
         buzzword_penalty = 1.2
@@ -494,9 +445,7 @@ def _score_answer_rubric_calibrated(
         "overall": overall,
     }
 
-
 def _quadratic_weighted_kappa(y_true: list[int], y_pred: list[int], min_r: int = 1, max_r: int = 4) -> float:
-    """Compute Quadratic Weighted Cohen's Kappa over integer ordinal tiers."""
     k = max_r - min_r + 1
     o_mat = np.zeros((k, k), dtype=np.float64)
     for t, p in zip(y_true, y_pred):
@@ -520,9 +469,7 @@ def _quadratic_weighted_kappa(y_true: list[int], y_pred: list[int], min_r: int =
     den = float(np.sum(w_mat * e_mat))
     return 1.0 - (num / den) if den > 1e-12 else 1.0
 
-
 def run_grader_experiment() -> dict:
-    """Evaluate answer grader calibration and length-confound robustness."""
     if not GRADER_DATASET_PATH.exists():
         return {}
     raw = json.loads(GRADER_DATASET_PATH.read_text(encoding="utf-8"))
@@ -535,7 +482,7 @@ def run_grader_experiment() -> dict:
 
     pairwise_correct = 0
     pairwise_total = 0
-    length_Builder_pairwise_correct = 0
+    length_pairwise_correct = 0
 
     confound_cases_total = 0
     confound_rubric_wins = 0
@@ -558,7 +505,6 @@ def run_grader_experiment() -> dict:
             pred_scores.append(overall)
             length_baseline_scores.append(float(word_count))
 
-            # Map 0-5 score to 1-4 ordinal tier
             if overall >= 3.8:
                 mapped_tier = 4
             elif overall >= 2.65:
@@ -569,7 +515,6 @@ def run_grader_experiment() -> dict:
                 mapped_tier = 1
             pred_tiers.append(mapped_tier)
 
-        # Check all 6 pairs (4>3, 4>2, 4>1, 3>2, 3>1, 2>1)
         tiers_desc = sorted(ans_map.keys(), reverse=True)
         for i in range(len(tiers_desc)):
             for j in range(i + 1, len(tiers_desc)):
@@ -578,7 +523,7 @@ def run_grader_experiment() -> dict:
                 if ans_map[hi_t] > ans_map[lo_t]:
                     pairwise_correct += 1
                 if len_map[hi_t] > len_map[lo_t]:
-                    length_Builder_pairwise_correct += 1
+                    length_pairwise_correct += 1
 
         if c.get("length_confound"):
             confound_cases_total += 1
@@ -587,9 +532,9 @@ def run_grader_experiment() -> dict:
             if len_map.get(3, 0) > len_map.get(2, 0):
                 confound_length_wins += 1
 
-    rho, _ = spearmanr(gold_tiers, pred_scores)
-    tau, _ = kendalltau(gold_tiers, pred_scores)
-    len_rho, _ = spearmanr(gold_tiers, length_baseline_scores)
+    rho = _spearman_rho(gold_tiers, pred_scores)
+    tau = _kendall_tau(gold_tiers, pred_scores)
+    len_rho = _spearman_rho(gold_tiers, length_baseline_scores)
     qwk = _quadratic_weighted_kappa(gold_tiers, pred_tiers)
 
     return {
@@ -608,14 +553,13 @@ def run_grader_experiment() -> dict:
         "naive_length_heuristic": {
             "spearman_rho": round(float(len_rho), 4),
             "pairwise_accuracy": round(
-                length_Builder_pairwise_correct / max(1, pairwise_total), 4
+                length_pairwise_correct / max(1, pairwise_total), 4
             ),
             "length_confound_accuracy_t3_gt_t2": round(
                 confound_length_wins / max(1, confound_cases_total), 4
             ),
         },
     }
-
 
 def run_all_benchmarks(version: str = "v1") -> dict:
     t0 = time.perf_counter()
@@ -659,46 +603,7 @@ def run_all_benchmarks(version: str = "v1") -> dict:
     out_file.write_text(json.dumps(payload, indent=2), encoding="utf-8")
     return payload
 
-
 if __name__ == "__main__":
     report = run_all_benchmarks("v1")
     print(report["dataset_summary"]["description"])
-    print(f"Total benchmark runtime: {report['total_runtime_sec']}s\n")
-    print("=== Experiment 1: Retrieval Strategy Comparison (on bullet_contextual) ===")
-    print(
-        f"{'Strategy':<22} {'R@1':>6} {'R@3':>6} {'R@5':>6} {'MRR@10':>7} {'nDCG@5':>7} {'MAP@10':>7} {'Trap@3':>7} {'GapAUC':>7} {'p(vs dense)':>11}"
-    )
-    for k, v in report["retrieval_comparison"].items():
-        print(
-            f"{k:<22} "
-            f"{v['recall_at_1']['mean']:>6.3f} "
-            f"{v['recall_at_3']['mean']:>6.3f} "
-            f"{v['recall_at_5']['mean']:>6.3f} "
-            f"{v['mrr_at_10']['mean']:>7.3f} "
-            f"{v['ndcg_at_5']['mean']:>7.3f} "
-            f"{v['map_at_10']['mean']:>7.3f} "
-            f"{v['trap_rate_at_3']:>7.3f} "
-            f"{v['gap_auroc']:>7.3f} "
-            f"{v['p_value_vs_dense_ndcg5']:>11.4f}"
-        )
-
-    print("\n=== Experiment 2: Chunking Strategy Ablation (under hybrid_rerank) ===")
-    print(
-        f"{'Chunking':<20} {'Chunks/Res':>10} {'Tok/Chunk':>10} {'R@150tok':>9} {'R@300tok':>9} {'F-nDCG@5':>9} {'SNR@3':>7}"
-    )
-    for k, v in report["chunking_ablation"].items():
-        print(
-            f"{k:<20} "
-            f"{v['avg_chunks_per_resume']:>10.1f} "
-            f"{v['avg_tokens_per_chunk']:>10.1f} "
-            f"{v['recall_at_150tok']['mean']:>9.3f} "
-            f"{v['recall_at_300tok']['mean']:>9.3f} "
-            f"{v['f_ndcg_at_5']['mean']:>9.3f} "
-            f"{v['snr_at_3']['mean']:>7.3f}"
-        )
-
-    print("\n=== Experiment 3: Grounding & Hallucination Guardrail ===")
-    print(json.dumps(report["grounding_evaluation"], indent=2))
-
-    print("\n=== Experiment 4: Answer Grader Calibration & Length-Bias Audit ===")
-    print(json.dumps(report["grader_calibration"], indent=2))
+    print(f"Total benchmark runtime: {report['total_runtime_sec']}s")

@@ -27,7 +27,6 @@ export default function ResumesPage() {
   const [pollingIds, setPollingIds] = useState<Set<string>>(new Set());
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Load the list on mount; resume polling for any rows still in progress.
   useEffect(() => {
     api.resumes
       .list()
@@ -49,7 +48,6 @@ export default function ResumesPage() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  // Poll each in-progress resume every 2s until it settles.
   useEffect(() => {
     if (pollingIds.size === 0) return;
 

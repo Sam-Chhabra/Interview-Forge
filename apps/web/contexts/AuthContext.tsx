@@ -31,8 +31,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [accessToken, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // On mount, hydrate from localStorage and validate the token by loading the
-  // profile. A stale/expired token fails /auth/me, so we clear it.
   useEffect(() => {
     const stored = getAccessToken();
     if (!stored) {
@@ -61,7 +59,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function register(email: string, password: string, full_name?: string) {
     await api.auth.register(email, password, full_name);
-    // Auto-login after register so the new user lands inside the app.
     await login(email, password);
   }
 

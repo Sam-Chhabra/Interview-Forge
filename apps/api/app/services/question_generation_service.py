@@ -1,17 +1,3 @@
-"""
-Requirement-decomposed RAG interview question generation with deterministic
-citation grounding verification and automatic anchor repair.
-
-Pipeline:
-1. Decompose the Job Description into atomic requirements (`must` vs `nice`).
-2. Retrieve the highest-scoring resume chunks per requirement using two-stage
-   Hybrid RRF + Cross-Encoder Reranking with MMR diversification.
-3. Generate structured questions (`gpt-4o-mini` when `OPENAI_API_KEY` is set,
-   with local neural-grounded synthesis fallback when running offline).
-4. Verify every question's `anchor` against the candidate's resume via
-   `verify_question_grounding` and auto-repair any hallucinated anchor.
-"""
-
 from __future__ import annotations
 
 import json
@@ -44,7 +30,6 @@ from app.services.resume_service import get_resume_by_id, search_chunks
 
 _MODEL = "gpt-4o-mini"
 logger = logging.getLogger(__name__)
-
 
 _QUESTION_SCHEMA: dict[str, Any] = {
     "name": "interview_questions",
@@ -89,7 +74,6 @@ _QUESTION_SCHEMA: dict[str, Any] = {
     },
 }
 
-
 _SYSTEM_PROMPT = """You are a senior engineering interviewer at a top tech company conducting a real interview.
 
 Generate personalized interview questions based on a candidate's actual resume and the specific job they're applying for. Each question must:
@@ -108,14 +92,12 @@ NEVER generate:
 - Generic STAR prompts not grounded in the resume
 - Questions about projects/skills not mentioned in the resume excerpts"""
 
-
 def _synthesize_questions_locally(
     chunks: list[dict],
     jd_title: str,
     jd_text: str,
     num_questions: int,
 ) -> list[dict]:
-    """Synthesize requirement-grounded questions using retrieved resume chunks."""
     reqs = extract_jd_requirements(jd_text, max_requirements=max(num_questions, 8))
     questions: list[dict] = []
 
@@ -180,7 +162,6 @@ def _synthesize_questions_locally(
         )
     return questions
 
-
 @retry(
     retry=retry_if_exception_type((openai.APIError, openai.APIConnectionError)),
     stop=stop_after_attempt(3),
@@ -193,12 +174,6 @@ async def generate_questions(
     user_id: uuid.UUID,
     num_questions: int = 8,
 ) -> InterviewPreviewResponse:
-    """Generate personalized interview questions for a (resume, JD) pair.
-
-    Uses Requirement-Decomposed Hybrid RRF + Cross-Encoder Reranking with MMR
-    diversification to select evidence chunks, then enforces citation grounding
-    verification on every returned question.
-    """
     resume = await get_resume_by_id(db, resume_id, user_id)
     if resume is None:
         raise HTTPException(
@@ -217,7 +192,6 @@ async def generate_questions(
             detail=f"Resume not ready (status: {resume.parse_status})",
         )
 
-    # 1. Decompose JD into atomic requirements and retrieve top evidence chunks
     reqs = extract_jd_requirements(jd.raw_text, max_requirements=8)
     seen_indices: set[int] = set()
     merged_chunks: list[dict] = []
@@ -237,7 +211,6 @@ async def generate_questions(
                 seen_indices.add(c_idx)
                 merged_chunks.append(h)
 
-    # Top up with MMR-diversified hybrid_rerank over full JD if fewer than 6 chunks
     if len(merged_chunks) < 6:
         fallback_hits = await search_chunks(
             db,
@@ -307,8 +280,6 @@ Generate exactly {num_questions} interview questions following all the rules in 
             chunks, jd.title, jd.raw_text, num_questions
         )
 
-    # 4. Run deterministic + neural grounding check on every question and repair
-    # any hallucinated anchor so 100% of anchors are verbatim resume phrases.
     resume_full_text = resume.raw_text or "\n".join(
         c.get("raw_content") or c["content"] for c in chunks
     )

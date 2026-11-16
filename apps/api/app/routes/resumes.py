@@ -1,10 +1,3 @@
-"""
-Resume endpoints: upload, list, retrieve, and multi-strategy RAG search.
-
-All routes require a valid access token. Handlers stay thin — file I/O and
-queries live in app.services.resume_service.
-"""
-
 import logging
 import uuid
 
@@ -39,7 +32,6 @@ logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
-
 @router.post("/", response_model=ResumeRead, status_code=status.HTTP_201_CREATED)
 async def upload_resume(
     background_tasks: BackgroundTasks,
@@ -57,7 +49,7 @@ async def upload_resume(
         raw_text=None,
     )
     db.add(resume)
-    await db.flush()  # populate resume.id
+    await db.flush()
 
     size, file_path = await save_uploaded_file(
         file,
@@ -73,14 +65,12 @@ async def upload_resume(
     background_tasks.add_task(parse_resume, resume.id, file_path)
     return resume
 
-
 @router.get("/", response_model=list[ResumeListItem])
 async def list_resumes(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ) -> list[Resume]:
     return await list_resumes_for_user(db, current_user.id)
-
 
 @router.get("/{resume_id}", response_model=ResumeRead)
 async def get_resume(
@@ -92,7 +82,6 @@ async def get_resume(
     if resume is None:
         raise HTTPException(status_code=404, detail="Resume not found")
     return resume
-
 
 @router.get("/{resume_id}/search", response_model=list[ResumeChunkMatch])
 async def search_resume(

@@ -1,13 +1,3 @@
-"""
-Async SQLAlchemy engine and session factory.
-
-Use `get_db()` as a FastAPI dependency in routes:
-
-    @router.get("/...")
-    async def handler(db: AsyncSession = Depends(get_db)):
-        ...
-"""
-
 from collections.abc import AsyncGenerator
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
@@ -28,7 +18,6 @@ AsyncSessionLocal = async_sessionmaker(
     expire_on_commit=False,
     autoflush=False,
 )
-
 
 async def get_db() -> AsyncGenerator[AsyncSession, None]:
     async with AsyncSessionLocal() as session:

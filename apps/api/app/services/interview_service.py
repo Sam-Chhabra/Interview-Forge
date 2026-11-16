@@ -1,12 +1,3 @@
-"""
-Interview session persistence layer.
-
-Wraps the generate_questions pipeline (LLM call + RAG retrieval) with the
-DB writes that persist the session and its questions. Also handles answer
-submission, which runs the evaluator synchronously and persists either
-the evaluation result or a 'failed' marker.
-"""
-
 import logging
 import uuid
 
@@ -29,18 +20,11 @@ from app.services.question_generation_service import generate_questions
 
 logger = logging.getLogger(__name__)
 
-
 async def create_session(
     db: AsyncSession,
     user_id: uuid.UUID,
     payload: InterviewSessionCreate,
 ) -> InterviewSession:
-    """Generate questions via the LLM pipeline, then persist as a session.
-
-    Ownership / readiness errors (404, 409, 500-empty-chunks) raised by
-    generate_questions propagate unchanged — we never reach the DB writes if
-    that call fails.
-    """
     preview = await generate_questions(
         db=db,
         resume_id=payload.resume_id,
@@ -58,7 +42,7 @@ async def create_session(
         num_questions=len(preview.questions),
     )
     db.add(session)
-    await db.flush()  # populate session.id for the FK below
+    await db.flush()
 
     for i, q in enumerate(preview.questions):
         db.add(
@@ -77,15 +61,11 @@ async def create_session(
 
     refreshed = await get_session_by_id(db, session.id, user_id)
     if refreshed is None:
-        # Defensive: we just committed this row with this user_id, so this
-        # branch shouldn't be reachable. get_session_by_id is Optional by
-        # contract, so we make the impossible case explicit.
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to re-fetch newly created session",
         )
     return refreshed
-
 
 async def list_sessions(
     db: AsyncSession,
@@ -97,7 +77,6 @@ async def list_sessions(
         .order_by(InterviewSession.created_at.desc())
     )
     return list(result)
-
 
 async def get_session_by_id(
     db: AsyncSession,
@@ -113,19 +92,12 @@ async def get_session_by_id(
         .options(selectinload(InterviewSession.questions))
     )
 
-
 async def submit_answer(
     db: AsyncSession,
     user_id: uuid.UUID,
     session_id: uuid.UUID,
     payload: InterviewAnswerCreate,
 ) -> InterviewAnswer:
-    """Persist an answer, then run the evaluator synchronously.
-
-    The answer row is committed before the evaluator runs so a failure mid-
-    eval still leaves the user's answer on disk. If the evaluator raises,
-    we mark the row 'failed' (not 'completed') so the client can retry.
-    """
     session = await get_session_by_id(db, session_id, user_id)
     if session is None:
         raise HTTPException(
@@ -155,8 +127,8 @@ async def submit_answer(
         evaluation_status=AnswerEvaluationStatus.evaluating,
     )
     db.add(answer)
-    await db.flush()  # populate answer.id
-    await db.commit()  # persist before the slow evaluator call
+    await db.flush()
+    await db.commit()
 
     try:
         eval_data = await evaluate_answer(
@@ -169,7 +141,7 @@ async def submit_answer(
         )
         answer.evaluation_json = eval_data
         answer.evaluation_status = AnswerEvaluationStatus.completed
-        answer.evaluator_model = "gpt-4o-mini"  # match _MODEL in evaluation_service
+        answer.evaluator_model = "gpt-4o-mini"
     except Exception as exc:
         logger.exception("Evaluation failed for answer %s: %s", answer.id, exc)
         answer.evaluation_status = AnswerEvaluationStatus.failed
@@ -192,9 +164,7 @@ async def submit_answer(
 
     return answer
 
-
 async def get_user_stats(db: AsyncSession, user_id: uuid.UUID) -> dict:
-    # Session counts
     total_sessions = await db.scalar(
         select(func.count(InterviewSession.id))
         .where(InterviewSession.user_id == user_id)
@@ -207,7 +177,6 @@ async def get_user_stats(db: AsyncSession, user_id: uuid.UUID) -> dict:
         )
     )
 
-    # Fetch all completed evaluations for this user (across all sessions)
     evals_query = (
         select(InterviewAnswer.evaluation_json)
         .join(
@@ -252,17 +221,11 @@ async def get_user_stats(db: AsyncSession, user_id: uuid.UUID) -> dict:
         "weakest_dimension": weakest,
     }
 
-
 async def list_answers(
     db: AsyncSession,
     user_id: uuid.UUID,
     session_id: uuid.UUID,
 ) -> list[InterviewAnswer]:
-    """List all answers for a session, oldest first.
-
-    Verifies session ownership; 404 if the session doesn't exist or isn't
-    owned by user_id.
-    """
     session = await get_session_by_id(db, session_id, user_id)
     if session is None:
         raise HTTPException(

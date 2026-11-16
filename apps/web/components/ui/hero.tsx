@@ -2,7 +2,6 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-// `motion` is the current package name of Framer Motion (same API, already installed).
 import { motion } from 'motion/react';
 
 import { Button } from '@/components/ui/button';
@@ -17,13 +16,10 @@ export interface HeroAction {
 
 export interface HeroProps
   extends Omit<React.HTMLAttributes<HTMLElement>, 'title'> {
-  /** Render the lamp / conic light effect at the top of the section. */
   gradient?: boolean;
-  /** Add a subtle frosted blur band above the lamp. */
   blur?: boolean;
   title: React.ReactNode;
   subtitle?: React.ReactNode;
-  /** Optional small pill rendered above the title. */
   badge?: React.ReactNode;
   actions?: HeroAction[];
   titleClassName?: string;
@@ -63,11 +59,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
             {blur && (
               <div className="absolute top-0 z-50 h-48 w-screen bg-transparent opacity-10 backdrop-blur-md" />
             )}
-
-            {/* Main glow */}
             <div className="absolute inset-auto z-50 h-36 w-[28rem] -translate-y-[-30%] rounded-full bg-primary/60 opacity-80 blur-3xl" />
-
-            {/* Lamp effect */}
             <motion.div
               initial={{ width: '8rem' }}
               viewport={{ once: true }}
@@ -75,8 +67,6 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
               whileInView={{ width: '16rem' }}
               className="absolute top-0 z-30 h-36 -translate-y-[20%] rounded-full bg-primary/60 blur-2xl"
             />
-
-            {/* Top line */}
             <motion.div
               initial={{ width: '15rem' }}
               viewport={{ once: true }}
@@ -84,8 +74,6 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
               whileInView={{ width: '30rem' }}
               className="absolute inset-auto z-50 h-0.5 -translate-y-[-10%] bg-primary/60"
             />
-
-            {/* Left gradient cone */}
             <motion.div
               initial={{ opacity: 0.5, width: '15rem' }}
               whileInView={{ opacity: 1, width: '30rem' }}
@@ -100,8 +88,6 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
               <div className="absolute bottom-0 left-0 z-20 h-40 w-[100%] bg-background [mask-image:linear-gradient(to_top,white,transparent)]" />
               <div className="absolute bottom-0 left-0 z-20 h-[100%] w-40 bg-background [mask-image:linear-gradient(to_right,white,transparent)]" />
             </motion.div>
-
-            {/* Right gradient cone */}
             <motion.div
               initial={{ opacity: 0.5, width: '15rem' }}
               whileInView={{ opacity: 1, width: '30rem' }}
