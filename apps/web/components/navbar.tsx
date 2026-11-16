@@ -70,7 +70,7 @@ export function Navbar() {
             )}
           >
             <FlaskConical className="h-3.5 w-3.5 text-emerald-500" />
-            <span>AI Benchmarks & Lab</span>
+            <span>AI Lab</span>
           </Link>
           {user ? (
             <div className="flex items-center gap-3 pl-2 border-l border-border/60">
