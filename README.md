@@ -2,6 +2,9 @@
 
 Built by **Sam** · MIT Licensed
 
+- **Live Demo:** [https://interview-forge-black.vercel.app/](https://interview-forge-black.vercel.app/)
+- **AI Benchmark & Retrieval Lab:** [https://interview-forge-black.vercel.app/benchmarks](https://interview-forge-black.vercel.app/benchmarks)
+
 ---
 
 ## 1. What Does This App Do? (In Plain Words)
