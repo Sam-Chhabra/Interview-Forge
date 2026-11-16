@@ -10,7 +10,7 @@ import './globals.css';
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'Interview Copilot',
+  title: 'Interview Forge',
   description: 'AI-powered interview preparation, personalized to your resume.',
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={cn('font-sans', geist.variable)}>
+    <html lang="en" className={cn('dark font-sans', geist.variable)}>
       <body className="min-h-screen antialiased">
         <AuthProvider>{children}</AuthProvider>
         <Toaster />

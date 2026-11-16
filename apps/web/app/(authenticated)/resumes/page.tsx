@@ -171,7 +171,7 @@ export default function ResumesPage() {
           ))
         ) : resumes.length === 0 ? (
           <div className="text-center py-12 border rounded-lg bg-muted/30">
-            <div className="mx-auto h-12 w-12 rounded-lg bg-zinc-100 flex items-center justify-center mb-4">
+            <div className="mx-auto h-12 w-12 rounded-lg bg-muted flex items-center justify-center mb-4">
               <FileText className="h-6 w-6 text-zinc-400" />
             </div>
             <p className="text-sm font-medium mb-1">No resumes yet</p>

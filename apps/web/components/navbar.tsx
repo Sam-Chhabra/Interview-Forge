@@ -35,7 +35,7 @@ export function Navbar() {
             alt="Interview Copilot logo"
             width={30}
             height={30}
-            className="h-7 w-7"
+            className="h-7 w-7 dark:invert"
             priority
           />
           <span className="h-5 w-px bg-border" aria-hidden />

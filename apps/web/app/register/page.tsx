@@ -66,7 +66,7 @@ export default function RegisterPage() {
             Set up your account and upload a resume to get started.
           </CardDescription>
         </CardHeader>
-        <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <form onSubmit={handleSubmit(onSubmit)} noValidate className="space-y-4">
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="full_name">

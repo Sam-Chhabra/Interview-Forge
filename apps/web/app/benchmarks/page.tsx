@@ -200,7 +200,7 @@ export default function BenchmarksLabPage() {
                   alt="Interview Forge"
                   width={20}
                   height={20}
-                  className="h-4 w-4"
+                  className="h-4 w-4 dark:invert"
                 />
               </div>
               <span className="text-sm font-semibold tracking-tight">
@@ -603,7 +603,10 @@ export default function BenchmarksLabPage() {
                 </div>
 
                 <div className="grid gap-4 md:grid-cols-2">
-                  {report.case_studies.slice(0, 2).map((cs: any) => (
+                  {report.case_studies
+                    .filter((cs: any) => cs.dense_top1 !== cs.hybrid_rerank_top1)
+                    .slice(0, 2)
+                    .map((cs: any) => (
                     <MagicCard key={cs.qid} className="p-5 space-y-3">
                       <p className="text-sm font-semibold text-foreground">
                         Query: “{cs.query}”

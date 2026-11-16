@@ -19,15 +19,15 @@ import { EvaluationDisplay } from './evaluation-display';
 
 function TypeBadge({ type }: { type: string }) {
   const styles: Record<string, string> = {
-    behavioral: 'bg-purple-100 text-purple-700',
-    technical_concept: 'bg-blue-100 text-blue-700',
-    technical_project: 'bg-indigo-100 text-indigo-700',
+    behavioral: 'bg-purple-500/15 text-purple-400',
+    technical_concept: 'bg-blue-500/15 text-blue-400',
+    technical_project: 'bg-indigo-500/15 text-indigo-400',
   };
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
-        styles[type] || 'bg-zinc-100 text-zinc-700',
+        styles[type] || 'bg-muted text-muted-foreground',
       )}
     >
       {type.replace('_', ' ')}
@@ -37,15 +37,15 @@ function TypeBadge({ type }: { type: string }) {
 
 function DifficultyBadge({ difficulty }: { difficulty: string }) {
   const styles: Record<string, string> = {
-    easy: 'bg-emerald-100 text-emerald-700',
-    medium: 'bg-amber-100 text-amber-700',
-    hard: 'bg-red-100 text-red-700',
+    easy: 'bg-emerald-500/15 text-emerald-400',
+    medium: 'bg-amber-500/15 text-amber-400',
+    hard: 'bg-red-500/15 text-red-400',
   };
   return (
     <span
       className={cn(
         'inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium',
-        styles[difficulty] || 'bg-zinc-100 text-zinc-700',
+        styles[difficulty] || 'bg-muted text-muted-foreground',
       )}
     >
       {difficulty}
@@ -145,7 +145,7 @@ export function QuestionCard({
         <div className="space-y-3">
           <div>
             <p className="mb-1 text-sm font-medium">Your answer:</p>
-            <p className="whitespace-pre-wrap border-l-2 border-zinc-200 pl-4 text-sm">
+            <p className="whitespace-pre-wrap border-l-2 border-border pl-4 text-sm">
               {answer.answer_text}
             </p>
           </div>
@@ -158,7 +158,7 @@ export function QuestionCard({
           )}
 
           {answer.evaluation_status === 'failed' && (
-            <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">
+            <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-400">
               Evaluation failed. The answer was saved but couldn&apos;t be
               scored.
             </p>

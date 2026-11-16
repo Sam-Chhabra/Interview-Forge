@@ -4,9 +4,9 @@ import type { EvaluationRubric } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
 function scoreColor(score: number): string {
-  if (score >= 4) return 'text-emerald-700';
-  if (score >= 3) return 'text-amber-700';
-  return 'text-red-700';
+  if (score >= 4) return 'text-emerald-400';
+  if (score >= 3) return 'text-amber-400';
+  return 'text-red-400';
 }
 
 export function EvaluationDisplay({
@@ -51,25 +51,25 @@ export function EvaluationDisplay({
 
       <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2">
         <div>
-          <h4 className="mb-1 text-sm font-semibold text-emerald-700">
+          <h4 className="mb-1 text-sm font-semibold text-emerald-400">
             Strengths
           </h4>
           <ul className="space-y-1">
             {evaluation.strengths.map((s, i) => (
               <li key={i} className="text-sm text-muted-foreground">
-                <span className="text-emerald-700">+</span> {s}
+                <span className="text-emerald-400">+</span> {s}
               </li>
             ))}
           </ul>
         </div>
         <div>
-          <h4 className="mb-1 text-sm font-semibold text-amber-700">
+          <h4 className="mb-1 text-sm font-semibold text-amber-400">
             Areas to improve
           </h4>
           <ul className="space-y-1">
             {evaluation.weaknesses.map((w, i) => (
               <li key={i} className="text-sm text-muted-foreground">
-                <span className="text-amber-700">−</span> {w}
+                <span className="text-amber-400">−</span> {w}
               </li>
             ))}
           </ul>

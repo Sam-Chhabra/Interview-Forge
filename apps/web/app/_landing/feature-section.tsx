@@ -38,13 +38,21 @@ export function FeatureSection({
             {description}
           </p>
         </div>
-        <MagicCard className="p-2.5 shadow-xl bg-muted/20">
+        <MagicCard
+          className="overflow-hidden border-border/70 bg-card/60 p-2 shadow-2xl"
+          gradientColor="rgba(255,255,255,0.06)"
+        >
+          <div className="flex items-center gap-1.5 px-2.5 pb-2 pt-1">
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+            <span className="h-2.5 w-2.5 rounded-full bg-zinc-700" />
+          </div>
           <Image
             src={imageSrc}
             alt={imageAlt}
             width={800}
             height={600}
-            className="rounded-lg w-full h-auto border border-border/50"
+            className="rounded-lg w-full h-auto border border-border/50 dark:invert dark:hue-rotate-180 dark:contrast-95"
           />
         </MagicCard>
       </div>

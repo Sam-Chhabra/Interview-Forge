@@ -14,7 +14,7 @@ export function StickyNav() {
               alt="Interview Forge logo"
               width={20}
               height={20}
-              className="h-4 w-4"
+              className="h-4 w-4 dark:invert"
               priority
             />
           </div>

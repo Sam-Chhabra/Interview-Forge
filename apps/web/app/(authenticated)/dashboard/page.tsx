@@ -83,8 +83,8 @@ export default function DashboardPage() {
 
           {stats.weakest_dimension && stats.dimension_averages && (
             <div className="rounded-lg border bg-muted/30 p-4 flex items-start gap-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-100 flex-shrink-0">
-                <Target className="h-4 w-4 text-amber-700" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-md bg-amber-500/15 flex-shrink-0">
+                <Target className="h-4 w-4 text-amber-400" />
               </div>
               <div>
                 <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground mb-1">
@@ -137,7 +137,7 @@ export default function DashboardPage() {
           ))
         ) : sessions.length === 0 ? (
           <div className="text-center py-12 border rounded-lg bg-muted/30">
-            <div className="mx-auto h-12 w-12 rounded-lg bg-zinc-100 flex items-center justify-center mb-4">
+            <div className="mx-auto h-12 w-12 rounded-lg bg-muted flex items-center justify-center mb-4">
               <Sparkles className="h-6 w-6 text-zinc-400" />
             </div>
             <p className="text-sm font-medium mb-1">No interviews yet</p>
