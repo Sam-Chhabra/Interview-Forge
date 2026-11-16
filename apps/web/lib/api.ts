@@ -6,7 +6,25 @@
  * setAccessToken); everything else just reads via the api.* methods.
  */
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+function resolveApiUrl(path: string): string {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+
+  // Server-side (SSR / Route Handlers): use the Vercel service binding `API_URL`
+  if (typeof window === 'undefined') {
+    const base =
+      process.env.API_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      'http://localhost:8000';
+    return new URL(normalizedPath, base.endsWith('/') ? base : `${base}/`).toString();
+  }
+
+  // Client-side (Browser): use explicit NEXT_PUBLIC_API_URL if configured,
+  // otherwise route through same-origin `/api/*` rewrite defined in vercel.json.
+  if (process.env.NEXT_PUBLIC_API_URL) {
+    return `${process.env.NEXT_PUBLIC_API_URL.replace(/\/$/, '')}${normalizedPath}`;
+  }
+  return `/api${normalizedPath}`;
+}
 
 let _accessToken: string | null = null;
 
@@ -37,7 +55,7 @@ export class ApiError extends Error {
 
 async function request<T>(path: string, options: RequestInit = {}): Promise<T> {
   const token = getAccessToken();
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(resolveApiUrl(path), {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -63,7 +81,7 @@ async function uploadFile<T>(path: string, file: File): Promise<T> {
   const token = getAccessToken();
   const formData = new FormData();
   formData.append('file', file);
-  const res = await fetch(`${API_URL}${path}`, {
+  const res = await fetch(resolveApiUrl(path), {
     method: 'POST',
     headers: {
       // No Content-Type — browser sets it with boundary

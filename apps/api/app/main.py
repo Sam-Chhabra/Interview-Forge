@@ -46,6 +46,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.middleware("http")
+async def strip_api_prefix(request, call_next):
+    """Allow requests arriving via Vercel's `/api/(.*)` rewrite to match root routers."""
+    path = request.scope.get("path", "")
+    if path == "/api":
+        request.scope["path"] = "/"
+    elif path.startswith("/api/"):
+        request.scope["path"] = path[4:]
+    return await call_next(request)
+
 # Routers
 app.include_router(health.router, tags=["health"])
 app.include_router(auth.router, prefix="/auth", tags=["auth"])

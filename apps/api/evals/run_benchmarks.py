@@ -29,7 +29,41 @@ import time
 from pathlib import Path
 
 import numpy as np
-from scipy.stats import kendalltau, spearmanr
+
+try:
+    from scipy.stats import kendalltau, spearmanr
+except ImportError:
+
+    def _rankdata(a: list[float] | list[int]) -> np.ndarray:
+        arr = np.asarray(a, dtype=np.float64)
+        sorter = np.argsort(arr)
+        inv = np.empty(sorter.size, dtype=np.intp)
+        inv[sorter] = np.arange(sorter.size, dtype=np.intp)
+        arr_sorted = arr[sorter]
+        obs = np.r_[True, arr_sorted[1:] != arr_sorted[:-1]]
+        dense = obs.cumsum()[inv]
+        count = np.r_[np.nonzero(obs)[0], len(obs)]
+        return 0.5 * (count[dense] + count[dense - 1] + 1)
+
+    def spearmanr(a: list[int], b: list[float]) -> tuple[float, float]:
+        ra, rb = _rankdata(a), _rankdata(b)
+        corr = float(np.corrcoef(ra, rb)[0, 1])
+        return corr, 0.0
+
+    def kendalltau(a: list[int], b: list[float]) -> tuple[float, float]:
+        n = len(a)
+        concordant = 0
+        discordant = 0
+        for i in range(n):
+            for j in range(i + 1, n):
+                da = a[i] - a[j]
+                db = b[i] - b[j]
+                if da * db > 0:
+                    concordant += 1
+                elif da * db < 0:
+                    discordant += 1
+        denom = max(1, concordant + discordant)
+        return float(concordant - discordant) / denom, 0.0
 
 from app.services.chunking_service import (
     ChunkRecord,
