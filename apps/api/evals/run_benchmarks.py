@@ -90,6 +90,47 @@ def _kendall_tau(a: list[int], b: list[float]) -> float:
     denom = float(np.sqrt((concordant + discordant + t_a) * (concordant + discordant + t_b)))
     return float(concordant - discordant) / denom if denom > 0 else 0.0
 
+def _rankdata(a: list[float] | list[int]) -> np.ndarray:
+    arr = np.asarray(a, dtype=np.float64)
+    sorter = np.argsort(arr)
+    inv = np.empty(sorter.size, dtype=np.intp)
+    inv[sorter] = np.arange(sorter.size, dtype=np.intp)
+    arr_sorted = arr[sorter]
+    obs = np.r_[True, arr_sorted[1:] != arr_sorted[:-1]]
+    dense = obs.cumsum()[inv]
+    count = np.r_[np.nonzero(obs)[0], len(obs)]
+    return 0.5 * (count[dense] + count[dense - 1] + 1)
+
+
+def _spearman_rho(a: list[int], b: list[float]) -> float:
+    ra, rb = _rankdata(a), _rankdata(b)
+    return float(np.corrcoef(ra, rb)[0, 1])
+
+
+def _kendall_tau(a: list[int], b: list[float]) -> float:
+    n = len(a)
+    concordant = 0
+    discordant = 0
+    t_a = 0
+    t_b = 0
+    for i in range(n):
+        for j in range(i + 1, n):
+            da = a[i] - a[j]
+            db = b[i] - b[j]
+            if da == 0 and db == 0:
+                continue
+            elif da == 0:
+                t_a += 1
+            elif db == 0:
+                t_b += 1
+            elif da * db > 0:
+                concordant += 1
+            else:
+                discordant += 1
+    denom = float(np.sqrt((concordant + discordant + t_a) * (concordant + discordant + t_b)))
+    return float(concordant - discordant) / denom if denom > 0 else 0.0
+
+
 def run_retrieval_experiment(ds: Dataset) -> tuple[dict, list[dict]]:
     retrievers: dict[str, InMemoryRetriever] = {}
     chunks_by_resume: dict[str, list[ChunkRecord]] = {}

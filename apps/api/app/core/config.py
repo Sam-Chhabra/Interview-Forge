@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     app_name: str = "Interview Copilot API"
     environment: str = Field(default="development")
 
-    upload_dir: str = Field(default="/app/uploads")
+    upload_dir: str = Field(default="/tmp/uploads")
     max_upload_size_mb: int = Field(default=10)
 
     database_url: str = Field(

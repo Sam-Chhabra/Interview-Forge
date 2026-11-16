@@ -17,7 +17,6 @@ from app.core.config import settings
 from app.schemas.evaluation import EvaluationRubric
 from app.services.embedding_service import has_valid_openai_key
 
-_client = AsyncOpenAI(api_key=settings.openai_api_key)
 _MODEL = "gpt-4o"
 logger = logging.getLogger(__name__)
 
@@ -298,8 +297,9 @@ Evaluate this answer per the rubric. Return the structured JSON."""
         EvaluationRubric.model_validate(data)
         return data
 
+    client = AsyncOpenAI(api_key=settings.openai_api_key)
     resp_fmt: Any = {"type": "json_schema", "json_schema": _EVALUATION_SCHEMA}
-    response = await _client.chat.completions.create(
+    response = await client.chat.completions.create(
         model=_MODEL,
         messages=[
             {"role": "system", "content": _SYSTEM_PROMPT},

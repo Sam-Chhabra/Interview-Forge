@@ -240,7 +240,14 @@ export const api = {
       ),
   },
   rag: {
-    benchmarks: () => request<any>('/rag/benchmarks'),
+    benchmarks: async () => {
+      try {
+        return await request<any>('/rag/benchmarks');
+      } catch {
+        const res = await fetch('/benchmark-data.json');
+        return res.json();
+      }
+    },
     runBenchmarks: () =>
       request<any>('/rag/benchmarks/run', { method: 'POST' }),
     searchCompare: (data: {
